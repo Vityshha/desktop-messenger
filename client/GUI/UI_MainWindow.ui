@@ -51,7 +51,7 @@
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <item alignment="Qt::AlignRight|Qt::AlignTop">
+       <item alignment="Qt::AlignTop">
         <widget class="QWidget" name="widget_btn" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout">
           <property name="spacing">
@@ -70,10 +70,23 @@
            <number>0</number>
           </property>
           <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item alignment="Qt::AlignRight">
            <widget class="QPushButton" name="btn_remove">
             <property name="font">
              <font>
-              <pointsize>10</pointsize>
+              <pointsize>12</pointsize>
              </font>
             </property>
             <property name="cursor">
@@ -89,7 +102,7 @@
              <string notr="true">QPushButton {
 	border: 0px solid rgba(62, 63, 70, 0);
     border-radius: 0px;
-	image: url(client/GUI/icons/remove.svg);
+	image: url(GUI/icons/remove.svg);
 }
 
 QPushButton:hover{
@@ -101,18 +114,18 @@ QPushButton:hover{
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignRight">
            <widget class="QPushButton" name="btn_shape">
             <property name="font">
              <font>
-              <pointsize>10</pointsize>
+              <pointsize>12</pointsize>
              </font>
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
     border: 0px solid rgba(62, 63, 70, 0);
     border-radius: 0px;
-	image: url(client/GUI/icons/check_box.svg);
+	image: url(GUI/icons/check_box.svg);
 }
 
 QPushButton:hover{
@@ -124,18 +137,18 @@ QPushButton:hover{
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignRight">
            <widget class="QPushButton" name="btn_close">
             <property name="font">
              <font>
-              <pointsize>10</pointsize>
+              <pointsize>12</pointsize>
              </font>
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
     border: 0px solid rgba(62, 63, 70, 0);
     border-radius: 0px;
-	image: url(client/GUI/icons/close.svg);
+	image: url(GUI/icons/close.svg);
 }
 
 QPushButton:hover{
@@ -242,7 +255,7 @@ QPushButton:hover{
                    <string notr="true">QPushButton {
     border: 0px solid rgba(62, 63, 70, 0);
     border-radius: 0px;
-	image: url(client/GUI/icons/menu.svg);
+	image: url(GUI/icons/menu.svg);
 }
 
 QPushButton:hover{
@@ -550,7 +563,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    <string notr="true">QPushButton {
     border: 0px solid rgba(62, 63, 70, 0);
     border-radius: 0px;
-	image: url(client/GUI/icons/send.svg);
+	image: url(GUI/icons/send.svg);
 }
 </string>
                   </property>
