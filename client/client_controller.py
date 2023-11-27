@@ -1,12 +1,18 @@
+import sys
+
 from GUI.UI_MainWindow import Ui_MainWindow
 from PyQt6.QtWidgets import QMainWindow
-from PyQt6.QtCore import Qt, QPoint
+from PyQt6.QtCore import Qt, pyqtSignal as Signal
+
+from Network.client_sender import Sender
 
 
 class Controller(QMainWindow):
     """
     Класс связывающий отображение с моделью
     """
+    signa_send_message = Signal(str)
+
     def __init__(self, isModel=None, parent=None):
         super(QMainWindow, self).__init__(parent)
 
@@ -15,9 +21,12 @@ class Controller(QMainWindow):
 
         self.model = isModel
 
+        self.sender = Sender()
+
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.init_const()
         self.init_connect()
+        self.init_connect_signal()
         self.show()
 
     def init_connect(self):
@@ -27,35 +36,42 @@ class Controller(QMainWindow):
         self.ui.btn_send.clicked.connect(self.send_message)
         self.ui.list_users.clicked.connect(self.user_choise)
         self.ui.btn_settings.clicked.connect(self.setting_mode)
-        self.ui.send_text.selectionChanged.connect(self.put_text_sms)
-        self.ui.search_text.selectionChanged.connect(self.put_text_search)
+
+
+        self.ui.send_text.setPlaceholderText(self.default_sms)
+        self.ui.send_text.installEventFilter(self)
+
+        self.ui.search_text.setPlaceholderText(self.default_search)
+        self.ui.send_text.installEventFilter(self)
+
+    def init_connect_signal(self):
+        self.signa_send_message.connect(self.sender.send)
 
     def init_const(self):
-        self.flag_resize = True
-        self.window_width = None
-        self.window_height = None
+        self.default_sms = 'Введите собщение...'
+        self.default_search = 'Поиск'
+        self.default_color = 'color: rgba(79, 91, 103, 0.8); border: transparent;'
+        self.select_color = 'color: rgba(255, 255, 255, 1); border: transparent;'
         self.shoise_user = None
 
     def close_app(self):
-        self.close()
+        message = '!DISCONNECT'
+        self.signa_send_message.emit(message)
+        sys.exit()
 
     def resize_window(self):
-        if self.flag_resize:
-            self.window_width = self.size().width()
-            self.window_height = self.size().height()
+        if not self.isFullScreen():
             self.showFullScreen()
-            self.flag_resize = False
         else:
-            self.resize(self.window_width,  self.window_height)
-            # self.move(0, 0)
-            self.flag_resize = True
+            self.showNormal()
 
     def remove_window(self):
         self.showMinimized()
 
 
     def send_message(self):
-        print(self.ui.send_text.toPlainText())
+        message = str(self.ui.send_text.toPlainText())
+        self.signa_send_message.emit(message)
         self.ui.send_text.clear()
 
 
@@ -66,8 +82,20 @@ class Controller(QMainWindow):
     def setting_mode(self):
         print('Окно настроек')
 
-    def put_text_sms(self):
-        self.ui.send_text.clear()
 
     def put_text_search(self):
         self.ui.search_text.clear()
+
+
+    #todo доделать пока что хуйня
+    def eventFilter(self, source, event):
+        if source == self.ui.send_text:
+            if event.type() == event.Type.FocusIn:
+                self.ui.send_text.setStyleSheet(self.select_color)
+                if self.ui.send_text.toPlainText().strip() == self.default_sms:
+                    self.ui.send_text.clear()
+            elif event.type() == event.Type.FocusOut:
+                self.ui.send_text.setStyleSheet(self.default_color)
+                if self.ui.send_text.toPlainText().strip() == "":
+                    self.ui.send_text.setPlainText(self.default_sms)
+        return super().eventFilter(source, event)
