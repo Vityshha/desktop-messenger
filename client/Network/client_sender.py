@@ -1,7 +1,7 @@
 import socket
 # import pickle ??????????
-from PyQt6.QtCore import pyqtSlot as Slot, pyqtSignal as Signal
 
+#todo HEADER слишком большой наверное
 HEADER = 64
 PORT = 5050
 SERVER = '172.29.80.1'
@@ -14,7 +14,7 @@ class Sender():
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect(ADDR)
     except:
-        print("Сервак не запущен")
+        print('[SEND ERROR] Сервер недоступен')
 
     def send(self, msg):
         message = msg.encode(FORMAT)
@@ -25,12 +25,6 @@ class Sender():
         try:
             self.client.send(send_lenght)
             self.client.send(message)
-            print(self.client.recv(2048).decode(FORMAT))
         except:
-            print("Сервак не запущен")
-
-
-# if __name__ == '__main__':
-#     msg = 'Hello, world2!'
-#     send(msg)
-#     send(DISCONNECT_MESSAGE)
+            print('[SEND ERROR] Сервер недоступен')
+            # Добавить повторную отправку на GUI о том что сервак не доступен

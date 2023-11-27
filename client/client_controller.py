@@ -75,6 +75,10 @@ class Controller(QMainWindow):
         self.ui.send_text.clear()
 
 
+    def send_sears_users(self):
+        print('Отправка на сервак для поиска usera')
+
+
     def user_choise(self):
         self.shoise_user = self.ui.list_users.currentItem().text()
         self.ui.user_label.setText(self.shoise_user)
