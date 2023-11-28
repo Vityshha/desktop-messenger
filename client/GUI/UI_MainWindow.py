@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.widget = QtWidgets.QWidget(parent=self.centralwidget)
-        self.widget.setStyleSheet("background-color: rgb(36, 47, 61);")
+        self.widget.setStyleSheet("background-color: rgb(70, 64, 98);")
         self.widget.setObjectName("widget")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.widget)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -44,11 +44,11 @@ class Ui_MainWindow(object):
         self.btn_remove.setStyleSheet("QPushButton {\n"
 "    border: 0px solid rgba(62, 63, 70, 0);\n"
 "    border-radius: 0px;\n"
-"    image: url(GUI/icons/remove.svg);\n"
+"    image: url(GUI/icons/remove.png);\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
-"    background: rgb(44, 56, 71);\n"
+"    background: rgb(90, 80, 120);\n"
 "}")
         self.btn_remove.setText("")
         self.btn_remove.setObjectName("btn_remove")
@@ -60,11 +60,11 @@ class Ui_MainWindow(object):
         self.btn_shape.setStyleSheet("QPushButton {\n"
 "    border: 0px solid rgba(62, 63, 70, 0);\n"
 "    border-radius: 0px;\n"
-"    image: url(GUI/icons/check_box.svg);\n"
+"    image: url(GUI/icons/check_box.png);\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
-"    background: rgb(44, 56, 71);\n"
+"    background: rgb(90, 80, 120);\n"
 "}")
         self.btn_shape.setText("")
         self.btn_shape.setObjectName("btn_shape")
@@ -76,11 +76,12 @@ class Ui_MainWindow(object):
         self.btn_close.setStyleSheet("QPushButton {\n"
 "    border: 0px solid rgba(62, 63, 70, 0);\n"
 "    border-radius: 0px;\n"
-"    image: url(GUI/icons/close.svg);\n"
+"    image: url(GUI/icons/close.png);\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
-"    background: rgb(44, 56, 71);\n"
+"    \n"
+"    background-color: rgb(255, 0, 0);\n"
 "}")
         self.btn_close.setText("")
         self.btn_close.setObjectName("btn_close")
@@ -103,7 +104,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget_left_main.sizePolicy().hasHeightForWidth())
         self.widget_left_main.setSizePolicy(sizePolicy)
-        self.widget_left_main.setStyleSheet("background-color: rgb(23, 33, 43);")
+        self.widget_left_main.setStyleSheet("background-color: rgb(54, 50, 87);")
         self.widget_left_main.setObjectName("widget_left_main")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.widget_left_main)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -132,11 +133,11 @@ class Ui_MainWindow(object):
         self.btn_settings.setStyleSheet("QPushButton {\n"
 "    border: 0px solid rgba(62, 63, 70, 0);\n"
 "    border-radius: 0px;\n"
-"    image: url(GUI/icons/menu.svg);\n"
+"    image: url(GUI/icons/menu.png);\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
-"    background: rgb(44, 56, 71);\n"
+"    background: rgb(70, 65, 100);\n"
 "}")
         self.btn_settings.setText("")
         self.btn_settings.setIconSize(QtCore.QSize(16, 16))
@@ -150,8 +151,8 @@ class Ui_MainWindow(object):
         self.search_text.setSizePolicy(sizePolicy)
         self.search_text.setMaximumSize(QtCore.QSize(200, 16777215))
         self.search_text.setAcceptDrops(False)
-        self.search_text.setStyleSheet("background-color: rgb(36, 47, 61);\n"
-"color: rgba(79, 91, 103, 0.8);\n"
+        self.search_text.setStyleSheet("background-color: rgb(70, 64, 98);\n"
+"color: rgba(255, 255, 255,1);\n"
 "border: 2px solid rgba(62, 63, 70, 0);\n"
 "border-radius: 12px;")
         self.search_text.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -210,10 +211,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.widget_user = QtWidgets.QWidget(parent=self.widget_right_main)
-        self.widget_user.setStyleSheet("background-color: rgb(23, 33, 43);")
+        self.widget_user.setStyleSheet("background-color: rgb(54, 50, 87);")
         self.widget_user.setObjectName("widget_user")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.widget_user)
-        self.verticalLayout_5.setContentsMargins(-1, -1, 0, 19)
+        self.verticalLayout_5.setContentsMargins(-1, -1, 0, 16)
         self.verticalLayout_5.setSpacing(0)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.user_label = QtWidgets.QLabel(parent=self.widget_user)
@@ -223,6 +224,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.user_label.sizePolicy().hasHeightForWidth())
         self.user_label.setSizePolicy(sizePolicy)
         self.user_label.setStyleSheet("color: rgb(255, 255, 255);")
+        self.user_label.setText("")
         self.user_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.user_label.setObjectName("user_label")
         self.verticalLayout_5.addWidget(self.user_label)
@@ -239,7 +241,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.sms_label.sizePolicy().hasHeightForWidth())
         self.sms_label.setSizePolicy(sizePolicy)
-        self.sms_label.setStyleSheet("background-color: rgb(14, 22, 33);\n"
+        self.sms_label.setStyleSheet("background-color: rgb(64, 57, 101);\n"
 "color: rgb(255, 255, 255);")
         self.sms_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.sms_label.setObjectName("sms_label")
@@ -262,7 +264,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.send_text.sizePolicy().hasHeightForWidth())
         self.send_text.setSizePolicy(sizePolicy)
-        self.send_text.setStyleSheet("color: rgba(79, 91, 103, 0.8);\n"
+        self.send_text.setStyleSheet("color: rgba(255, 255, 255,1);\n"
 "border: transparent;")
         self.send_text.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.send_text.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -276,7 +278,7 @@ class Ui_MainWindow(object):
         self.btn_send.setStyleSheet("QPushButton {\n"
 "    border: 0px solid rgba(62, 63, 70, 0);\n"
 "    border-radius: 0px;\n"
-"    image: url(GUI/icons/send.svg);\n"
+"    image: url(GUI/icons/send.png);\n"
 "}\n"
 "")
         self.btn_send.setText("")
@@ -319,7 +321,6 @@ class Ui_MainWindow(object):
         item = self.list_users.item(6)
         item.setText(_translate("MainWindow", "Никита"))
         self.list_users.setSortingEnabled(__sortingEnabled)
-        self.user_label.setText(_translate("MainWindow", "User"))
         self.sms_label.setText(_translate("MainWindow", "Выберите, кому хотели бы написать"))
         self.send_text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"

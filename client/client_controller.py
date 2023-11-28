@@ -11,7 +11,7 @@ class Controller(QMainWindow):
     """
     Класс связывающий отображение с моделью
     """
-    signa_send_message = Signal(str)
+    signal_send_message = Signal(str)
 
     def __init__(self, isModel=None, parent=None):
         super(QMainWindow, self).__init__(parent)
@@ -45,7 +45,7 @@ class Controller(QMainWindow):
         self.ui.send_text.installEventFilter(self)
 
     def init_connect_signal(self):
-        self.signa_send_message.connect(self.sender.send)
+        self.signal_send_message.connect(self.sender.send)
 
     def init_const(self):
         self.default_sms = 'Введите собщение...'
@@ -56,7 +56,7 @@ class Controller(QMainWindow):
 
     def close_app(self):
         message = '!DISCONNECT'
-        self.signa_send_message.emit(message)
+        self.signal_send_message.emit(message)
         sys.exit()
 
     def resize_window(self):
@@ -71,7 +71,9 @@ class Controller(QMainWindow):
 
     def send_message(self):
         message = str(self.ui.send_text.toPlainText())
-        self.signa_send_message.emit(message)
+        if message == '':
+            return
+        self.signal_send_message.emit(message)
         self.ui.send_text.clear()
 
 

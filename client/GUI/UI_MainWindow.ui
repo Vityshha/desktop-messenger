@@ -33,7 +33,7 @@
     <item>
      <widget class="QWidget" name="widget" native="true">
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(36, 47, 61);</string>
+       <string notr="true">background-color: rgb(70, 64, 98);</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="spacing">
@@ -102,11 +102,11 @@
              <string notr="true">QPushButton {
 	border: 0px solid rgba(62, 63, 70, 0);
     border-radius: 0px;
-	image: url(GUI/icons/remove.svg);
+	image: url(GUI/icons/remove.png);
 }
 
 QPushButton:hover{
-    background: rgb(44, 56, 71);
+    background: rgb(90, 80, 120);
 }</string>
             </property>
             <property name="text">
@@ -125,11 +125,11 @@ QPushButton:hover{
              <string notr="true">QPushButton {
     border: 0px solid rgba(62, 63, 70, 0);
     border-radius: 0px;
-	image: url(GUI/icons/check_box.svg);
+	image: url(GUI/icons/check_box.png);
 }
 
 QPushButton:hover{
-    background: rgb(44, 56, 71);
+    background: rgb(90, 80, 120);
 }</string>
             </property>
             <property name="text">
@@ -148,11 +148,12 @@ QPushButton:hover{
              <string notr="true">QPushButton {
     border: 0px solid rgba(62, 63, 70, 0);
     border-radius: 0px;
-	image: url(GUI/icons/close.svg);
+	image: url(GUI/icons/close.png);
 }
 
 QPushButton:hover{
-    background: rgb(44, 56, 71);
+    
+	background-color: rgb(255, 0, 0);
 }</string>
             </property>
             <property name="text">
@@ -196,7 +197,7 @@ QPushButton:hover{
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: rgb(23, 33, 43);</string>
+             <string notr="true">background-color: rgb(54, 50, 87);</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <property name="spacing">
@@ -255,11 +256,11 @@ QPushButton:hover{
                    <string notr="true">QPushButton {
     border: 0px solid rgba(62, 63, 70, 0);
     border-radius: 0px;
-	image: url(GUI/icons/menu.svg);
+	image: url(GUI/icons/menu.png);
 }
 
 QPushButton:hover{
-    background: rgb(44, 56, 71);
+    background: rgb(70, 65, 100);
 }</string>
                   </property>
                   <property name="text">
@@ -291,8 +292,8 @@ QPushButton:hover{
                    <bool>false</bool>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-color: rgb(36, 47, 61);
-color: rgba(79, 91, 103, 0.8);
+                   <string notr="true">background-color: rgb(70, 64, 98);
+color: rgba(255, 255, 255,1);
 border: 2px solid rgba(62, 63, 70, 0);
 border-radius: 12px;</string>
                   </property>
@@ -420,7 +421,7 @@ border: transparent;</string>
              <item>
               <widget class="QWidget" name="widget_user" native="true">
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(23, 33, 43);</string>
+                <string notr="true">background-color: rgb(54, 50, 87);</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_5">
                 <property name="spacing">
@@ -430,7 +431,7 @@ border: transparent;</string>
                  <number>0</number>
                 </property>
                 <property name="bottomMargin">
-                 <number>19</number>
+                 <number>16</number>
                 </property>
                 <item>
                  <widget class="QLabel" name="user_label">
@@ -444,7 +445,7 @@ border: transparent;</string>
                    <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
-                   <string>User</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -481,7 +482,7 @@ border: transparent;</string>
                    </sizepolicy>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">background-color: rgb(14, 22, 33);
+                   <string notr="true">background-color: rgb(64, 57, 101);
 color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
@@ -528,7 +529,7 @@ color: rgb(255, 255, 255);</string>
                    </sizepolicy>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">color: rgba(79, 91, 103, 0.8);
+                   <string notr="true">color: rgba(255, 255, 255,1);
 border: transparent;</string>
                   </property>
                   <property name="verticalScrollBarPolicy">
@@ -563,7 +564,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    <string notr="true">QPushButton {
     border: 0px solid rgba(62, 63, 70, 0);
     border-radius: 0px;
-	image: url(GUI/icons/send.svg);
+	image: url(GUI/icons/send.png);
 }
 </string>
                   </property>
