@@ -2,7 +2,8 @@ import sys
 
 from GUI.UI_MainWindow import Ui_MainWindow
 from PyQt6.QtWidgets import QMainWindow
-from PyQt6.QtCore import Qt, pyqtSignal as Signal
+from PyQt6.QtCore import Qt, pyqtSignal as Signal, QPoint
+from PyQt6 import QtCore
 
 from Network.client_sender import Sender
 
@@ -37,13 +38,6 @@ class Controller(QMainWindow):
         self.ui.list_users.clicked.connect(self.user_choise)
         self.ui.btn_settings.clicked.connect(self.setting_mode)
 
-
-        self.ui.send_text.setPlaceholderText(self.default_sms)
-        self.ui.send_text.installEventFilter(self)
-
-        self.ui.search_text.setPlaceholderText(self.default_search)
-        self.ui.send_text.installEventFilter(self)
-
     def init_connect_signal(self):
         self.signal_send_message.connect(self.sender.send)
 
@@ -76,6 +70,15 @@ class Controller(QMainWindow):
         self.signal_send_message.emit(message)
         self.ui.send_text.clear()
 
+    def keyPressEvent(self, event):
+        if event.key() == 16777220:
+            print('enter')
+            message = str(self.ui.send_text.toPlainText())
+            if message == '':
+                return
+            self.signal_send_message.emit(message)
+            self.ui.send_text.clear()
+
 
     def send_sears_users(self):
         print('Отправка на сервак для поиска usera')
@@ -93,15 +96,11 @@ class Controller(QMainWindow):
         self.ui.search_text.clear()
 
 
-    #todo доделать пока что хуйня
-    def eventFilter(self, source, event):
-        if source == self.ui.send_text:
-            if event.type() == event.Type.FocusIn:
-                self.ui.send_text.setStyleSheet(self.select_color)
-                if self.ui.send_text.toPlainText().strip() == self.default_sms:
-                    self.ui.send_text.clear()
-            elif event.type() == event.Type.FocusOut:
-                self.ui.send_text.setStyleSheet(self.default_color)
-                if self.ui.send_text.toPlainText().strip() == "":
-                    self.ui.send_text.setPlainText(self.default_sms)
-        return super().eventFilter(source, event)
+    def mousePressEvent(self, event):
+        self.oldPosition = event.pos()
+
+    def mouseMoveEvent(self, event):
+        # Move window
+        delta = QPoint(event.pos() - self.oldPosition)
+        self.move(self.x() + delta.x(), self.y() + delta.y())
+        # Resize window

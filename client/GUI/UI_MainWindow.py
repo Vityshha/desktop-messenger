@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
 "}")
         self.btn_remove.setText("")
         self.btn_remove.setObjectName("btn_remove")
-        self.horizontalLayout.addWidget(self.btn_remove, 0, QtCore.Qt.AlignmentFlag.AlignRight)
+        self.horizontalLayout.addWidget(self.btn_remove)
         self.btn_shape = QtWidgets.QPushButton(parent=self.widget_btn)
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
 "}")
         self.btn_shape.setText("")
         self.btn_shape.setObjectName("btn_shape")
-        self.horizontalLayout.addWidget(self.btn_shape, 0, QtCore.Qt.AlignmentFlag.AlignRight)
+        self.horizontalLayout.addWidget(self.btn_shape)
         self.btn_close = QtWidgets.QPushButton(parent=self.widget_btn)
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -85,7 +85,7 @@ class Ui_MainWindow(object):
 "}")
         self.btn_close.setText("")
         self.btn_close.setObjectName("btn_close")
-        self.horizontalLayout.addWidget(self.btn_close, 0, QtCore.Qt.AlignmentFlag.AlignRight)
+        self.horizontalLayout.addWidget(self.btn_close)
         self.verticalLayout_2.addWidget(self.widget_btn, 0, QtCore.Qt.AlignmentFlag.AlignTop)
         self.widget_main = QtWidgets.QWidget(parent=self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.MinimumExpanding)
@@ -182,14 +182,6 @@ class Ui_MainWindow(object):
 "border: transparent;")
         self.list_users.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.list_users.setObjectName("list_users")
-        item = QtWidgets.QListWidgetItem()
-        self.list_users.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        self.list_users.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        self.list_users.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        self.list_users.addItem(item)
         item = QtWidgets.QListWidgetItem()
         self.list_users.addItem(item)
         item = QtWidgets.QListWidgetItem()
@@ -295,7 +287,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Месседжер"))
         self.search_text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -304,22 +296,15 @@ class Ui_MainWindow(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:\'Segoe UI\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.search_text.setPlaceholderText(_translate("MainWindow", "Поиск"))
         __sortingEnabled = self.list_users.isSortingEnabled()
         self.list_users.setSortingEnabled(False)
         item = self.list_users.item(0)
-        item.setText(_translate("MainWindow", "Витя"))
+        item.setText(_translate("MainWindow", "admin1"))
         item = self.list_users.item(1)
-        item.setText(_translate("MainWindow", "Даша"))
+        item.setText(_translate("MainWindow", "admin2"))
         item = self.list_users.item(2)
-        item.setText(_translate("MainWindow", "Ильсаф"))
-        item = self.list_users.item(3)
-        item.setText(_translate("MainWindow", "Айдар"))
-        item = self.list_users.item(4)
-        item.setText(_translate("MainWindow", "Камиль"))
-        item = self.list_users.item(5)
-        item.setText(_translate("MainWindow", "Тимур"))
-        item = self.list_users.item(6)
-        item.setText(_translate("MainWindow", "Никита"))
+        item.setText(_translate("MainWindow", "admin3"))
         self.list_users.setSortingEnabled(__sortingEnabled)
         self.sms_label.setText(_translate("MainWindow", "Выберите, кому хотели бы написать"))
         self.send_text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -330,3 +315,4 @@ class Ui_MainWindow(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:\'Segoe UI\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.send_text.setPlaceholderText(_translate("MainWindow", "Введите сообщение..."))
