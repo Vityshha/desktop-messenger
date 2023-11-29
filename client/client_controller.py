@@ -3,7 +3,6 @@ import sys
 from GUI.UI_MainWindow import Ui_MainWindow
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtCore import Qt, pyqtSignal as Signal, QPoint
-from PyQt6 import QtCore
 
 from Network.client_sender import Sender
 
