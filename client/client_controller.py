@@ -1,6 +1,11 @@
 import sys
+import time
 
 from GUI.UI_MainWindow import Ui_MainWindow
+from authorization import Authorization
+
+from client_constant import Constant
+
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtCore import Qt, pyqtSignal as Signal, QPoint
 
@@ -16,18 +21,32 @@ class Controller(QMainWindow):
     def __init__(self, isModel=None, parent=None):
         super(QMainWindow, self).__init__(parent)
 
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.client_constant = Constant()
+        self.sender = Sender()
+
+        self.login_messager()
 
         self.model = isModel
 
-        self.sender = Sender()
 
-        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
-        self.init_const()
-        self.init_connect()
-        self.init_connect_signal()
-        self.show()
+    def login_messager(self):
+        if self.client_constant.AUTHORIZED == 'True':
+            self.ui = Ui_MainWindow()
+            self.ui.setupUi(self)
+            self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+            self.init_const()
+            self.init_connect()
+            self.init_connect_signal()
+            self.show()
+        else:
+            self.Authorization = Authorization()
+            self.Authorization.show()
+            paragraph = 'Authentication parameters'
+            value = 'AUTHORIZED'
+            importance = 'True'
+            self.client_constant.shanges(paragraph, value, importance)
+            self.Authorization.close()
+            self.login_messager()
 
     def init_connect(self):
         self.ui.btn_close.clicked.connect(self.close_app)
