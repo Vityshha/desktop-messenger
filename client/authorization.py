@@ -1,21 +1,25 @@
 import sys
-from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtWidgets
 from PyQt6.QtCore import QPoint, Qt
 from PyQt6.QtWidgets import QMainWindow
 from GUI.UI_Authorization import Ui_Authorization
+from Network.client_sender import Sender
+from PyQt6.QtCore import Qt, pyqtSignal as Signal
 
 class Authorization(QMainWindow):
+
+    signal_send_authorization = Signal(str)
     def __init__(self, parent=None):
         super(QMainWindow, self).__init__(parent)
         self.ui_authorization = Ui_Authorization()
         self.ui_authorization.setupUi(self)
-
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
 
         self.ui_authorization.btn_reg.clicked.connect(self.reg)
         self.ui_authorization.btn_in.clicked.connect(self.auth)
         self.base_line_edit = [self.ui_authorization.login, self.ui_authorization.password]
 
+        self.sender = Sender()
         self.init_connect()
 
 
@@ -31,10 +35,14 @@ class Authorization(QMainWindow):
     def auth(self):
         login = self.ui_authorization.login.toPlainText()
         password = self.ui_authorization.password.toPlainText()
+        print(f'Проверка в БД {login}, {password}')
+        self.signal_send_authorization.emit(str(login) + ' ' + str(password))
 
     def reg(self):
         login = self.ui_authorization.login.toPlainText()
         password = self.ui_authorization.password.toPlainText()
+        print(f'Запись в БД {login}, {password}')
+        self.signal_send_authorization.emit(str(login) + ' ' + str(password))
 
     def mousePressEvent(self, event):
         self.oldPosition = event.pos()
@@ -46,6 +54,9 @@ class Authorization(QMainWindow):
         # Resize window
 
     def close_app(self):
+        message = '!DISCONNECT'
+        self.signal_send_authorization.emit(message)
+        self.close()
         sys.exit()
 
     def remove_window(self):

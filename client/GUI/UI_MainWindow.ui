@@ -354,21 +354,6 @@ border: transparent;</string>
                   <property name="verticalScrollBarPolicy">
                    <enum>Qt::ScrollBarAlwaysOff</enum>
                   </property>
-                  <item>
-                   <property name="text">
-                    <string>admin1</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>admin2</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>admin3</string>
-                   </property>
-                  </item>
                  </widget>
                 </item>
                </layout>

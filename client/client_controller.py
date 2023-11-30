@@ -1,5 +1,4 @@
 import sys
-import time
 
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
@@ -17,6 +16,7 @@ class Controller(QMainWindow):
     Класс связывающий отображение с моделью
     """
     signal_send_message = Signal(str)
+    signal_search_user = Signal(str)
 
     def __init__(self, isModel=None, parent=None):
         super(QMainWindow, self).__init__(parent)
@@ -36,17 +36,18 @@ class Controller(QMainWindow):
             self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
             self.init_const()
             self.init_connect()
-            self.init_connect_signal()
             self.show()
+            self.signal_send_message.connect(self.sender.send_message)
+
         else:
             self.Authorization = Authorization()
             self.Authorization.show()
             paragraph = 'Authentication parameters'
             value = 'AUTHORIZED'
             importance = 'True'
-            self.client_constant.shanges(paragraph, value, importance)
-            self.Authorization.close()
-            self.login_messager()
+            # self.client_constant.shanges(paragraph, value, importance)
+            self.Authorization.signal_send_authorization.connect(self.sender.send_authorization)
+
 
     def init_connect(self):
         self.ui.btn_close.clicked.connect(self.close_app)
@@ -55,9 +56,6 @@ class Controller(QMainWindow):
         self.ui.btn_send.clicked.connect(self.send_message)
         self.ui.list_users.clicked.connect(self.user_choise)
         self.ui.btn_settings.clicked.connect(self.setting_mode)
-
-    def init_connect_signal(self):
-        self.signal_send_message.connect(self.sender.send)
 
     def init_const(self):
         self.default_sms = 'Введите собщение...'
@@ -69,6 +67,7 @@ class Controller(QMainWindow):
     def close_app(self):
         message = '!DISCONNECT'
         self.signal_send_message.emit(message)
+        self.close()
         sys.exit()
 
     def resize_window(self):
