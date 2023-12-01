@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtCore import Qt, pyqtSignal as Signal, QPoint
 
 from Network.client_sender import Sender
+from Network.client_receiver import Receiver
 
 
 class Controller(QMainWindow):
@@ -20,6 +21,7 @@ class Controller(QMainWindow):
 
     def __init__(self, isModel=None, parent=None):
         super(QMainWindow, self).__init__(parent)
+        self.receiver = Receiver()
 
         self.client_constant = Constant()
         self.sender = Sender()
@@ -27,6 +29,7 @@ class Controller(QMainWindow):
         self.login_messager()
 
         self.model = isModel
+
 
 
     def login_messager(self):

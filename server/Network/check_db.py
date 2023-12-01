@@ -11,5 +11,5 @@ class CheckThread(QThread):
     def thr_login(self, name, passw):
         self.auth.login(name, passw)
 
-    def thr_register(self, name, passw):
-        self.auth.register(name, passw)
+    def thr_register(self, name, passw, ip):
+        self.auth.register(name, passw, ip)

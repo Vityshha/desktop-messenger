@@ -4,6 +4,7 @@ import threading
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt, pyqtSignal as Signal, QObject
 from server.Network.check_db import CheckThread
+from server.Network.server_sender import Sender
 
 HEADER = 64
 PORT = 5050
@@ -20,33 +21,35 @@ class Receiver(QObject):
     signal_reg = Signal(str)
     signal_message = Signal(str)
 
-    def __init__(self, parent=None):
-        super(Receiver, self).__init__(parent)
+    def __init__(self, database):
+        super(Receiver, self).__init__()
 
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind(ADDR)
+        self.database = database
+        self.check_db = CheckThread(self.database)
 
-        self.check_db = CheckThread('C:\\Users\\KFU\\Desktop\\desktop-messenger\\server\\database_metod\\database\\users.db')
 
     def handle_client(self, conn, addr):
         print(f'[NEW CONNECTIONS] {addr} connected')
 
         connected = True
         while connected:
+            self.sender = Sender(addr)
             msg_lenght = conn.recv(HEADER).decode(FORMAT)
             if msg_lenght:
                 msg_lenght = int(msg_lenght)
                 msg = conn.recv(msg_lenght).decode(FORMAT)
                 if msg == DISCONNECT_MESSAGE:
                     connected = False
+                    return
                 print(f'[{addr}] [{msg[0:3]}] {msg[3:]}')
                 if msg[0:3] == '#!0':
                     self.auth(msg[3:])
                 elif msg[0:3] == '#!1':
-                    self.reg(msg[3:])
+                    self.reg(msg[3:], ip=addr)
                 else:
                     print('хз пришло')
-                conn.send('msg received'.encode(FORMAT))
         conn.close()
 
     def start(self):
@@ -64,18 +67,15 @@ class Receiver(QObject):
         passw = data[1]
         self.check_db.thr_login(login, passw)
 
-    def reg(self, msg):
+    def reg(self, msg, ip):
         data = msg.split()
         login = data[0]
         passw = data[1]
-        self.check_db.thr_register(login, passw)
-
-    def signal_handler(self, value):
-        QtWidgets.QMessageBox.about(self, 'Оповещение', value)
-
+        self.check_db.thr_register(login, passw, ip)
+        self.check_db.auth.correct = 0
+        self.correct_authorization()
 
 
-if __name__ == "__main__":
-    print('[START] Server is starting...')
-    rec = Receiver()
-    rec.start()
+    def correct_authorization(self):
+        print('Отправка сигнала о правильном вхлде')
+        self.sender.client_send_message(msg='correct')

@@ -3,7 +3,6 @@ from PyQt6 import QtWidgets
 from PyQt6.QtCore import QPoint, Qt
 from PyQt6.QtWidgets import QMainWindow
 from GUI.UI_Authorization import Ui_Authorization
-from Network.client_sender import Sender
 from PyQt6.QtCore import Qt, pyqtSignal as Signal
 
 class Authorization(QMainWindow):
@@ -19,7 +18,6 @@ class Authorization(QMainWindow):
         self.ui_authorization.btn_in.clicked.connect(self.auth)
         self.base_line_edit = [self.ui_authorization.login, self.ui_authorization.password]
 
-        self.sender = Sender()
         self.init_connect()
 
 

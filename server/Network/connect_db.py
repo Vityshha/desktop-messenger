@@ -29,9 +29,10 @@ class Connect_DB:
         with sq.connect(self.database) as con:
             cur = con.cursor()
             cur.execute(f'{request}')
-            # results = cur.fetchall()
-            for results in cur:
-                print(results)
+            results = cur.fetchall()
+            # for results in cur:
+            #     print(results)
+            return results
 
     def update_db(self, request):
         """
