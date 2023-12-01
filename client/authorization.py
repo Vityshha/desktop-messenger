@@ -36,13 +36,13 @@ class Authorization(QMainWindow):
         login = self.ui_authorization.login.toPlainText()
         password = self.ui_authorization.password.toPlainText()
         print(f'Проверка в БД {login}, {password}')
-        self.signal_send_authorization.emit(str(login) + ' ' + str(password))
+        self.signal_send_authorization.emit('#!0 ' + str(login) + ' ' + str(password))
 
     def reg(self):
         login = self.ui_authorization.login.toPlainText()
         password = self.ui_authorization.password.toPlainText()
         print(f'Запись в БД {login}, {password}')
-        self.signal_send_authorization.emit(str(login) + ' ' + str(password))
+        self.signal_send_authorization.emit('#!1 ' +str(login) + ' ' + str(password))
 
     def mousePressEvent(self, event):
         self.oldPosition = event.pos()
