@@ -4,7 +4,7 @@ import socket
 #todo HEADER слишком большой наверное
 HEADER = 64
 PORT = 5050
-SERVER = '172.30.128.1'
+SERVER = '172.22.32.1'
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!DISCONNECT'

@@ -6,14 +6,18 @@ HEADER = 64
 class Sender():
 
     def __init__(self, ADDR=None):
-        self.ADDR = ADDR
-        print('Пытаюсь подключиться к ', ADDR)
+        print(ADDR)
+        self.ip = ADDR[0]
+        self.port = int(ADDR[1])+1
+        self.ADDR = (self.ip, self.port)
+        print('Пытаюсь подключиться к ',self.ADDR)
 
         try:
             self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.server.connect(self.ADDR)
+            print('Подключился к клиенту')
         except:
-            print('Клиент недоступен')
+            print('Клиент недоступен1')
 
     def client_send_message(self, msg):
         message = msg.encode(FORMAT)
@@ -24,6 +28,6 @@ class Sender():
             self.server.send(send_lenght)
             self.server.send(message)
         except:
-            print('Клиент недоступен')
+            print('Клиент недоступен2')
 
 

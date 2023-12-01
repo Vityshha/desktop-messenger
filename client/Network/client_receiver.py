@@ -5,7 +5,7 @@ from PyQt6.QtCore import Qt, pyqtSignal as Signal, QObject
 
 HEADER = 64
 PORT = 5051
-SERVER = '172.30.128.1'
+SERVER = '172.20.16.1'
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!DISCONNECT'

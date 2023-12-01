@@ -1,5 +1,6 @@
 import socket
 import threading
+import time
 
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt, pyqtSignal as Signal, QObject
@@ -8,7 +9,8 @@ from server.Network.server_sender import Sender
 
 HEADER = 64
 PORT = 5050
-SERVER = socket.gethostbyname(socket.gethostname())
+#todo надо свое писать
+SERVER = '192.168.50.133'
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!DISCONNECT'
@@ -35,7 +37,7 @@ class Receiver(QObject):
 
         connected = True
         while connected:
-            self.sender = Sender(addr)
+            time.sleep(3)
             msg_lenght = conn.recv(HEADER).decode(FORMAT)
             if msg_lenght:
                 msg_lenght = int(msg_lenght)
@@ -60,6 +62,8 @@ class Receiver(QObject):
             thread = threading.Thread(target=self.handle_client, args=(conn, addr))
             thread.start()
             print(f'[ACTIVE CONNECTIONS] {threading.activeCount() - 1}')
+            self.sender = Sender(addr)
+
 
     def auth(self, msg):
         data = msg.split()
@@ -78,4 +82,5 @@ class Receiver(QObject):
 
     def correct_authorization(self):
         print('Отправка сигнала о правильном вхлде')
+        #Вот ту ошибка
         self.sender.client_send_message(msg='correct')
