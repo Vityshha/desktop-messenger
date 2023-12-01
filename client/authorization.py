@@ -1,9 +1,9 @@
 import sys
-from PyQt6 import QtWidgets
-from PyQt6.QtCore import QPoint, Qt
-from PyQt6.QtWidgets import QMainWindow
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import QPoint, Qt
+from PyQt5.QtWidgets import QMainWindow
 from GUI.UI_Authorization import Ui_Authorization
-from PyQt6.QtCore import Qt, pyqtSignal as Signal
+from PyQt5.QtCore import Qt, pyqtSignal as Signal
 
 class Authorization(QMainWindow):
 

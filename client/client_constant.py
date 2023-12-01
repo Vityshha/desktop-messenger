@@ -6,7 +6,8 @@ class Constant:
         self.config = configparser.ConfigParser()
         self.config.read("constant.ini")
 
-        self.AUTHORIZED = self.config["Authentication parameters"]["AUTHORIZED"]
+        # self.AUTHORIZED = self.config["Authentication parameters"]["authorized"]
+        self.AUTHORIZED = True
 
 
     def shanges(self, paragraph, value, importance):

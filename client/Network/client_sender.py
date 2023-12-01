@@ -4,7 +4,7 @@ import socket
 #todo HEADER слишком большой наверное
 HEADER = 64
 PORT = 5050
-SERVER = '172.30.128.1'
+SERVER = '192.168.50.133'
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!DISCONNECT'
@@ -13,10 +13,14 @@ class Sender():
     try:
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect(ADDR)
+        print(1)
+        port_res = client.getsockname()[1]
+        print(port_res)
     except:
         print('[SEND ERROR] Сервер недоступен')
 
     def send_message(self, msg):
+
         message = msg.encode(FORMAT)
         msg_lenght = len(message)
         send_lenght = str(msg_lenght).encode(FORMAT)

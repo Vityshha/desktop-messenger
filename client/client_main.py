@@ -1,6 +1,5 @@
 import sys
-
-from PyQt6.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication 
 from client_controller import Controller
 
 def main():

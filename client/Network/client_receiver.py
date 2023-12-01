@@ -1,11 +1,11 @@
 import socket
 import threading
 
-from PyQt6.QtCore import Qt, pyqtSignal as Signal, QObject
+from PyQt5.QtCore import Qt, pyqtSignal as Signal, QObject
 
 HEADER = 64
 PORT = 5051
-SERVER = '172.30.128.1'
+SERVER = '192.168.50.133'
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!DISCONNECT'
@@ -13,11 +13,14 @@ DISCONNECT_MESSAGE = '!DISCONNECT'
 
 class Receiver(QObject):
 
-    def __init__(self):
+    def __init__(self, port):
         super(Receiver, self).__init__()
-
+        print(port, 123)
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        ADDR = (SERVER, port+1)
         self.server.bind(ADDR)
+        port_res = self.server.getsockname()[1]
+        print(port_res)
 
     def handle_client(self, conn, addr):
 

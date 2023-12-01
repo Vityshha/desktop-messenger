@@ -5,8 +5,8 @@ from authorization import Authorization
 
 from client_constant import Constant
 
-from PyQt6.QtWidgets import QMainWindow
-from PyQt6.QtCore import Qt, pyqtSignal as Signal, QPoint
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtCore import Qt, pyqtSignal as Signal, QPoint
 
 from Network.client_sender import Sender
 from Network.client_receiver import Receiver
@@ -14,17 +14,17 @@ from Network.client_receiver import Receiver
 
 class Controller(QMainWindow):
     """
-    Класс связывающий отображение с моделью
+    Класс связывающий отображение c моделью
     """
     signal_send_message = Signal(str)
     signal_search_user = Signal(str)
 
     def __init__(self, isModel=None, parent=None):
         super(QMainWindow, self).__init__(parent)
-        self.receiver = Receiver()
-
         self.client_constant = Constant()
         self.sender = Sender()
+        self.send_port = self.sender.port_res
+        # self.receiver = Receiver(self.send_port)
 
         self.login_messager()
 
