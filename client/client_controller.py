@@ -1,56 +1,52 @@
 import sys
-
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
-
-from client_constant import Constant
-
-from PyQt6.QtWidgets import QMainWindow
-from PyQt6.QtCore import Qt, pyqtSignal as Signal, QPoint
-
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QObject
 from Network.client_sender import Sender
-from Network.client_receiver import Receiver
+from client_constant import Constant
 
 
 class Controller(QMainWindow):
-    """
-    Класс связывающий отображение с моделью
-    """
     signal_send_message = Signal(str)
     signal_search_user = Signal(str)
 
     def __init__(self, isModel=None, parent=None):
-        super(QMainWindow, self).__init__(parent)
-        self.receiver = Receiver()
-
+        super(Controller, self).__init__(parent)
         self.client_constant = Constant()
         self.sender = Sender()
 
-        self.login_messager()
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.init_const()
+        self.init_connect()
+        self.signal_send_message.connect(self.sender.send_message)
 
+        self.Authorization = Authorization()
+        self.Authorization.signal_send_authorization.connect(self.sender.send_authorization)
         self.model = isModel
+
+        self.sender.signal_authorization_status.connect(self.authorization_close)
+        self.sender.signal_authorization_text.connect(self.notification_author)
+
+        self.login_messager()
 
 
 
     def login_messager(self):
         if self.client_constant.AUTHORIZED == 'True':
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
-            self.init_const()
-            self.init_connect()
             self.show()
-            self.signal_send_message.connect(self.sender.send_message)
-
         else:
-            self.Authorization = Authorization()
             self.Authorization.show()
-            paragraph = 'Authentication parameters'
-            value = 'AUTHORIZED'
-            importance = 'True'
-            # self.client_constant.shanges(paragraph, value, importance)
-            self.Authorization.signal_send_authorization.connect(self.sender.send_authorization)
 
+    def authorization_close(self):
+        self.Authorization.close()
+        paragraph = 'Authentication parameters'
+        value = 'AUTHORIZED'
+        importance = 'True'
+        self.client_constant.shanges(paragraph, value, importance)
+        self.show()
 
     def init_connect(self):
         self.ui.btn_close.clicked.connect(self.close_app)
@@ -66,6 +62,10 @@ class Controller(QMainWindow):
         self.default_color = 'color: rgba(79, 91, 103, 0.8); border: transparent;'
         self.select_color = 'color: rgba(255, 255, 255, 1); border: transparent;'
         self.shoise_user = None
+
+    @Slot(str)
+    def notification_author(self, notif):
+        self.Authorization.ui_authorization.notif_label.setText(notif)
 
     def close_app(self):
         message = '!DISCONNECT'

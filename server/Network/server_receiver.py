@@ -1,20 +1,9 @@
 import socket
 import threading
-import time
 
-from PyQt6 import QtWidgets
-from PyQt6.QtCore import Qt, pyqtSignal as Signal, QObject
+from PyQt6.QtCore import pyqtSignal as Signal, QObject
 from server.Network.check_db import CheckThread
-from server.Network.server_sender import Sender
-
-HEADER = 64
-PORT = 5050
-#todo надо свое писать
-SERVER = '192.168.50.133'
-ADDR = (SERVER, PORT)
-FORMAT = 'utf-8'
-DISCONNECT_MESSAGE = '!DISCONNECT'
-
+from server import server_constant
 
 
 class Receiver(QObject):
@@ -25,62 +14,66 @@ class Receiver(QObject):
 
     def __init__(self, database):
         super(Receiver, self).__init__()
-
+        self.init_const()
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server.bind(ADDR)
+        self.server.bind(self.ADDR)
         self.database = database
         self.check_db = CheckThread(self.database)
 
+
+    def init_const(self):
+        self.HEADER = int(server_constant.HEADER)
+        self.PORT = int(server_constant.PORT)
+        self.SERVER = server_constant.SERVER
+        self.ADDR = server_constant.ADDR
+        self.FORMAT = str(server_constant.FORMAT)
+        self.DISCONNECT_MESSAGE = str(server_constant.DISCONNECT_MESSAGE)
 
     def handle_client(self, conn, addr):
         print(f'[NEW CONNECTIONS] {addr} connected')
 
         connected = True
         while connected:
-            time.sleep(3)
-            msg_lenght = conn.recv(HEADER).decode(FORMAT)
+            msg_lenght = conn.recv(self.HEADER).decode(self.FORMAT)
             if msg_lenght:
                 msg_lenght = int(msg_lenght)
-                msg = conn.recv(msg_lenght).decode(FORMAT)
-                if msg == DISCONNECT_MESSAGE:
+                msg = conn.recv(msg_lenght).decode(self.FORMAT)
+                if msg == self.DISCONNECT_MESSAGE:
                     connected = False
                     return
-                print(f'[{addr}] [{msg[0:3]}] {msg[3:]}')
                 if msg[0:3] == '#!0':
-                    self.auth(msg[3:])
+                    self.auth(msg[3:], conn)
                 elif msg[0:3] == '#!1':
-                    self.reg(msg[3:], ip=addr)
+                    self.reg(msg[3:], addr, conn)
                 else:
-                    print('хз пришло')
+                    print(msg)
         conn.close()
 
     def start(self):
         self.server.listen()
-        print(f'[LISTENING] Server is listening on {SERVER}')
+        print(f'[LISTENING] Server is listening on {self.SERVER}')
         while True:
             conn, addr = self.server.accept()
             thread = threading.Thread(target=self.handle_client, args=(conn, addr))
             thread.start()
             print(f'[ACTIVE CONNECTIONS] {threading.activeCount() - 1}')
-            self.sender = Sender(addr)
 
-
-    def auth(self, msg):
+    def auth(self, msg, conn):
         data = msg.split()
         login = data[0]
         passw = data[1]
         self.check_db.thr_login(login, passw)
+        if self.check_db.auth.correct == 0:
+            conn.send(('#!ay').encode(self.FORMAT))
+        else:
+            conn.send(('#!an').encode(self.FORMAT))
 
-    def reg(self, msg, ip):
+    def reg(self, msg, ip, conn):
         data = msg.split()
         login = data[0]
         passw = data[1]
         self.check_db.thr_register(login, passw, ip)
-        self.check_db.auth.correct = 0
-        self.correct_authorization()
-
-
-    def correct_authorization(self):
-        print('Отправка сигнала о правильном вхлде')
-        #Вот ту ошибка
-        self.sender.client_send_message(msg='correct')
+        if self.check_db.auth.correct == 0:
+            conn.send(('#!ry').encode(self.FORMAT))
+        else:
+            conn.send(('#!rn').encode(self.FORMAT))

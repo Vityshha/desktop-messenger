@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>333</width>
-    <height>302</height>
+    <height>352</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>333</width>
-    <height>302</height>
+    <height>352</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>333</width>
-    <height>302</height>
+    <height>352</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -214,7 +214,7 @@ QPushButton:hover{
           <item>
            <widget class="QTextEdit" name="login">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+             <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -246,7 +246,7 @@ border-radius: 12px;</string>
           <item>
            <widget class="QTextEdit" name="password">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+             <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -379,6 +379,21 @@ QPushButton:hover{
            </widget>
           </item>
          </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="notif_label">
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
         </widget>
        </item>
       </layout>

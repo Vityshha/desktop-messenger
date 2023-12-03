@@ -1,6 +1,5 @@
 import sys
-
-from PyQt6.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication 
 from client_controller import Controller
 
 def main():
@@ -8,7 +7,7 @@ def main():
 
     model = None
     controller = Controller(model)
-    app.exec()
+    sys.exit(app.exec_())
 
 if __name__ == '__main__':
-    sys.exit(main())
+    main()

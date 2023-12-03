@@ -1,6 +1,5 @@
 from server.Network.connect_db import Connect_DB
 from Network.server_receiver import Receiver
-from Network.server_sender import Sender
 
 
 class DataBaseController:
@@ -8,7 +7,6 @@ class DataBaseController:
         self.database = database
         self.db_method = Connect_DB(self.database)
         self.receiver = Receiver(self.database)
-        # self.sender = Sender()
 
         self.receiver.start()
 
