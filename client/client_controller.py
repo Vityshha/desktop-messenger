@@ -17,7 +17,7 @@ class Controller(QMainWindow):
         self.sender = Sender()
 
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)  # Здесь ошибка
+        self.ui.setupUi(self)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.init_const()
         self.init_connect()
@@ -28,6 +28,7 @@ class Controller(QMainWindow):
         self.model = isModel
 
         self.sender.signal_authorization_status.connect(self.authorization_close)
+        self.sender.signal_authorization_text.connect(self.notification_author)
 
         self.login_messager()
 
@@ -35,11 +36,6 @@ class Controller(QMainWindow):
 
     def login_messager(self):
         if self.client_constant.AUTHORIZED == 'True':
-            self.Authorization.close()
-            paragraph = 'Authentication parameters'
-            value = 'AUTHORIZED'
-            importance = 'True'
-            self.client_constant.shanges(paragraph, value, importance)
             self.show()
         else:
             self.Authorization.show()
@@ -66,6 +62,10 @@ class Controller(QMainWindow):
         self.default_color = 'color: rgba(79, 91, 103, 0.8); border: transparent;'
         self.select_color = 'color: rgba(255, 255, 255, 1); border: transparent;'
         self.shoise_user = None
+
+    @Slot(str)
+    def notification_author(self, notif):
+        self.Authorization.ui_authorization.notif_label.setText(notif)
 
     def close_app(self):
         message = '!DISCONNECT'

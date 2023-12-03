@@ -64,11 +64,9 @@ class Receiver(QObject):
         passw = data[1]
         self.check_db.thr_login(login, passw)
         if self.check_db.auth.correct == 0:
-            print('norm')
-            conn.send(('#!y').encode(self.FORMAT))
+            conn.send(('#!ay').encode(self.FORMAT))
         else:
-            conn.send(('#!n').encode(self.FORMAT))
-            print('ne norm')
+            conn.send(('#!an').encode(self.FORMAT))
 
     def reg(self, msg, ip, conn):
         data = msg.split()
@@ -76,8 +74,6 @@ class Receiver(QObject):
         passw = data[1]
         self.check_db.thr_register(login, passw, ip)
         if self.check_db.auth.correct == 0:
-            print('norm')
-            conn.send(('#!y').encode(self.FORMAT))
+            conn.send(('#!ry').encode(self.FORMAT))
         else:
-            print('ne norm')
-            conn.send(('#!n').encode(self.FORMAT))
+            conn.send(('#!rn').encode(self.FORMAT))

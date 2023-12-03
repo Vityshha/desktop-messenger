@@ -9,6 +9,7 @@ from PyQt5.QtCore import QObject
 
 class Sender(QObject):
     signal_authorization_status = Signal()
+    signal_authorization_text = Signal(str)
     def __init__(self):
         super(Sender, self).__init__()
         self.FORMAT = Constant().FORMAT
@@ -54,13 +55,20 @@ class Sender(QObject):
     def start_listen_server(self):
         msg = self.client.recv(2048).decode(self.FORMAT)
         if msg:
-            if msg == '#!y':
-                print('Вход')
+            if msg == '#!ay':
                 self.signal_authorization_status.emit()
-            elif msg == '#!n':
-                print('Проверьте данные')
+            elif msg == '#!an':
+                self.notification = 'Проверьте введенные данные!'
+                self.signal_authorization_text.emit(self.notification)
+            elif msg == '#!ry':
+                self.notification = 'Успешная регистрация!'
+                self.signal_authorization_text.emit(self.notification)
+            elif msg == '#!rn':
+                self.notification = 'Пользователь уже занят!'
+                self.signal_authorization_text.emit(self.notification)
             else:
-                print('хз что пришло')
+                self.notification = 'Произошла ошибка!'
+                self.signal_authorization_text.emit(self.notification)
 
     def search_users(self, user):
         print(f'Поиск usera {user}')
