@@ -59,7 +59,8 @@ class Controller(QMainWindow):
         self.sender.signal_authorization_status.connect(self.authorization_close)
         self.sender.signal_authorization_text.connect(self.notification_author)
         self.ui.search_text.textChanged.connect(self.search_user)
-        self.signal_search_user.connect(self.sender.send_message)
+        self.signal_search_user.connect(self.sender.send_authorization)
+        self.sender.signal_sears_user_bd.connect(self.user_add)
 
 
     def init_const(self):
@@ -87,6 +88,10 @@ class Controller(QMainWindow):
 
     def remove_window(self):
         self.showMinimized()
+
+    @Slot(str)
+    def user_add(self, user):
+        self.ui.list_users.addItem(user)
 
 
     def send_message(self):

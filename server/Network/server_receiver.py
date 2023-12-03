@@ -66,6 +66,8 @@ class Receiver(QObject):
 
     def auth(self, msg, conn):
         data = msg.split()
+        if data == []:
+            return
         login = data[0]
         passw = data[1]
         self.check_db.thr_login(login, passw)
@@ -76,6 +78,8 @@ class Receiver(QObject):
 
     def reg(self, msg, ip, conn):
         data = msg.split()
+        if data == []:
+            return
         login = data[0]
         passw = data[1]
         self.check_db.thr_register(login, passw, ip)
@@ -85,7 +89,6 @@ class Receiver(QObject):
             conn.send(('#!rn').encode(self.FORMAT))
 
     def user_db(self, user=None, conn=None):
-        print('Поиск юзера', user)
         request = f'SELECT login FROM users WHERE login = "{user}"'
         user = self.db_method.select_db(request)
         send_client_text = '#?1' + str(user)[1:-1]
