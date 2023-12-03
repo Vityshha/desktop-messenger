@@ -20,17 +20,11 @@ class Controller(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.init_const()
-        self.init_connect()
-        self.signal_send_message.connect(self.sender.send_message)
-
         self.Authorization = Authorization()
-        self.Authorization.signal_send_authorization.connect(self.sender.send_authorization)
         self.model = isModel
-
-        self.sender.signal_authorization_status.connect(self.authorization_close)
-        self.sender.signal_authorization_text.connect(self.notification_author)
-
         self.login_messager()
+        self.init_connect()
+
 
 
 
@@ -39,6 +33,10 @@ class Controller(QMainWindow):
             self.show()
         else:
             self.Authorization.show()
+
+    def search_user(self):
+        text = '#?0' + self.ui.search_text.toPlainText()
+        self.signal_search_user.emit(text)
 
     def authorization_close(self):
         self.Authorization.close()
@@ -55,6 +53,14 @@ class Controller(QMainWindow):
         self.ui.btn_send.clicked.connect(self.send_message)
         self.ui.list_users.clicked.connect(self.user_choise)
         self.ui.btn_settings.clicked.connect(self.setting_mode)
+
+        self.signal_send_message.connect(self.sender.send_message)
+        self.Authorization.signal_send_authorization.connect(self.sender.send_authorization)
+        self.sender.signal_authorization_status.connect(self.authorization_close)
+        self.sender.signal_authorization_text.connect(self.notification_author)
+        self.ui.search_text.textChanged.connect(self.search_user)
+        self.signal_search_user.connect(self.sender.send_message)
+
 
     def init_const(self):
         self.default_sms = 'Введите собщение...'

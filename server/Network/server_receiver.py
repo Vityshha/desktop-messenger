@@ -4,6 +4,8 @@ import threading
 from PyQt6.QtCore import pyqtSignal as Signal, QObject
 from server.Network.check_db import CheckThread
 from server import server_constant
+from server.Network.connect_db import Connect_DB
+
 
 
 class Receiver(QObject):
@@ -19,6 +21,8 @@ class Receiver(QObject):
         self.server.bind(self.ADDR)
         self.database = database
         self.check_db = CheckThread(self.database)
+        self.db_method = Connect_DB(self.database)
+
 
 
     def init_const(self):
@@ -45,6 +49,8 @@ class Receiver(QObject):
                     self.auth(msg[3:], conn)
                 elif msg[0:3] == '#!1':
                     self.reg(msg[3:], addr, conn)
+                elif msg[0:3] == '#?0':
+                    self.user_db(msg[3:], conn)
                 else:
                     print(msg)
         conn.close()
@@ -77,3 +83,15 @@ class Receiver(QObject):
             conn.send(('#!ry').encode(self.FORMAT))
         else:
             conn.send(('#!rn').encode(self.FORMAT))
+
+    def user_db(self, user=None, conn=None):
+        print('Поиск юзера', user)
+        request = f'SELECT login FROM users WHERE login = "{user}"'
+        user = self.db_method.select_db(request)
+        send_client_text = '#?1' + str(user)[1:-1]
+        if send_client_text == '#?1':
+            return
+        else:
+            print('Найдено', send_client_text)
+            conn.send(send_client_text.encode(self.FORMAT))
+

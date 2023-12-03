@@ -57,6 +57,7 @@ class Sender(QObject):
         if msg:
             if msg == '#!ay':
                 self.signal_authorization_status.emit()
+                self.client.close()
             elif msg == '#!an':
                 self.notification = 'Проверьте введенные данные!'
                 self.signal_authorization_text.emit(self.notification)
@@ -69,6 +70,4 @@ class Sender(QObject):
             else:
                 self.notification = 'Произошла ошибка!'
                 self.signal_authorization_text.emit(self.notification)
-
-    def search_users(self, user):
-        print(f'Поиск usera {user}')
+                print('Пришло')
