@@ -13,10 +13,8 @@ class Authorization:
             value = cur.fetchall()
 
             if value != [] and value[0][2] == password:
-                print('Вход')
                 self.correct = 0
             else:
-                print('Проверте правильность ввода данных')
                 self.correct = 1
 
 
@@ -28,10 +26,8 @@ class Authorization:
             value = cur.fetchall()
 
             if value != []:
-                print('Такой ник уже используется')
                 self.correct = 1
             elif value == []:
                 cur.execute(f'INSERT INTO users (login, password, addres) VALUES ("{login}", "{password}", "{ip}");')
-                print('Успешная регистрация')
                 self.correct = 0
                 con.commit()

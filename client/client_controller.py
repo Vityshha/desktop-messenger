@@ -1,56 +1,56 @@
 import sys
-
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
-
-from client_constant import Constant
-
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtCore import Qt, pyqtSignal as Signal, QPoint
-
+from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QObject
 from Network.client_sender import Sender
-from Network.client_receiver import Receiver
+from client_constant import Constant
 
 
 class Controller(QMainWindow):
-    """
-    Класс связывающий отображение c моделью
-    """
     signal_send_message = Signal(str)
     signal_search_user = Signal(str)
 
     def __init__(self, isModel=None, parent=None):
-        super(QMainWindow, self).__init__(parent)
+        super(Controller, self).__init__(parent)
         self.client_constant = Constant()
         self.sender = Sender()
-        self.send_port = self.sender.port_res
-        # self.receiver = Receiver(self.send_port)
+
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)  # Здесь ошибка
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.init_const()
+        self.init_connect()
+        self.signal_send_message.connect(self.sender.send_message)
+
+        self.Authorization = Authorization()
+        self.Authorization.signal_send_authorization.connect(self.sender.send_authorization)
+        self.model = isModel
+
+        self.sender.signal_authorization_status.connect(self.authorization_close)
 
         self.login_messager()
-
-        self.model = isModel
 
 
 
     def login_messager(self):
         if self.client_constant.AUTHORIZED == 'True':
-            self.ui = Ui_MainWindow()
-            self.ui.setupUi(self)
-            self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
-            self.init_const()
-            self.init_connect()
-            self.show()
-            self.signal_send_message.connect(self.sender.send_message)
-
-        else:
-            self.Authorization = Authorization()
-            self.Authorization.show()
+            self.Authorization.close()
             paragraph = 'Authentication parameters'
             value = 'AUTHORIZED'
             importance = 'True'
-            # self.client_constant.shanges(paragraph, value, importance)
-            self.Authorization.signal_send_authorization.connect(self.sender.send_authorization)
+            self.client_constant.shanges(paragraph, value, importance)
+            self.show()
+        else:
+            self.Authorization.show()
 
+    def authorization_close(self):
+        self.Authorization.close()
+        paragraph = 'Authentication parameters'
+        value = 'AUTHORIZED'
+        importance = 'True'
+        self.client_constant.shanges(paragraph, value, importance)
+        self.show()
 
     def init_connect(self):
         self.ui.btn_close.clicked.connect(self.close_app)
