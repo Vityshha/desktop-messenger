@@ -15,6 +15,7 @@ class Constant:
 
         self.AUTHORIZED = self.config["Authentication parameters"]["authorized"]
         self.id = self.config["Authentication parameters"]["id"]
+        self.login = self.config["Authentication parameters"]["login"]
 
     def shanges(self, paragraph, value, importance):
         self.config.set(paragraph, value, importance)

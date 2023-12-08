@@ -74,6 +74,12 @@ class Connect_DB:
         """
         pass
 
+    def messages_db(self, id, id_send, msg):
+        with sq.connect(self.database) as con:
+            cur = con.cursor()
+            cur.execute(f'INSERT INTO messages (id, id_send, message) VALUES ("{id}", "{id_send}", "{msg}");')
+            con.commit()
+
 
 
 if __name__ == '__main__':

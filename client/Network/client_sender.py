@@ -66,8 +66,6 @@ class Sender(QObject):
 
     #Слушаем сервер
     def process_received_message(self, msg):
-        # Ваш код обработки полученного сообщения
-        # Например, вы можете использовать сигналы для обновления GUI
         if msg == '#!ay':
             self.signal_authorization_status.emit()
         elif msg == '#!an':

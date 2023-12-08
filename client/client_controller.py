@@ -95,11 +95,17 @@ class Controller(QMainWindow):
 
 
     def send_message(self):
-        message = str(self.ui.send_text.toPlainText())
-        if message == '':
+        msg = str(self.ui.send_text.toPlainText())
+        try:
+            user_send = self.ui.list_users.currentItem().text()
+        except:
             return
-        self.signal_send_message.emit(message)
-        self.ui.send_text.clear()
+        if msg == '' or user_send == '':
+            return
+        else:
+            message = f'user: {self.client_constant.login} ' + 'to: ' + user_send + ' #!msg: ' + msg
+            self.signal_send_message.emit(message)
+            self.ui.send_text.clear()
 
     def keyPressEvent(self, event):
         if event.key() == 16777220:

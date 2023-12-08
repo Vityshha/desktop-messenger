@@ -51,6 +51,9 @@ class Receiver(QObject):
                     self.reg(msg[3:], addr, conn)
                 elif msg[0:3] == '#?0':
                     self.user_db(msg[3:], conn)
+                elif msg[0:4] == 'user':
+                    print(msg)
+                    self.messages_to_db(msg, conn)
                 else:
                     print(msg)
         conn.close()
@@ -97,4 +100,10 @@ class Receiver(QObject):
         else:
             print('Найдено', send_client_text)
             conn.send(send_client_text.encode(self.FORMAT))
+
+    def messages_to_db(self, msg=None, conn=None):
+        id = msg.split("user:")[1].split("to:")[0].strip()
+        id_send = msg.split("to:")[1].split("#!msg:")[0].strip()
+        msg = msg.split("#!msg:")[1].strip()
+        self.db_method.messages_db(id, id_send, msg)
 
