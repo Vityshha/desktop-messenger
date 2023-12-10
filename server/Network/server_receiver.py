@@ -1,5 +1,6 @@
 import socket
 import threading
+import time
 
 from PyQt6.QtCore import pyqtSignal as Signal, QObject
 from server.Network.check_db import CheckThread
@@ -55,7 +56,7 @@ class Receiver(QObject):
                     print(msg)
                     self.messages_to_db(msg, conn)
                 elif msg[0:5] == 'start':
-                    self.add_old_user(msg[5:], conn)
+                    self.add_old_user(msg[6:], conn)
                 else:
                     print(msg)
         conn.close()
@@ -115,5 +116,6 @@ class Receiver(QObject):
         users = self.db_method.select_db(request)
         result_string = ', '.join([item[0] for item in users])
         msg = 'user: ' + result_string
+        time.sleep(0.5)
         conn.send(msg.encode(self.FORMAT))
 

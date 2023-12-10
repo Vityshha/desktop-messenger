@@ -29,8 +29,11 @@ class Sender(QObject):
             print('[SEND ERROR] Сервер недоступен')
 
         self.listen_thread = threading.Thread(target=self.listen_server)
-        self.listen_thread.daemon = True  # Поток будет завершен, когда основной поток завершится
+        self.listen_thread.daemon = True
         self.listen_thread.start()
+
+        self.start_msg = 'start ' + Constant().login
+        self.send_message(self.start_msg)
 
     def send_message(self, msg):
         message = msg.encode(self.FORMAT)
@@ -84,7 +87,6 @@ class Sender(QObject):
             self.notification = 'Пользователь уже занят!'
             self.signal_authorization_text.emit(self.notification)
         elif msg[:3] == '#?1':
-            print('Найден пользователь', msg[5:-3])
             user = str(msg[5:-3])
             self.signal_sears_user_bd.emit(user)
         elif msg[:4] == 'user':

@@ -1,4 +1,6 @@
 import sys
+import time
+
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
 from PyQt5.QtWidgets import QMainWindow
