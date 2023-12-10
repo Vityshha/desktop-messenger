@@ -57,6 +57,8 @@ class Receiver(QObject):
                     self.messages_to_db(msg, conn)
                 elif msg[0:5] == 'start':
                     self.add_old_user(msg[6:], conn)
+                elif msg[0:6] == 'select':
+                    self.show_user_sms(msg[7:], conn)
                 else:
                     print(msg)
         conn.close()
@@ -118,4 +120,19 @@ class Receiver(QObject):
         msg = 'user: ' + result_string
         time.sleep(0.5)
         conn.send(msg.encode(self.FORMAT))
+
+
+    def show_user_sms(self, user=None, conn=None):
+        id = user.split("user:")[1].split("user_send:")[0].strip()
+        id_send = user.split("user_send:")[1].strip()
+        request = f"SELECT message FROM messages WHERE (id = '{str(id)}' AND id_send = '{str(id_send)}')"
+        msg = self.db_method.select_db(request)
+        try:
+            messages = ';!msg '.join([item[0] for item in msg])
+            msg_full = '#!msg_u: ' + messages
+            conn.send(msg_full.encode(self.FORMAT))
+        except:
+            return
+
+
 

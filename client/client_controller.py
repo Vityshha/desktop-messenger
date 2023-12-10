@@ -71,6 +71,7 @@ class Controller(QMainWindow):
         self.sender.signal_sears_user_bd.connect(self.user_add)
 
         self.sender.signal_add_users.connect(self.user_add_db)
+        self.sender.signal_db_messages.connect(self.add_messages)
 
 
     def init_const(self):
@@ -116,6 +117,10 @@ class Controller(QMainWindow):
         for user in users:
             self.ui.list_users.addItem(user)
 
+    @Slot(str)
+    def add_messages(self, msg):
+        self.ui.sms_label.setText(msg)
+
 
     def send_message(self):
             msg = str(self.ui.send_text.toPlainText())
@@ -140,13 +145,11 @@ class Controller(QMainWindow):
             self.ui.send_text.clear()
 
 
-    def send_sears_users(self):
-        print('Отправка на сервак для поиска usera')
-
-
     def user_choise(self):
         self.shoise_user = self.ui.list_users.currentItem().text()
         self.ui.user_label.setText(self.shoise_user)
+        msg = 'select: ' + 'user: ' + self.client_constant.login + ' user_send: ' + self.shoise_user
+        self.signal_send_message.emit(msg)
 
     def setting_mode(self):
         print('Окно настроек')

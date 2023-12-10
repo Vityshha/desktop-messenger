@@ -11,6 +11,7 @@ class Sender(QObject):
     signal_authorization_text = Signal(str)
     signal_sears_user_bd = Signal(str)
     signal_add_users = Signal(str)
+    signal_db_messages = Signal(str)
 
     def __init__(self):
         super(Sender, self).__init__()
@@ -92,6 +93,10 @@ class Sender(QObject):
         elif msg[:4] == 'user':
             user = msg[6:]
             self.signal_add_users.emit(user)
+        elif msg[:7] == '#!msg_u':
+            print('Проверка сообщений')
+            messages = msg[9:]
+            self.signal_db_messages.emit(messages)
         else:
             self.notification = 'Произошла ошибка!'
             self.signal_authorization_text.emit(self.notification)
