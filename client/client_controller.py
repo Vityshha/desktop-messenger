@@ -43,8 +43,14 @@ class Controller(QMainWindow):
         paragraph = 'Authentication parameters'
         value = 'AUTHORIZED'
         importance = 'True'
+        login = self.Authorization.ui_authorization.login.toPlainText()
+        password = self.Authorization.ui_authorization.password.toPlainText()
         self.client_constant.shanges(paragraph, value, importance)
+
+        self.client_constant.shanges(paragraph, 'login', login)
+        self.client_constant.shanges(paragraph, 'password', password)
         self.show()
+
 
     def init_connect(self):
         self.ui.btn_close.clicked.connect(self.close_app)
@@ -91,21 +97,28 @@ class Controller(QMainWindow):
 
     @Slot(str)
     def user_add(self, user):
-        self.ui.list_users.addItem(user)
+        self.books = []
+        for i in range(self.ui.list_users.count()):
+            book = self.ui.list_users.item(i).text()
+            self.books.append(book)
+        if user in self.books:
+            return
+        else:
+            self.ui.list_users.addItem(user)
 
 
     def send_message(self):
-        msg = str(self.ui.send_text.toPlainText())
-        try:
-            user_send = self.ui.list_users.currentItem().text()
-        except:
-            return
-        if msg == '' or user_send == '':
-            return
-        else:
-            message = f'user: {self.client_constant.login} ' + 'to: ' + user_send + ' #!msg: ' + msg
-            self.signal_send_message.emit(message)
-            self.ui.send_text.clear()
+            msg = str(self.ui.send_text.toPlainText())
+            try:
+                user_send = self.ui.list_users.currentItem().text()
+            except:
+                return
+            if msg == '' or user_send == '':
+                return
+            else:
+                message = f'user: {self.client_constant.login} ' + 'to: ' + user_send + ' #!msg: ' + msg
+                self.signal_send_message.emit(message)
+                self.ui.send_text.clear()
 
     def keyPressEvent(self, event):
         if event.key() == 16777220:
