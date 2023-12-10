@@ -68,6 +68,8 @@ class Controller(QMainWindow):
         self.signal_search_user.connect(self.sender.send_authorization)
         self.sender.signal_sears_user_bd.connect(self.user_add)
 
+        self.sender.signal_add_users.connect(self.user_add_db)
+
 
     def init_const(self):
         self.default_sms = 'Введите собщение...'
@@ -104,6 +106,12 @@ class Controller(QMainWindow):
         if user in self.books:
             return
         else:
+            self.ui.list_users.addItem(user)
+
+    @Slot(str)
+    def user_add_db(self, users):
+        users = users.split(', ')
+        for user in users:
             self.ui.list_users.addItem(user)
 
 

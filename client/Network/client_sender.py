@@ -1,5 +1,7 @@
 import socket
 import threading
+import time
+
 from client.client_constant import Constant
 from PyQt5.QtCore import pyqtSignal as Signal
 from PyQt5.QtCore import QObject
@@ -8,6 +10,7 @@ class Sender(QObject):
     signal_authorization_status = Signal()
     signal_authorization_text = Signal(str)
     signal_sears_user_bd = Signal(str)
+    signal_add_users = Signal(str)
 
     def __init__(self):
         super(Sender, self).__init__()
@@ -68,6 +71,9 @@ class Sender(QObject):
     def process_received_message(self, msg):
         if msg == '#!ay':
             self.signal_authorization_status.emit()
+            time.sleep(1)
+            self.start_msg = 'start' + Constant().login
+            self.send_message(self.start_msg)
         elif msg == '#!an':
             self.notification = 'Проверьте введенные данные!'
             self.signal_authorization_text.emit(self.notification)
@@ -81,6 +87,9 @@ class Sender(QObject):
             print('Найден пользователь', msg[5:-3])
             user = str(msg[5:-3])
             self.signal_sears_user_bd.emit(user)
+        elif msg[:4] == 'user':
+            user = msg[6:]
+            self.signal_add_users.emit(user)
         else:
             self.notification = 'Произошла ошибка!'
             self.signal_authorization_text.emit(self.notification)

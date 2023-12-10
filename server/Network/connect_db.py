@@ -83,6 +83,8 @@ class Connect_DB:
 
 
 if __name__ == '__main__':
-    database = 'database\\users.db'
+    database = 'C:\\Users\\KFU\\Desktop\\desktop-messenger\\server\\database_metod\\database\\users.db'
     db = Connect_DB(database)
-    db.create_db()
+    request = f'SELECT DISTINCT id_send FROM messages WHERE id = "admin";'
+    res = db.select_db(request)
+    print(res)

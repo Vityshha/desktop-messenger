@@ -54,6 +54,8 @@ class Receiver(QObject):
                 elif msg[0:4] == 'user':
                     print(msg)
                     self.messages_to_db(msg, conn)
+                elif msg[0:5] == 'start':
+                    self.add_old_user(msg[5:], conn)
                 else:
                     print(msg)
         conn.close()
@@ -106,4 +108,12 @@ class Receiver(QObject):
         id_send = msg.split("to:")[1].split("#!msg:")[0].strip()
         msg = msg.split("#!msg:")[1].strip()
         self.db_method.messages_db(id, id_send, msg)
+
+
+    def add_old_user(self, user=None, conn=None):
+        request = f'SELECT DISTINCT id_send FROM messages WHERE id = "{str(user)}";'
+        users = self.db_method.select_db(request)
+        result_string = ', '.join([item[0] for item in users])
+        msg = 'user: ' + result_string
+        conn.send(msg.encode(self.FORMAT))
 
