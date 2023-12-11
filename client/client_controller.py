@@ -118,8 +118,9 @@ class Controller(QMainWindow):
             self.ui.list_users.addItem(user)
 
     @Slot(str)
-    def add_messages(self, msg):
-        self.ui.sms_label.setText(msg)
+    def add_messages(self, messages):
+        print(messages)
+        self.ui.sms_label.setText(messages)
 
 
     def send_message(self):

@@ -128,7 +128,7 @@ class Receiver(QObject):
         request = f"SELECT message FROM messages WHERE (id = '{str(id)}' AND id_send = '{str(id_send)}')"
         msg = self.db_method.select_db(request)
         try:
-            messages = ';!msg '.join([item[0] for item in msg])
+            messages = '\n'.join([item[0] for item in msg])
             msg_full = '#!msg_u: ' + messages
             conn.send(msg_full.encode(self.FORMAT))
         except:
