@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QObject
 from Network.client_sender import Sender
 from client_constant import Constant
+import re
 
 
 class Controller(QMainWindow):
@@ -120,11 +121,16 @@ class Controller(QMainWindow):
 
     @Slot(str)
     def add_messages(self, messages):
-        print(messages)
-        # if self.flag_sms:
-        #     messages = f"<div style='text-align:right;'>{messages}</div>"+ '\n'
-        # else:
-        #     messages = f"<div style='text-align:left;'>{messages}</div>" + '\n'
+        messages = messages[1:-1]
+        result = re.findall(r'\((.*?)\)', messages)
+        ite = [item.replace("'", "") for item in result]
+        ite = [item.split(', ') for item in ite]
+        messages = ''
+        for itt in ite:
+            if itt[0] == self.client_constant.login:
+                messages += f"<div style='text-align:right;'>{itt[2]}</div>" + '\n'
+            else:
+                messages += f"<div style='text-align:left;'>{itt[2]}</div>" + '\n'
         self.ui.sms_label.setText(messages)
         self.flag_sms = not self.flag_sms
 

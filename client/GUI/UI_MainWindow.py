@@ -224,21 +224,15 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setSpacing(0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.scrollArea = QtWidgets.QScrollArea(self.widget_sms)
-        self.scrollArea.setStyleSheet("QScrollBar:vertical {\n"
-"    background: rgb(11, 255, 68); /* Цвет фона вертикальной полосы прокрутки */\n"
-"    \n"
-"    background-color: rgb(255, 255, 28);\n"
-"}\n"
-"\n"
-"QScrollBar::handle:vertical {\n"
-"    background: rgb(255, 10, 128); /* Цвет ползунка */\n"
-"    border: none; /* Убираем границу ползунка */\n"
-"    \n"
-"    background-color: rgb(255, 242, 255);\n"
-"}\n"
+        self.scrollArea.setStyleSheet("border: 1px solid transparent; /* Установка прозрачной границы */\n"
+"    background-color: rgb(64, 57, 101);\n"
+"    color: rgb(255, 255, 255);\n"
 "QScrollArea {\n"
 "    border: 1px solid transparent; /* Установка прозрачной границы */\n"
-"}")
+"    background-color: rgb(64, 57, 101);\n"
+"    color: rgb(255, 255, 255);\n"
+"}\n"
+"")
         self.scrollArea.setLineWidth(1)
         self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.scrollArea.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
@@ -249,8 +243,8 @@ class Ui_MainWindow(object):
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 524, 502))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.scrollAreaWidgetContents)
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_5.setSpacing(0)
+        self.horizontalLayout_5.setContentsMargins(10, 10, 10, 10)
+        self.horizontalLayout_5.setSpacing(10)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.sms_label = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
@@ -258,6 +252,9 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.sms_label.sizePolicy().hasHeightForWidth())
         self.sms_label.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.sms_label.setFont(font)
         self.sms_label.setStyleSheet("background-color: rgb(64, 57, 101);\n"
 "color: rgb(255, 255, 255);")
         self.sms_label.setTextFormat(QtCore.Qt.AutoText)

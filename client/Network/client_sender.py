@@ -73,6 +73,7 @@ class Sender(QObject):
 
     #Слушаем сервер
     def process_received_message(self, msg):
+        print(msg)
         if msg == '#!ay':
             self.signal_authorization_status.emit()
             time.sleep(1)
@@ -92,6 +93,7 @@ class Sender(QObject):
             self.signal_sears_user_bd.emit(user)
         elif msg[:4] == 'user':
             user = msg[6:]
+            time.sleep(1)
             self.signal_add_users.emit(user)
         elif msg[:7] == '#!msg_u':
             print('Проверка сообщений')

@@ -441,21 +441,15 @@ border: transparent;</string>
                 <item>
                  <widget class="QScrollArea" name="scrollArea">
                   <property name="styleSheet">
-                   <string notr="true">QScrollBar:vertical {
-    background: rgb(11, 255, 68); /* Цвет фона вертикальной полосы прокрутки */
-	
-	background-color: rgb(255, 255, 28);
-}
-
-QScrollBar::handle:vertical {
-    background: rgb(255, 10, 128); /* Цвет ползунка */
-    border: none; /* Убираем границу ползунка */
-	
-	background-color: rgb(255, 242, 255);
-}
+                   <string notr="true">border: 1px solid transparent; /* Установка прозрачной границы */
+	background-color: rgb(64, 57, 101);
+	color: rgb(255, 255, 255);
 QScrollArea {
     border: 1px solid transparent; /* Установка прозрачной границы */
-}</string>
+	background-color: rgb(64, 57, 101);
+	color: rgb(255, 255, 255);
+}
+</string>
                   </property>
                   <property name="lineWidth">
                    <number>1</number>
@@ -483,19 +477,19 @@ QScrollArea {
                    </property>
                    <layout class="QHBoxLayout" name="horizontalLayout_5">
                     <property name="spacing">
-                     <number>0</number>
+                     <number>10</number>
                     </property>
                     <property name="leftMargin">
-                     <number>0</number>
+                     <number>10</number>
                     </property>
                     <property name="topMargin">
-                     <number>0</number>
+                     <number>10</number>
                     </property>
                     <property name="rightMargin">
-                     <number>0</number>
+                     <number>10</number>
                     </property>
                     <property name="bottomMargin">
-                     <number>0</number>
+                     <number>10</number>
                     </property>
                     <item>
                      <widget class="QLabel" name="sms_label">
@@ -504,6 +498,11 @@ QScrollArea {
                         <horstretch>0</horstretch>
                         <verstretch>0</verstretch>
                        </sizepolicy>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>20</pointsize>
+                       </font>
                       </property>
                       <property name="styleSheet">
                        <string notr="true">background-color: rgb(64, 57, 101);

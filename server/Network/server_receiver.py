@@ -125,11 +125,10 @@ class Receiver(QObject):
     def show_user_sms(self, user=None, conn=None):
         id = user.split("user:")[1].split("user_send:")[0].strip()
         id_send = user.split("user_send:")[1].strip()
-        request = f"SELECT message FROM messages WHERE (id = '{str(id)}' AND id_send = '{str(id_send)}')"
+        request = f"SELECT id, id_send, message  FROM messages WHERE ((id = '{str(id)}' AND id_send = '{str(id_send)}') OR (id = '{str(id_send)}' AND id_send = '{str(id)}'))"
         msg = self.db_method.select_db(request)
         try:
-            messages = '\n'.join([item[0] for item in msg])
-            msg_full = '#!msg_u: ' + messages
+            msg_full = '#!msg_u: ' + str(msg)
             conn.send(msg_full.encode(self.FORMAT))
         except:
             return
