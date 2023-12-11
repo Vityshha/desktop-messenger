@@ -1,6 +1,6 @@
-from PyQt6.QtCore import QThread
+from PyQt5.QtCore import QThread
 from server.database_metod.authorization_db import Authorization
-from PyQt6.QtCore import pyqtSignal as Signal
+from PyQt5.QtCore import pyqtSignal as Signal
 
 class CheckThread(QThread):
 

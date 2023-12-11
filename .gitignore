@@ -4,6 +4,7 @@ venv/
 *.mp4
 *.pt
 
+test.py
 
 
 

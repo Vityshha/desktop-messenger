@@ -12,6 +12,6 @@ class DataBaseController:
 
 
 if __name__ == '__main__':
-    database = 'C:\\Users\\KFU\\Desktop\\desktop-messenger\\server\\database_metod\\database\\users.db'
+    database = '..\\server\\database_metod\\database\\users.db'
     db_c = DataBaseController(database)
     # db_c.receiver.start()

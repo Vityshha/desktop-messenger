@@ -26,6 +26,7 @@ class Controller(QMainWindow):
         self.model = isModel
         self.login_messager()
         self.init_connect()
+        self.flag_sms = True
 
 
 
@@ -120,7 +121,12 @@ class Controller(QMainWindow):
     @Slot(str)
     def add_messages(self, messages):
         print(messages)
+        # if self.flag_sms:
+        #     messages = f"<div style='text-align:right;'>{messages}</div>"+ '\n'
+        # else:
+        #     messages = f"<div style='text-align:left;'>{messages}</div>" + '\n'
         self.ui.sms_label.setText(messages)
+        self.flag_sms = not self.flag_sms
 
 
     def send_message(self):
