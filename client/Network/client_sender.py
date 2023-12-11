@@ -36,6 +36,9 @@ class Sender(QObject):
         self.start_msg = 'start ' + Constant().login
         self.send_message(self.start_msg)
 
+        self.start_msg = '#!info ' + Constant().login
+        self.send_message(self.start_msg)
+
     def send_message(self, msg):
         message = msg.encode(self.FORMAT)
         msg_lenght = len(message)
@@ -46,7 +49,8 @@ class Sender(QObject):
             self.client.send(message)
         except:
             print('[SEND ERROR] Не отправил')
-            # Добавить повторную отправку на GUI о том что сервак не доступен
+            self.notification = 'Сервер недоступен!'
+            self.signal_authorization_text.emit(self.notification)
 
     def send_authorization(self, msg):
         if msg:
@@ -65,7 +69,7 @@ class Sender(QObject):
             try:
                 msg = self.client.recv(2048).decode(self.FORMAT)
                 if not msg:
-                    break  # Если соединение закрыто, выходим из цикла
+                    break
                 self.process_received_message(msg)
             except Exception as e:
                 print('[LISTEN ERROR]', str(e))
@@ -73,7 +77,6 @@ class Sender(QObject):
 
     #Слушаем сервер
     def process_received_message(self, msg):
-        print(msg)
         if msg == '#!ay':
             self.signal_authorization_status.emit()
             time.sleep(1)
@@ -96,10 +99,7 @@ class Sender(QObject):
             time.sleep(1)
             self.signal_add_users.emit(user)
         elif msg[:7] == '#!msg_u':
-            print('Проверка сообщений')
             messages = msg[9:]
             self.signal_db_messages.emit(messages)
         else:
-            self.notification = 'Произошла ошибка!'
-            self.signal_authorization_text.emit(self.notification)
-            print('Пришло', msg)
+            print('[LISTEN ERROR] Проверьте что пришло')

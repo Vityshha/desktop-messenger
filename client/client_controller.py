@@ -88,10 +88,12 @@ class Controller(QMainWindow):
         self.Authorization.ui_authorization.notif_label.setText(notif)
 
     def close_app(self):
-        message = '!DISCONNECT'
+        message = '#!info ' + '!DISCONNECT'
         self.signal_send_message.emit(message)
         self.close()
+        self.thread().quit()
         sys.exit()
+
 
     def resize_window(self):
         if not self.isFullScreen():

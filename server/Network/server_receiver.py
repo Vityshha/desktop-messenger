@@ -39,21 +39,28 @@ class Receiver(QObject):
 
         connected = True
         while connected:
-            msg_lenght = conn.recv(self.HEADER).decode(self.FORMAT)
+            try:
+                msg_lenght = conn.recv(self.HEADER).decode(self.FORMAT)
+            except:
+                print(f'[CLIETN] Клиент {addr} разорвал подключение')
+                return
             if msg_lenght:
                 msg_lenght = int(msg_lenght)
                 msg = conn.recv(msg_lenght).decode(self.FORMAT)
-                if msg == self.DISCONNECT_MESSAGE:
-                    connected = False
-                    return
-                if msg[0:3] == '#!0':
+                print(msg)
+                if msg[0:6] == '#!info':
+                    if msg[0:8] == self.DISCONNECT_MESSAGE:
+                        self.activ_disconnect_user(msg[7:])
+                        connected = False
+                        conn.close()
+                        return
+                elif msg[0:3] == '#!0':
                     self.auth(msg[3:], conn)
                 elif msg[0:3] == '#!1':
                     self.reg(msg[3:], addr, conn)
                 elif msg[0:3] == '#?0':
                     self.user_db(msg[3:], conn)
                 elif msg[0:4] == 'user':
-                    print(msg)
                     self.messages_to_db(msg, conn)
                 elif msg[0:5] == 'start':
                     self.add_old_user(msg[6:], conn)
@@ -103,35 +110,49 @@ class Receiver(QObject):
         if send_client_text == '#?1':
             return
         else:
-            print('Найдено', send_client_text)
             conn.send(send_client_text.encode(self.FORMAT))
 
     def messages_to_db(self, msg=None, conn=None):
         id = msg.split("user:")[1].split("to:")[0].strip()
         id_send = msg.split("to:")[1].split("#!msg:")[0].strip()
         msg = msg.split("#!msg:")[1].strip()
+        # try:
         self.db_method.messages_db(id, id_send, msg)
+        # except:
+        #     print(f'[BD ERROR] Ошибка добавления сообщения в БД')
 
 
     def add_old_user(self, user=None, conn=None):
         request = f'SELECT DISTINCT id_send FROM messages WHERE id = "{str(user)}";'
-        users = self.db_method.select_db(request)
-        result_string = ', '.join([item[0] for item in users])
-        msg = 'user: ' + result_string
-        time.sleep(0.5)
-        conn.send(msg.encode(self.FORMAT))
+        try:
+            users = self.db_method.select_db(request)
+            result_string = ', '.join([item[0] for item in users])
+            msg = 'user: ' + result_string
+            time.sleep(0.5)
+            conn.send(msg.encode(self.FORMAT))
+        except:
+            print(f'[BD ERROR] Ошибка поиска юзеров')
+            return
 
 
     def show_user_sms(self, user=None, conn=None):
         id = user.split("user:")[1].split("user_send:")[0].strip()
         id_send = user.split("user_send:")[1].strip()
         request = f"SELECT id, id_send, message  FROM messages WHERE ((id = '{str(id)}' AND id_send = '{str(id_send)}') OR (id = '{str(id_send)}' AND id_send = '{str(id)}'))"
-        msg = self.db_method.select_db(request)
         try:
+            msg = self.db_method.select_db(request)
             msg_full = '#!msg_u: ' + str(msg)
             conn.send(msg_full.encode(self.FORMAT))
         except:
-            return
+            print(f'[BD ERROR] Ошибка поиска сообщений в БД')
 
-
-
+    def activ_disconnect_user(self, msg):
+        login = msg[6:]
+        if msg == self.DISCONNECT_MESSAGE:
+            print('Отключился')
+            request = f"UPDATE users SET activ = 0 WHERE login = '{login}'"
+            self.db_method.update_db(request)
+        elif msg != self.DISCONNECT_MESSAGE:
+            print('Подключился')
+            request = f"UPDATE users SET activ = 1 WHERE login = '{login}'"
+            self.db_method.update_db(request)
