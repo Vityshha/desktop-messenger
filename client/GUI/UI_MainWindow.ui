@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>891</width>
+    <height>635</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -310,7 +310,7 @@ border-radius: 12px;</string>
                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:6.6pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Segoe UI'; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="overwriteMode">
@@ -448,6 +448,28 @@ QScrollArea {
     border: 1px solid transparent; /* Установка прозрачной границы */
 	background-color: rgb(64, 57, 101);
 	color: rgb(255, 255, 255);
+	wight: 5px;
+}
+QScrollBar:vertical {
+background: #2f2f2f;
+width: 15px;
+margin: 0;
+}
+
+QScrollBar::handle:vertical {
+background: #5b5b5b;
+}
+
+QScrollBar::add-line:vertical {
+height: 0px;
+}
+
+QScrollBar::sub-line:vertical {
+height: 0px;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+height: 0px;
 }
 </string>
                   </property>
@@ -471,8 +493,8 @@ QScrollArea {
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>524</width>
-                     <height>502</height>
+                     <width>611</width>
+                     <height>526</height>
                     </rect>
                    </property>
                    <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -509,7 +531,8 @@ QScrollArea {
 color: rgb(255, 255, 255);</string>
                       </property>
                       <property name="text">
-                       <string>Выберите, кому хотели бы написать</string>
+                       <string>Выберите, кому хотели бы написать
+</string>
                       </property>
                       <property name="textFormat">
                        <enum>Qt::AutoText</enum>
@@ -575,7 +598,7 @@ border: transparent;</string>
                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:6.6pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Segoe UI'; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="placeholderText">
@@ -603,6 +626,9 @@ p, li { white-space: pre-wrap; }
                   </property>
                   <property name="text">
                    <string/>
+                  </property>
+                  <property name="shortcut">
+                   <string>Return</string>
                   </property>
                  </widget>
                 </item>

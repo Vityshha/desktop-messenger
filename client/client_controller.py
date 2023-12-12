@@ -63,6 +63,7 @@ class Controller(QMainWindow):
         self.ui.btn_send.clicked.connect(self.send_message)
         self.ui.list_users.clicked.connect(self.user_choise)
         self.ui.btn_settings.clicked.connect(self.setting_mode)
+        self.ui.scrollArea.verticalScrollBar().rangeChanged.connect(self.scrollToBottom)
 
         self.signal_send_message.connect(self.sender.send_message)
         self.Authorization.signal_send_authorization.connect(self.sender.send_authorization)
@@ -129,19 +130,11 @@ class Controller(QMainWindow):
         ite = [item.split(', ') for item in ite]
         messages = ''
         for itt in ite:
-            # if itt[0] == self.client_constant.login:
-            #     messages += f"<div style='text-align:right;'>{itt[2]}</div>" + '\n'
-            # else:
-            #     messages += f"<div style='text-align:left;'>{itt[2]}</div>" + '\n'
             if itt[0] != self.client_constant.login:
                 messages += f"<div style='text-align:left;'>{itt[2]}</div>" + '\n'
             else:
                 messages += f"<div style='text-align:right;'>{itt[2]}</div>" + '\n'
         self.ui.sms_label.setText(messages)
-        self.flag_sms = not self.flag_sms
-
-
-
 
     def send_message(self):
             msg = str(self.ui.send_text.toPlainText())
@@ -158,20 +151,19 @@ class Controller(QMainWindow):
                 messages = self.ui.sms_label.text()
                 messages += msg
                 self.ui.sms_label.setText(messages)
-
-
                 self.ui.send_text.clear()
 
-
+    def scrollToBottom(self, minVal=None, maxVal=None):
+        self.ui.scrollArea.verticalScrollBar().setValue(self.ui.scrollArea.verticalScrollBar().maximum())
 
     def keyPressEvent(self, event):
-        if event.key() == 16777220:
-            print('enter')
-            message = str(self.ui.send_text.toPlainText())
-            if message == '':
-                return
-            self.signal_send_message.emit(message)
-            self.ui.send_text.clear()
+            if event.key() == 16777220:
+                print('enter')
+                message = str(self.ui.send_text.toPlainText())
+                if message == '':
+                    return
+                self.signal_send_message.emit(message)
+                self.ui.send_text.clear()
 
 
     def user_choise(self):
