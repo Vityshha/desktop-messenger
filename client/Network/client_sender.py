@@ -77,6 +77,7 @@ class Sender(QObject):
 
     #Слушаем сервер
     def process_received_message(self, msg):
+        print(msg)
         if msg == '#!ay':
             self.signal_authorization_status.emit()
             time.sleep(1)

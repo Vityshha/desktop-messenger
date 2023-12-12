@@ -129,12 +129,18 @@ class Controller(QMainWindow):
         ite = [item.split(', ') for item in ite]
         messages = ''
         for itt in ite:
-            if itt[0] == self.client_constant.login:
-                messages += f"<div style='text-align:right;'>{itt[2]}</div>" + '\n'
-            else:
+            # if itt[0] == self.client_constant.login:
+            #     messages += f"<div style='text-align:right;'>{itt[2]}</div>" + '\n'
+            # else:
+            #     messages += f"<div style='text-align:left;'>{itt[2]}</div>" + '\n'
+            if itt[0] != self.client_constant.login:
                 messages += f"<div style='text-align:left;'>{itt[2]}</div>" + '\n'
+            else:
+                messages += f"<div style='text-align:right;'>{itt[2]}</div>" + '\n'
         self.ui.sms_label.setText(messages)
         self.flag_sms = not self.flag_sms
+
+
 
 
     def send_message(self):
@@ -148,7 +154,15 @@ class Controller(QMainWindow):
             else:
                 message = f'user: {self.client_constant.login} ' + 'to: ' + user_send + ' #!msg: ' + msg
                 self.signal_send_message.emit(message)
+                msg = f"<div style='text-align:right;'>{msg}</div>" + '\n'
+                messages = self.ui.sms_label.text()
+                messages += msg
+                self.ui.sms_label.setText(messages)
+
+
                 self.ui.send_text.clear()
+
+
 
     def keyPressEvent(self, event):
         if event.key() == 16777220:
