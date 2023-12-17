@@ -33,12 +33,6 @@ class Sender(QObject):
         self.listen_thread.daemon = True
         self.listen_thread.start()
 
-        self.start_msg = 'start ' + Constant().login
-        self.send_message(self.start_msg)
-
-        self.start_msg = '#!info ' + Constant().login
-        self.send_message(self.start_msg)
-
     def send_message(self, msg):
         message = msg.encode(self.FORMAT)
         msg_lenght = len(message)
@@ -80,9 +74,6 @@ class Sender(QObject):
         print(msg)
         if msg == '#!ay':
             self.signal_authorization_status.emit()
-            time.sleep(1)
-            self.start_msg = 'start' + Constant().login
-            self.send_message(self.start_msg)
         elif msg == '#!an':
             self.notification = 'Проверьте введенные данные!'
             self.signal_authorization_text.emit(self.notification)

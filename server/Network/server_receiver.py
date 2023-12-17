@@ -66,6 +66,8 @@ class Receiver(QObject):
                     self.add_old_user(msg[6:], conn)
                 elif msg[0:6] == 'select':
                     self.show_user_sms(msg[7:], conn)
+                elif msg[0:6] == '#!info':
+                    print('Клиент в сети', msg)
                 else:
                     print(msg)
         conn.close()
@@ -127,6 +129,8 @@ class Receiver(QObject):
         try:
             users = self.db_method.select_db(request)
             result_string = ', '.join([item[0] for item in users])
+            if result_string == '':
+                return
             msg = 'user: ' + result_string
             time.sleep(0.5)
             conn.send(msg.encode(self.FORMAT))

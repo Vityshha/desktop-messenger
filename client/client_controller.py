@@ -35,6 +35,13 @@ class Controller(QMainWindow):
     def login_messager(self):
         if self.client_constant.AUTHORIZED == 'True':
             self.show()
+
+            start_msg = 'start ' + Constant().login
+            self.sender.send_message(start_msg)
+
+            msg = '#!info ' + Constant().login
+            self.sender.send_message(msg)
+
         else:
             self.Authorization.show()
 
@@ -54,6 +61,10 @@ class Controller(QMainWindow):
         self.client_constant.shanges(paragraph, 'login', login)
         self.client_constant.shanges(paragraph, 'password', password)
         self.show()
+        start_msg = 'start ' + login
+        self.sender.send_message(start_msg)
+        msg = '#!info ' + login
+        self.sender.send_message(msg)
 
 
     def init_connect(self):
@@ -169,7 +180,7 @@ class Controller(QMainWindow):
     def user_choise(self):
         self.shoise_user = self.ui.list_users.currentItem().text()
         self.ui.user_label.setText(self.shoise_user)
-        msg = 'select: ' + 'user: ' + self.client_constant.login + ' user_send: ' + self.shoise_user
+        msg = 'select: ' + 'user: ' + Constant().login + ' user_send: ' + self.shoise_user
         self.signal_send_message.emit(msg)
 
     def setting_mode(self):
