@@ -192,10 +192,14 @@ class Controller(QMainWindow):
 
 
     def mousePressEvent(self, event):
-        self.oldPosition = event.pos()
+        if event.button() == Qt.LeftButton and self.ui.widget_btn.geometry().contains(event.pos()):
+            self.oldPosition = event.pos()
 
     def mouseMoveEvent(self, event):
-        # Move window
-        delta = QPoint(event.pos() - self.oldPosition)
-        self.move(self.x() + delta.x(), self.y() + delta.y())
-        # Resize window
+        if self.oldPosition is not None:
+            delta = QPoint(event.pos() - self.oldPosition)
+            self.move(self.x() + delta.x(), self.y() + delta.y())
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.oldPosition = None
