@@ -86,11 +86,13 @@ class Controller(QMainWindow):
         self.sender.signal_db_messages.connect(self.add_messages)
 
         self.ui.send_text.installEventFilter(self)
+        self.installEventFilter(self)
 
 
     def init_const(self):
         self.shoise_user = None
         self.ui.send_text.setAcceptRichText(False)
+        self.ui.stackedWidget_sms.setCurrentIndex(1)
 
     @Slot(str)
     def notification_author(self, notif):
@@ -167,6 +169,10 @@ class Controller(QMainWindow):
         self.ui.scrollArea.verticalScrollBar().setValue(self.ui.scrollArea.verticalScrollBar().maximum())
 
     def eventFilter(self, obj, event):
+        if (event.type() == QEvent.KeyPress):
+            key = event.key()
+            if key == Qt.Key_Escape:
+                self.ui.stackedWidget_sms.setCurrentIndex(1)
         if obj is self.ui.send_text and event.type() == QEvent.KeyPress:
             if event.key() == Qt.Key_Return and not event.modifiers():
                 self.send_message()
@@ -176,6 +182,7 @@ class Controller(QMainWindow):
 
 
     def user_choise(self):
+        self.ui.stackedWidget_sms.setCurrentIndex(0)
         self.shoise_user = self.ui.list_users.currentItem().text()
         self.ui.user_label.setText(self.shoise_user)
         msg = 'select: ' + 'user: ' + Constant().login + ' user_send: ' + self.shoise_user

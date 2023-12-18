@@ -217,13 +217,15 @@ class Ui_MainWindow(object):
         self.user_label.setObjectName("user_label")
         self.verticalLayout_5.addWidget(self.user_label)
         self.verticalLayout_4.addWidget(self.widget_user)
-        self.widget_sms = QtWidgets.QWidget(self.widget_right_main)
-        self.widget_sms.setObjectName("widget_sms")
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.widget_sms)
+        self.stackedWidget_sms = QtWidgets.QStackedWidget(self.widget_right_main)
+        self.stackedWidget_sms.setObjectName("stackedWidget_sms")
+        self.stackedWidget_smsPage1 = QtWidgets.QWidget()
+        self.stackedWidget_smsPage1.setObjectName("stackedWidget_smsPage1")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.stackedWidget_smsPage1)
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_6.setSpacing(0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.scrollArea = QtWidgets.QScrollArea(self.widget_sms)
+        self.scrollArea = QtWidgets.QScrollArea(self.stackedWidget_smsPage1)
         self.scrollArea.setStyleSheet("border: 1px solid transparent; /* Установка прозрачной границы */\n"
 "    background-color: rgb(64, 57, 101);\n"
 "    color: rgb(255, 255, 255);\n"
@@ -265,8 +267,8 @@ class Ui_MainWindow(object):
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 615, 539))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.scrollAreaWidgetContents)
-        self.horizontalLayout_5.setContentsMargins(10, 10, 10, 10)
-        self.horizontalLayout_5.setSpacing(10)
+        self.horizontalLayout_5.setContentsMargins(10, 0, 10, 0)
+        self.horizontalLayout_5.setSpacing(0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.sms_label = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
@@ -275,17 +277,35 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.sms_label.sizePolicy().hasHeightForWidth())
         self.sms_label.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(10)
         self.sms_label.setFont(font)
         self.sms_label.setStyleSheet("background-color: rgb(64, 57, 101);\n"
 "color: rgb(255, 255, 255);")
+        self.sms_label.setText("")
         self.sms_label.setTextFormat(QtCore.Qt.AutoText)
         self.sms_label.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignHCenter)
         self.sms_label.setObjectName("sms_label")
         self.horizontalLayout_5.addWidget(self.sms_label)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout_6.addWidget(self.scrollArea)
-        self.verticalLayout_4.addWidget(self.widget_sms)
+        self.stackedWidget_sms.addWidget(self.stackedWidget_smsPage1)
+        self.page_info = QtWidgets.QWidget()
+        self.page_info.setStyleSheet("background-color: rgb(64, 57, 101);\n"
+"color: rgb(255, 255, 255);")
+        self.page_info.setObjectName("page_info")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.page_info)
+        self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_8.setSpacing(0)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.label = QtWidgets.QLabel(self.page_info)
+        self.label.setContextMenuPolicy(QtCore.Qt.PreventContextMenu)
+        self.label.setStyleSheet("background-color: rgb(64, 57, 101);\n"
+"color: rgb(255, 255, 255);")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setObjectName("label")
+        self.verticalLayout_8.addWidget(self.label)
+        self.stackedWidget_sms.addWidget(self.page_info)
+        self.verticalLayout_4.addWidget(self.stackedWidget_sms)
         self.widget_send_text = QtWidgets.QWidget(self.widget_right_main)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
@@ -331,6 +351,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
+        self.stackedWidget_sms.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -342,8 +363,7 @@ class Ui_MainWindow(object):
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.1pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Segoe UI\'; font-size:9pt;\"><br /></p></body></html>"))
         self.search_text.setPlaceholderText(_translate("MainWindow", "Поиск"))
-        self.sms_label.setText(_translate("MainWindow", "Выберите, кому хотели бы написать\n"
-""))
+        self.label.setText(_translate("MainWindow", "Выберите, кому хотели бы написать"))
         self.send_text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
