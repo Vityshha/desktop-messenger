@@ -4,7 +4,8 @@ import time
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QObject
+from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QObject, QEvent
+from PyQt5 import QtGui
 from Network.client_sender import Sender
 from client_constant import Constant
 import re
@@ -84,13 +85,12 @@ class Controller(QMainWindow):
         self.sender.signal_add_users.connect(self.user_add_db)
         self.sender.signal_db_messages.connect(self.add_messages)
 
+        self.ui.send_text.installEventFilter(self)
+
 
     def init_const(self):
-        self.default_sms = 'Введите собщение...'
-        self.default_search = 'Поиск'
-        self.default_color = 'color: rgba(79, 91, 103, 0.8); border: transparent;'
-        self.select_color = 'color: rgba(255, 255, 255, 1); border: transparent;'
         self.shoise_user = None
+        self.ui.send_text.setAcceptRichText(False)
 
     @Slot(str)
     def notification_author(self, notif):
@@ -160,18 +160,19 @@ class Controller(QMainWindow):
                 messages += msg
                 self.ui.sms_label.setText(messages)
                 self.ui.send_text.clear()
+                self.ui.send_text.update()
+                self.ui.send_text.setAcceptRichText(False)
 
     def scrollToBottom(self, minVal=None, maxVal=None):
         self.ui.scrollArea.verticalScrollBar().setValue(self.ui.scrollArea.verticalScrollBar().maximum())
 
-    def keyPressEvent(self, event):
-            if event.key() == 16777220:
-                print('enter')
-                message = str(self.ui.send_text.toPlainText())
-                if message == '':
-                    return
-                self.signal_send_message.emit(message)
-                self.ui.send_text.clear()
+    def eventFilter(self, obj, event):
+        if obj is self.ui.send_text and event.type() == QEvent.KeyPress:
+            if event.key() == Qt.Key_Return and not event.modifiers():
+                self.send_message()
+            if event.key() in (Qt.Key_Return, Qt.Key_Enter):
+                return True
+        return super().eventFilter(obj, event)
 
 
     def user_choise(self):
