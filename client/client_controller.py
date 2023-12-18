@@ -99,7 +99,7 @@ class Controller(QMainWindow):
         self.Authorization.ui_authorization.notif_label.setText(notif)
 
     def close_app(self):
-        message = '#!info ' + '!DISCONNECT'
+        message = '#!info ' + '!DISCONNECT ' + Constant().login
         self.signal_send_message.emit(message)
         self.close()
         self.thread().quit()

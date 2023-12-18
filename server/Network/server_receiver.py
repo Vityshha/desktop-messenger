@@ -49,11 +49,14 @@ class Receiver(QObject):
                 msg = conn.recv(msg_lenght).decode(self.FORMAT)
                 print(msg)
                 if msg[0:6] == '#!info':
-                    if msg[0:8] == self.DISCONNECT_MESSAGE:
-                        self.activ_disconnect_user(msg[7:])
+                    if msg[7:18] == self.DISCONNECT_MESSAGE:
+                        self.activ_disconnect_user(msg[19:])
                         connected = False
                         conn.close()
                         return
+                    else:
+                        # self.activ_disconnect_user(msg[7:])
+                        pass
                 elif msg[0:3] == '#!0':
                     self.auth(msg[3:], conn)
                 elif msg[0:3] == '#!1':
@@ -66,10 +69,8 @@ class Receiver(QObject):
                     self.add_old_user(msg[6:], conn)
                 elif msg[0:6] == 'select':
                     self.show_user_sms(msg[7:], conn)
-                elif msg[0:6] == '#!info':
-                    print('Клиент в сети', msg)
                 else:
-                    print(msg)
+                    print(f'Непонятное смс {msg}')
         conn.close()
 
     def start(self):
@@ -125,18 +126,19 @@ class Receiver(QObject):
 
 
     def add_old_user(self, user=None, conn=None):
-        request = f'SELECT DISTINCT id_send FROM messages WHERE id = "{str(user)}";'
-        try:
-            users = self.db_method.select_db(request)
-            result_string = ', '.join([item[0] for item in users])
-            if result_string == '':
-                return
-            msg = 'user: ' + result_string
-            time.sleep(0.5)
-            conn.send(msg.encode(self.FORMAT))
-        except:
-            print(f'[BD ERROR] Ошибка поиска юзеров')
+        request = f'UPDATE users SET activ = 1 WHERE login = "{str(user)}";\
+         SELECT DISTINCT id_send FROM messages WHERE id = "{str(user)}";'
+        # try:
+        users = self.db_method.select_db(request)
+        result_string = ', '.join([item[0] for item in users])
+        if result_string == '':
             return
+        msg = 'user: ' + result_string
+        time.sleep(0.5)
+        conn.send(msg.encode(self.FORMAT))
+        # except:
+        #     print(f'[BD ERROR] Ошибка поиска юзеров')
+        #     return
 
 
     def show_user_sms(self, user=None, conn=None):
@@ -150,13 +152,7 @@ class Receiver(QObject):
         except:
             print(f'[BD ERROR] Ошибка поиска сообщений в БД')
 
-    def activ_disconnect_user(self, msg):
-        login = msg[6:]
-        if msg == self.DISCONNECT_MESSAGE:
-            print('Отключился')
-            request = f"UPDATE users SET activ = 0 WHERE login = '{login}'"
-            self.db_method.update_db(request)
-        elif msg != self.DISCONNECT_MESSAGE:
-            print('Подключился')
-            request = f"UPDATE users SET activ = 1 WHERE login = '{login}'"
-            self.db_method.update_db(request)
+    def activ_disconnect_user(self, login):
+        print('Отключился ', login)
+        request = f"UPDATE users SET activ = 0 WHERE login = '{login}'"
+        self.db_method.update_db(request)

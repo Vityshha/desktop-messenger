@@ -29,8 +29,9 @@ class Connect_DB:
         """
         with sq.connect(self.database) as con:
             cur = con.cursor()
-            cur.execute(f'{request}')
+            cur.executescript(f'{request}')
             results = cur.fetchall()
+            print('Результат ', results)
             # for results in cur:
             #     print(results)
             return results
