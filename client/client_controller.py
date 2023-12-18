@@ -173,6 +173,8 @@ class Controller(QMainWindow):
             key = event.key()
             if key == Qt.Key_Escape:
                 self.ui.stackedWidget_sms.setCurrentIndex(1)
+                self.ui.user_label.clear()
+                self.ui.list_users.clearSelection()
         if obj is self.ui.send_text and event.type() == QEvent.KeyPress:
             if event.key() == Qt.Key_Return and not event.modifiers():
                 self.send_message()
