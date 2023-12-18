@@ -29,8 +29,6 @@ class Controller(QMainWindow):
         self.flag_sms = True
 
 
-
-
     def login_messager(self):
         if Constant().AUTHORIZED == 'True':
             self.show()
