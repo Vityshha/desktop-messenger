@@ -16,7 +16,6 @@ class Controller(QMainWindow):
 
     def __init__(self, isModel=None, parent=None):
         super(Controller, self).__init__(parent)
-        self.client_constant = Constant()
         self.sender = Sender()
 
         self.ui = Ui_MainWindow()
@@ -33,7 +32,7 @@ class Controller(QMainWindow):
 
 
     def login_messager(self):
-        if self.client_constant.AUTHORIZED == 'True':
+        if Constant().AUTHORIZED == 'True':
             self.show()
 
             start_msg = 'start ' + Constant().login
@@ -56,10 +55,10 @@ class Controller(QMainWindow):
         importance = 'True'
         login = self.Authorization.ui_authorization.login.toPlainText()
         password = self.Authorization.ui_authorization.password.toPlainText()
-        self.client_constant.shanges(paragraph, value, importance)
+        Constant().shanges(paragraph, value, importance)
 
-        self.client_constant.shanges(paragraph, 'login', login)
-        self.client_constant.shanges(paragraph, 'password', password)
+        Constant().shanges(paragraph, 'login', login)
+        Constant().shanges(paragraph, 'password', password)
         self.show()
         start_msg = 'start ' + login
         self.sender.send_message(start_msg)
@@ -141,7 +140,7 @@ class Controller(QMainWindow):
         ite = [item.split(', ') for item in ite]
         messages = ''
         for itt in ite:
-            if itt[0] != self.client_constant.login:
+            if itt[0] != Constant().login:
                 messages += f"<div style='text-align:left;'>{itt[2]}</div>" + '\n'
             else:
                 messages += f"<div style='text-align:right;'>{itt[2]}</div>" + '\n'
@@ -156,7 +155,7 @@ class Controller(QMainWindow):
             if msg == '' or user_send == '':
                 return
             else:
-                message = f'user: {self.client_constant.login} ' + 'to: ' + user_send + ' #!msg: ' + msg
+                message = f'user: {Constant().login} ' + 'to: ' + user_send + ' #!msg: ' + msg
                 self.signal_send_message.emit(message)
                 msg = f"<div style='text-align:right;'>{msg}</div>" + '\n'
                 messages = self.ui.sms_label.text()
