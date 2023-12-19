@@ -5,7 +5,7 @@ venv/
 *.pt
 
 test.py
-
+server/database_metod/database/users.db
 
 
 __pycache__/

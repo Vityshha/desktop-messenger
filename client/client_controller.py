@@ -28,24 +28,60 @@ class Controller(QMainWindow):
         self.login_messager()
         self.init_connect()
         self.flag_sms = True
+        self.clone_users = []
 
 
     def login_messager(self):
         if Constant().AUTHORIZED == 'True':
             self.show()
-
             start_msg = 'start ' + Constant().login
             self.sender.send_message(start_msg)
-
-            msg = '#!info ' + Constant().login
-            self.sender.send_message(msg)
-
         else:
             self.Authorization.show()
 
     def search_user(self):
         text = '#?0' + self.ui.search_text.toPlainText()
+        self.func_textchanged()
         self.signal_search_user.emit(text)
+
+
+    def func_textchanged(self):
+        search_text = self.ui.search_text.toPlainText().lower()
+        item_anywhere = self.ui.list_users.findItems(search_text, Qt.MatchContains)
+
+        start_list = list(filter(lambda item: item.text().lower().startswith(search_text), item_anywhere))
+        start_text = [x.text().lower() for x in start_list]
+
+        def bw_filter(item):
+            item_text = item.text().lower()
+            return search_text in item_text[1:-1] and item_text not in start_text
+
+        bw_lst = list(filter(bw_filter, item_anywhere))
+        bw_lst.sort(key=lambda item: item.text().lower().find(search_text))
+        bw_text = [x.text().lower() for x in bw_lst]
+
+        def end_filter(item):
+            item_text = item.text().lower()
+            return item_text.endswith(search_text) and item_text.lower() not in start_text and item_text not in bw_text
+
+        end_lst = list(filter(end_filter, item_anywhere))
+        end_lst.sort(key=lambda item: item.text().lower().find(search_text))
+
+
+        for i in range(self.ui.list_users.count()):
+            self.ui.list_users.takeItem(0)
+
+        for item in start_list + bw_lst + end_lst:
+            self.ui.list_users.addItem(item.text())
+
+        for i in range(len(self.original_items)):
+            item_text = self.original_items[i]
+            existing_items = self.ui.list_users.findItems(item_text, Qt.MatchExactly)
+            if not existing_items:
+                self.ui.list_users.addItem(item_text)
+            else:
+                pass
+
 
     def authorization_close(self):
         self.Authorization.close()
@@ -61,8 +97,6 @@ class Controller(QMainWindow):
         self.show()
         start_msg = 'start ' + login
         self.sender.send_message(start_msg)
-        msg = '#!info ' + login
-        self.sender.send_message(msg)
 
 
     def init_connect(self):
@@ -131,6 +165,7 @@ class Controller(QMainWindow):
         users = users.split(', ')
         for user in users:
             self.ui.list_users.addItem(user)
+        self.original_items = [self.ui.list_users.item(i).text() for i in range(self.ui.list_users.count())]
 
     @Slot(str)
     def add_messages(self, messages):
