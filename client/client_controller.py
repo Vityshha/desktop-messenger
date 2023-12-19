@@ -46,6 +46,12 @@ class Controller(QMainWindow):
 
 
     def func_textchanged(self):
+        if self.ui.search_text.toPlainText() == '':
+            for i in range(self.ui.list_users.count()):
+                self.ui.list_users.takeItem(0)
+            for i in range(len(self.original_items)):
+                self.ui.list_users.addItem(self.original_items[i])
+
         search_text = self.ui.search_text.toPlainText().lower()
         item_anywhere = self.ui.list_users.findItems(search_text, Qt.MatchContains)
 
