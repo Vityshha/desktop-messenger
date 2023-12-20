@@ -123,7 +123,7 @@ class Receiver(QObject):
 
 
     def add_old_user(self, user=None, conn=None):
-        request = f'SELECT DISTINCT id_send FROM messages WHERE id = "{str(user)}";'
+        request = f'SELECT DISTINCT id_send FROM messages WHERE id = "{str(user)}" UNION SELECT DISTINCT id FROM messages WHERE id_send = "{str(user)}";'
         try:
             users = self.db_method.select_db(request)
             result_string = ', '.join([item[0] for item in users])
