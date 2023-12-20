@@ -63,7 +63,7 @@ class Receiver(QObject):
                 elif msg[0:4] == 'user':
                     self.messages_to_db(msg, conn)
                 elif msg[0:5] == 'start':
-                    self.add_old_user(msg[6:], conn)
+                    self.add_old_user(msg[6:], addr, conn)
                 elif msg[0:6] == 'select':
                     self.show_user_sms(msg[7:], conn)
                 else:
@@ -116,28 +116,30 @@ class Receiver(QObject):
         id = msg.split("user:")[1].split("to:")[0].strip()
         id_send = msg.split("to:")[1].split("#!msg:")[0].strip()
         msg = msg.split("#!msg:")[1].strip()
-        # try:
-        self.db_method.messages_db(id, id_send, msg)
-        # except:
-        #     print(f'[BD ERROR] Ошибка добавления сообщения в БД')
-
-
-    def add_old_user(self, user=None, conn=None):
-        request = f'SELECT DISTINCT id_send FROM messages WHERE id = "{str(user)}" UNION SELECT DISTINCT id FROM messages WHERE id_send = "{str(user)}";'
         try:
-            users = self.db_method.select_db(request)
-            result_string = ', '.join([item[0] for item in users])
-            if result_string == '':
-                return
-            msg = 'user: ' + result_string
-            time.sleep(0.5)
-            conn.send(msg.encode(self.FORMAT))
-
-            request = f'UPDATE users SET activ = 1 WHERE login = "{str(user)}";'
-            self.db_method.select_db(request)
+            self.db_method.messages_db(id, id_send, msg)
         except:
-            print(f'[BD ERROR] Ошибка поиска юзеров')
+            print(f'[BD ERROR] Ошибка добавления сообщения в БД')
+
+
+    def add_old_user(self, user=None, addr=None, conn=None):
+        request = f'SELECT DISTINCT id_send FROM messages WHERE id = "{str(user)}" UNION SELECT DISTINCT id FROM messages WHERE id_send = "{str(user)}";'
+        # try:
+        users = self.db_method.select_db(request)
+        result_string = ', '.join([item[0] for item in users])
+        if result_string == '':
             return
+        msg = 'user: ' + result_string
+        time.sleep(0.5)
+        conn.send(msg.encode(self.FORMAT))
+
+        request = f'UPDATE users SET activ = 1 WHERE login = "{str(user)}";'
+        self.db_method.select_db(request)
+        request = f'UPDATE users SET addres = "{str(addr)}" WHERE login = "{str(user)}";'
+        self.db_method.select_db(request)
+        # except:
+        #     print(f'[BD ERROR] Ошибка поиска юзеров')
+        #     return
 
 
     def show_user_sms(self, user=None, conn=None):

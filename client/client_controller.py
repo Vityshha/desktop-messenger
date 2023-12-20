@@ -46,6 +46,8 @@ class Controller(QMainWindow):
 
 
     def func_textchanged(self):
+        if self.ui.list_users.count() == 0:
+            return
         if self.ui.search_text.toPlainText() == '':
             for i in range(self.ui.list_users.count()):
                 self.ui.list_users.takeItem(0)
@@ -165,6 +167,7 @@ class Controller(QMainWindow):
             return
         else:
             self.ui.list_users.addItem(user)
+            self.original_items = [self.ui.list_users.item(i).text() for i in range(self.ui.list_users.count())]
 
     @Slot(str)
     def user_add_db(self, users):
