@@ -148,6 +148,9 @@ class Receiver(QObject):
             msg = self.db_method.select_db(request)
             msg_full = '#!msg_u: ' + str(msg)
             conn.send(msg_full.encode(self.FORMAT))
+
+            request = f'UPDATE messages SET read = 1 WHERE (id = "{str(id)}" AND id_send = "{str(id_send)}");'
+            self.db_method.select_db(request)
         except:
             print(f'[BD ERROR] Ошибка поиска сообщений в БД')
 

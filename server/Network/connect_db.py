@@ -1,5 +1,6 @@
 import sqlite3 as sq
 import time
+import datetime
 
 
 class Connect_DB:
@@ -79,7 +80,9 @@ class Connect_DB:
     def messages_db(self, id, id_send, msg):
         with sq.connect(self.database) as con:
             cur = con.cursor()
-            cur.execute(f'INSERT OR IGNORE INTO messages (id, id_send, message) VALUES ("{id}", "{id_send}", "{msg}");')
+            read = 0
+            time_sms = str(datetime.datetime.now())
+            cur.execute(f'INSERT OR IGNORE INTO messages (id, id_send, message, time_sms, read) VALUES ("{id}", "{id_send}", "{msg}", "{time_sms}", "{read}");')
             con.commit()
 
     def close_connect(self):
