@@ -1,6 +1,7 @@
 import socket
 import threading
 import time
+import datetime
 
 from PyQt5.QtCore import pyqtSignal as Signal, QObject
 from server.Network.check_db import CheckThread
@@ -137,9 +138,6 @@ class Receiver(QObject):
         self.db_method.select_db(request)
         request = f'UPDATE users SET addres = "{str(addr)}" WHERE login = "{str(user)}";'
         self.db_method.select_db(request)
-        # except:
-        #     print(f'[BD ERROR] Ошибка поиска юзеров')
-        #     return
 
 
     def show_user_sms(self, user=None, conn=None):
@@ -158,4 +156,8 @@ class Receiver(QObject):
 
     def activ_disconnect_user(self, login):
         request = f"UPDATE users SET activ = 0 WHERE login = '{login}'"
+        self.db_method.update_db(request)
+
+        time_last_connect = str(datetime.datetime.now())
+        request = f"UPDATE users SET time_activ = '{time_last_connect}' WHERE login = '{login}'"
         self.db_method.update_db(request)
