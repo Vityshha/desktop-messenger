@@ -1,0 +1,47 @@
+{
+	"QCustomSlideMenu": [{
+		"name": "menu_bar_settings",
+		"floatPosition": [{
+			"relativeTo": "widget_left_main",
+			"position": "parent",
+			"shadow":[{
+						"color": "#54, 50, 87",
+						"blurRadius": 10,
+						"xOffset": 0,
+						"yOffset": 0
+			}]
+		}],
+		"defaultSize": [{
+			"width": 0,
+			"height": 0
+		}],
+		"collapsedSize": [{
+			"width": 0,
+			"height": "parent"
+		}],
+		"expandedSize": [{
+			"width": 274,
+			"height": "parent"
+		}],
+		"toggleButton": [{
+			"buttonName": "btn_settings"}],
+
+		"menuTransitionAnimation": [{
+			"animationDuration": 300,
+			"animationEasingCurve": "Linear",
+			"whenCollapsing": [{
+				"animationDuration": 80,
+				"animationEasingCurve": "OutInBack"
+			}],
+			"whenExpanding": [{
+				"animationDuration": 80,
+				"animationEasingCurve": "Linear"
+			}]
+		}],
+		"menuContainerStyle": [{
+			"whenMenuIsExpanded": [
+				"background-color: rgb(54, 50, 87);"
+			]
+		}]
+	}]
+}

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>891</width>
-    <height>635</height>
+    <height>614</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -189,26 +189,69 @@ QPushButton:hover{
            <number>0</number>
           </property>
           <item>
-           <widget class="QCustomSlideMenu" name="widget_2" native="true">
+           <widget class="QCustomSlideMenu" name="menu_bar_settings" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(54, 50, 87);</string>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_9">
-             <item alignment="Qt::AlignTop">
-              <widget class="QWidget" name="widget_3" native="true">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item alignment="Qt::AlignLeft|Qt::AlignTop">
+              <widget class="QWidget" name="user_info" native="true">
                <layout class="QVBoxLayout" name="verticalLayout_10">
+                <property name="rightMargin">
+                 <number>9</number>
+                </property>
                 <item>
-                 <widget class="QLabel" name="label_2">
+                 <widget class="QLabel" name="icon_user">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>MS Reference Sans Serif</family>
+                    <pointsize>30</pointsize>
+                    <stylestrategy>NoAntialias</stylestrategy>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">image: url(GUI/icons/person.png);</string>
+                  </property>
                   <property name="text">
-                   <string>icon</string>
+                   <string/>
                   </property>
                  </widget>
                 </item>
                 <item alignment="Qt::AlignBottom">
-                 <widget class="QLabel" name="label_3">
+                 <widget class="QLabel" name="name_user">
+                  <property name="styleSheet">
+                   <string notr="true">color: rgb(255, 255, 255);</string>
+                  </property>
                   <property name="text">
                    <string>user name</string>
                   </property>
@@ -218,7 +261,7 @@ QPushButton:hover{
               </widget>
              </item>
              <item>
-              <widget class="QWidget" name="widget_4" native="true">
+              <widget class="QWidget" name="more_settings" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
                  <horstretch>0</horstretch>
@@ -226,8 +269,11 @@ QPushButton:hover{
                 </sizepolicy>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_12">
-                <item>
-                 <widget class="QPushButton" name="pushButton">
+                <property name="rightMargin">
+                 <number>9</number>
+                </property>
+                <item alignment="Qt::AlignLeft">
+                 <widget class="QPushButton" name="btn_menu_settings">
                   <property name="text">
                    <string>Настройки </string>
                   </property>
@@ -246,8 +292,8 @@ QPushButton:hover{
                   </property>
                  </spacer>
                 </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton_2">
+                <item alignment="Qt::AlignLeft">
+                 <widget class="QPushButton" name="btn_user_close">
                   <property name="text">
                    <string>Выйти</string>
                   </property>
@@ -257,12 +303,40 @@ QPushButton:hover{
               </widget>
              </item>
              <item>
-              <widget class="QWidget" name="widget_5" native="true">
+              <widget class="QWidget" name="app_info" native="true">
                <layout class="QVBoxLayout" name="verticalLayout_11">
+                <property name="rightMargin">
+                 <number>9</number>
+                </property>
                 <item>
-                 <widget class="QLabel" name="label_4">
+                 <widget class="QLabel" name="app_text">
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">color: rgb(255, 255, 255);</string>
+                  </property>
                   <property name="text">
-                   <string>info</string>
+                   <string>KFU Desktop Messaging</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="app_text_2">
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">color: rgb(255, 255, 255);</string>
+                  </property>
+                  <property name="text">
+                   <string>Версия 0.1 - О программе </string>
                   </property>
                  </widget>
                 </item>
@@ -582,7 +656,7 @@ height: 0px;
                       <x>0</x>
                       <y>0</y>
                       <width>306</width>
-                      <height>540</height>
+                      <height>519</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_5">

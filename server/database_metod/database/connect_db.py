@@ -1,4 +1,6 @@
 import sqlite3 as sq
+from PIL import Image
+
 import time
 import datetime
 
@@ -89,10 +91,23 @@ class Connect_DB:
         sq.connect(self.database).close()
 
 
+    def load_icon(self, login, icon):
+        # with sq.connect(self.database) as con:
+        #     cur = con.cursor()
+        #     path_image_save = f'./icons/{login}'
+        #     img = Image.open(icon)
+        #     img.save(f"{path_image_save}.png")
+        #
+        #     request = f"UPDATE users SET icon = {str(path_image_save)} WHERE login = '{login}';"
+        #     cur.execute(request)
+        #     con.commit()
+        pass
+
+
+
+
 
 if __name__ == '__main__':
     database = 'C:\\Users\\KFU\\Desktop\\desktop-messenger\\server\\database_metod\\database\\users.db'
     db = Connect_DB(database)
-    request = f'SELECT DISTINCT id_send FROM messages WHERE id = "admin";'
-    res = db.select_db(request)
-    print(res)
+    res = db.load_icon('admin', 'C:\\Users\\KFU\Desktop\\desktop-messenger\\client\\GUI\\icons\\person.png')

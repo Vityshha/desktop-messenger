@@ -6,7 +6,7 @@ import datetime
 from PyQt5.QtCore import pyqtSignal as Signal, QObject
 from server.Network.check_db import CheckThread
 from server import server_constant
-from server.Network.connect_db import Connect_DB
+from server.database_metod.database.connect_db import Connect_DB
 
 
 

@@ -1,11 +1,12 @@
 import sys
-import time
 
+from PyQt5.QtGui import QPixmap
+
+from Custom_Widgets import loadJsonStyle
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
-from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QObject, QEvent
-from PyQt5 import QtGui
+from PyQt5.QtWidgets import QMainWindow, QFileDialog
+from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent
 from Network.client_sender import Sender
 from client_constant import Constant
 import re
@@ -27,8 +28,6 @@ class Controller(QMainWindow):
         self.model = isModel
         self.login_messager()
         self.init_connect()
-        self.flag_sms = True
-        self.clone_users = []
 
 
     def login_messager(self):
@@ -36,6 +35,7 @@ class Controller(QMainWindow):
             self.show()
             start_msg = 'start ' + Constant().login
             self.sender.send_message(start_msg)
+            self.menu_bar_settings()
         else:
             self.Authorization.show()
 
@@ -106,6 +106,8 @@ class Controller(QMainWindow):
         start_msg = 'start ' + login
         self.sender.send_message(start_msg)
 
+        self.menu_bar_settings()
+
 
     def init_connect(self):
         self.ui.btn_close.clicked.connect(self.close_app)
@@ -113,7 +115,6 @@ class Controller(QMainWindow):
         self.ui.btn_remove.clicked.connect(self.remove_window)
         self.ui.btn_send.clicked.connect(self.send_message)
         self.ui.list_users.clicked.connect(self.user_choise)
-        self.ui.btn_settings.clicked.connect(self.setting_mode)
         self.ui.scrollArea.verticalScrollBar().rangeChanged.connect(self.scrollToBottom)
 
         self.signal_send_message.connect(self.sender.send_message)
@@ -127,6 +128,8 @@ class Controller(QMainWindow):
         self.sender.signal_add_users.connect(self.user_add_db)
         self.sender.signal_db_messages.connect(self.add_messages)
 
+        self.ui.btn_user_close.clicked.connect(self.user_exit)
+
         self.ui.send_text.installEventFilter(self)
         self.installEventFilter(self)
 
@@ -135,6 +138,8 @@ class Controller(QMainWindow):
         self.shoise_user = None
         self.ui.send_text.setAcceptRichText(False)
         self.ui.stackedWidget_sms.setCurrentIndex(1)
+        self.menu_bar_settings()
+        loadJsonStyle(self, self.ui, jsonFiles={"GUI\style.json"})
 
     @Slot(str)
     def notification_author(self, notif):
@@ -216,9 +221,12 @@ class Controller(QMainWindow):
         if (event.type() == QEvent.KeyPress):
             key = event.key()
             if key == Qt.Key_Escape:
-                self.ui.stackedWidget_sms.setCurrentIndex(1)
-                self.ui.user_label.clear()
-                self.ui.list_users.clearSelection()
+                if self.ui.menu_bar_settings.width() != 0:
+                    self.ui.menu_bar_settings.collapseMenu()
+                else:
+                    self.ui.stackedWidget_sms.setCurrentIndex(1)
+                    self.ui.user_label.clear()
+                    self.ui.list_users.clearSelection()
         if obj is self.ui.send_text and event.type() == QEvent.KeyPress:
             if event.key() == Qt.Key_Return and not event.modifiers():
                 self.send_message()
@@ -234,23 +242,53 @@ class Controller(QMainWindow):
         msg = 'select: ' + 'user: ' + Constant().login + ' user_send: ' + self.shoise_user
         self.signal_send_message.emit(msg)
 
-    def setting_mode(self):
-        print('Окно настроек')
-
 
     def put_text_search(self):
         self.ui.search_text.clear()
 
 
     def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton and self.ui.icon_user.geometry().contains(event.pos()):
+            print('Выбор картинки')
+            self.load_icon()
         if event.button() == Qt.LeftButton and self.ui.widget_btn.geometry().contains(event.pos()):
             self.oldPosition = event.pos()
 
     def mouseMoveEvent(self, event):
-        if self.oldPosition is not None:
-            delta = QPoint(event.pos() - self.oldPosition)
-            self.move(self.x() + delta.x(), self.y() + delta.y())
+        try:
+            if self.oldPosition is not None:
+                delta = QPoint(event.pos() - self.oldPosition)
+                self.move(self.x() + delta.x(), self.y() + delta.y())
+        except:
+            return
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.oldPosition = None
+
+
+    def menu_bar_settings(self):
+        self.ui.name_user.setText(Constant().login)
+
+
+    def user_exit(self):
+        paragraph = 'Authentication parameters'
+        Constant().shanges(paragraph, 'AUTHORIZED', 'False')
+        Constant().shanges(paragraph, 'login', '')
+        Constant().shanges(paragraph, 'password', '')
+
+        message = '#!info ' + '!DISCONNECT ' + Constant().login
+        self.signal_send_message.emit(message)
+        self.close()
+
+    def load_icon(self):
+        file_path, _ = QFileDialog.getOpenFileName(self, "Выберите изображение", "", "Images (*.png *.xpm *.jpg)")
+        if file_path:
+            pixmap = QPixmap(file_path)
+            pixmap.scaled(self.ui.icon_user.width(),  self.ui.icon_user.height())
+            self.ui.icon_user.setPixmap(pixmap)
+            self.ui.icon_user.resize(self.ui.icon_user.width(),  self.ui.icon_user.height())
+
+            # icon = open(file_path, mode='rb')
+            # self.sender.send_ico(icon)
+

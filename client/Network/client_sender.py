@@ -58,6 +58,15 @@ class Sender(QObject):
             except:
                 print('[SEND ERROR] Не авторизовался')
 
+    def send_ico(self, icon):
+        file = icon
+        image_data = file.read(2048)
+
+        while image_data:
+            self.client.send(image_data)
+            image_data = file.read(2048)
+        file.close()
+
     def listen_server(self):
         while True:
             try:
