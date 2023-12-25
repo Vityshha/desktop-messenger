@@ -143,7 +143,7 @@ class Receiver(QObject):
     def show_user_sms(self, user=None, conn=None):
         id = user.split("user:")[1].split("user_send:")[0].strip()
         id_send = user.split("user_send:")[1].strip()
-        request = f"SELECT id, id_send, message  FROM messages WHERE ((id = '{str(id)}' AND id_send = '{str(id_send)}') OR (id = '{str(id_send)}' AND id_send = '{str(id)}'))"
+        request = f"SELECT id, id_send, message, time_sms, read  FROM messages WHERE ((id = '{str(id)}' AND id_send = '{str(id_send)}') OR (id = '{str(id_send)}' AND id_send = '{str(id)}'))"
         try:
             msg = self.db_method.select_db(request)
             msg_full = '#!msg_u: ' + str(msg)

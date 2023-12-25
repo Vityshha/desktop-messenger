@@ -196,9 +196,9 @@ class Controller(QMainWindow):
         messages = ''
         for itt in ite:
             if itt[0] != Constant().login:
-                messages += f"<div style='text-align:left;'>{itt[2]}</div>" + '\n'
+                messages += f"<div style='text-align:left;'>{itt[2]}<div style='text-align:right;'>{itt[3]}</div></div>" + '\n'
             else:
-                messages += f"<div style='text-align:right;'>{itt[2]}</div>" + '\n'
+                messages += f"<div style='text-align:left;'>{itt[2]}<div style='text-align:right;'>{itt[3]}</div></div>" + '\n'
         self.ui.sms_label.setText(messages)
 
     def send_message(self):
