@@ -1,12 +1,12 @@
 import sys
 
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QImage, QBrush, QPainter, QWindow
 
 from Custom_Widgets import loadJsonStyle
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
 from PyQt5.QtWidgets import QMainWindow, QFileDialog
-from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent
+from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent, QRect
 from Network.client_sender import Sender
 from client_constant import Constant
 import re
@@ -249,7 +249,6 @@ class Controller(QMainWindow):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton and self.ui.icon_user.geometry().contains(event.pos()):
-            print('Выбор картинки')
             self.load_icon()
         if event.button() == Qt.LeftButton and self.ui.widget_btn.geometry().contains(event.pos()):
             self.oldPosition = event.pos()
@@ -284,11 +283,39 @@ class Controller(QMainWindow):
     def load_icon(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Выберите изображение", "", "Images (*.png *.xpm *.jpg)")
         if file_path:
-            pixmap = QPixmap(file_path)
-            pixmap.scaled(self.ui.icon_user.width(),  self.ui.icon_user.height())
+            imgdata = open(file_path, 'rb').read()
+            imgtype = file_path[-3:]
+            pixmap = self.mask_image(imgdata, imgtype)
+            self.ui.icon_user.setStyleSheet('')
             self.ui.icon_user.setPixmap(pixmap)
-            self.ui.icon_user.resize(self.ui.icon_user.width(),  self.ui.icon_user.height())
 
             # icon = open(file_path, mode='rb')
             # self.sender.send_ico(icon)
+
+    def mask_image(self, imgdata, imgtype='jpg', size=64):
+
+        image = QImage.fromData(imgdata, imgtype)
+        image.convertToFormat(QImage.Format_ARGB32)
+
+        imgsize = int(min(image.width(), image.height()))
+        rect = QRect(int((image.width() - imgsize) / 2), int((image.height() - imgsize) / 2), imgsize, imgsize)
+        image = image.copy(rect)
+
+        out_img = QImage(imgsize, imgsize, QImage.Format_ARGB32)
+        out_img.fill(Qt.transparent)
+
+        brush = QBrush(image)
+        painter = QPainter(out_img)
+        painter.setBrush(brush)
+        painter.setPen(Qt.NoPen)
+        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.drawEllipse(0, 0, imgsize, imgsize)
+        painter.end()
+
+        pr = QWindow().devicePixelRatio()
+        pm = QPixmap.fromImage(out_img)
+        pm.setDevicePixelRatio(pr)
+        size *= pr
+        pm = pm.scaled(self.ui.icon_user.width(), self.ui.icon_user.height(), Qt.KeepAspectRatio)
+        return pm
 
