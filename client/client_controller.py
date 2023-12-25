@@ -262,6 +262,10 @@ class Controller(QMainWindow):
             self.load_icon()
         if event.button() == Qt.LeftButton and self.ui.widget_btn.geometry().contains(event.pos()):
             self.oldPosition = event.pos()
+        if event.button() == Qt.LeftButton and self.ui.widget_right_main.geometry().contains(event.pos()):
+            if self.ui.menu_bar_settings.width() != 0:
+                self.ui.menu_bar_settings.collapseMenu()
+                self.blur_effect.setEnabled(False)
 
     def mouseMoveEvent(self, event):
         try:
