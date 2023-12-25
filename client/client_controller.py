@@ -1,12 +1,12 @@
 import sys
 
-from PyQt5.QtGui import QPixmap, QImage, QBrush, QPainter, QWindow
+from PyQt5.QtGui import QPixmap, QImage, QBrush, QPainter, QWindow, QIcon
 
 from Custom_Widgets import loadJsonStyle
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QGraphicsBlurEffect
-from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent, QRect
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QGraphicsBlurEffect, QGridLayout, QLabel
+from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent, QRect, QSize
 from Network.client_sender import Sender
 from client_constant import Constant
 import re

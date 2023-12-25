@@ -148,6 +148,11 @@ class Ui_MainWindow(object):
         self.name_user.setStyleSheet("color: rgb(255, 255, 255);")
         self.name_user.setObjectName("name_user")
         self.verticalLayout_10.addWidget(self.name_user, 0, QtCore.Qt.AlignBottom)
+        self.line = QtWidgets.QFrame(self.user_info)
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.verticalLayout_10.addWidget(self.line)
         self.verticalLayout_9.addWidget(self.user_info, 0, QtCore.Qt.AlignTop)
         self.more_settings = QtWidgets.QWidget(self.menu_bar_settings)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.MinimumExpanding)
@@ -157,23 +162,129 @@ class Ui_MainWindow(object):
         self.more_settings.setSizePolicy(sizePolicy)
         self.more_settings.setObjectName("more_settings")
         self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.more_settings)
-        self.verticalLayout_12.setContentsMargins(-1, -1, 9, -1)
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_12.setObjectName("verticalLayout_12")
-        self.line = QtWidgets.QFrame(self.more_settings)
-        self.line.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line.setObjectName("line")
-        self.verticalLayout_12.addWidget(self.line)
+        self.btn_create_group = QtWidgets.QPushButton(self.more_settings)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btn_create_group.sizePolicy().hasHeightForWidth())
+        self.btn_create_group.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.btn_create_group.setFont(font)
+        self.btn_create_group.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_create_group.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.btn_create_group.setStyleSheet("QPushButton {\n"
+"    text-align: right;\n"
+"    border: 0px solid rgba(62, 63, 70, 0);\n"
+"    image: url(GUI/icons/group.png);\n"
+"    image-align: left;\n"
+"    color: rgb(255, 255, 255)\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background: rgb(70, 65, 100);\n"
+"}")
+        self.btn_create_group.setIconSize(QtCore.QSize(40, 20))
+        self.btn_create_group.setObjectName("btn_create_group")
+        self.verticalLayout_12.addWidget(self.btn_create_group)
+        self.btn_account = QtWidgets.QPushButton(self.more_settings)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btn_account.sizePolicy().hasHeightForWidth())
+        self.btn_account.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.btn_account.setFont(font)
+        self.btn_account.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_account.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.btn_account.setStyleSheet("QPushButton {\n"
+"    text-align: right;\n"
+"    border: 0px solid rgba(62, 63, 70, 0);\n"
+"    image: url(GUI/icons/account.png);\n"
+"    color: rgb(255, 255, 255)\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background: rgb(70, 65, 100);\n"
+"}")
+        self.btn_account.setIconSize(QtCore.QSize(40, 20))
+        self.btn_account.setObjectName("btn_account")
+        self.verticalLayout_12.addWidget(self.btn_account)
+        self.btn_call = QtWidgets.QPushButton(self.more_settings)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btn_call.sizePolicy().hasHeightForWidth())
+        self.btn_call.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.btn_call.setFont(font)
+        self.btn_call.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_call.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.btn_call.setStyleSheet("QPushButton {\n"
+"    text-align: right;\n"
+"    border: 0px solid rgba(62, 63, 70, 0);\n"
+"    image: url(GUI/icons/call.png);\n"
+"    color: rgb(255, 255, 255)\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background: rgb(70, 65, 100);\n"
+"}")
+        self.btn_call.setIconSize(QtCore.QSize(40, 20))
+        self.btn_call.setObjectName("btn_call")
+        self.verticalLayout_12.addWidget(self.btn_call)
         self.btn_menu_settings = QtWidgets.QPushButton(self.more_settings)
-        self.btn_menu_settings.setStyleSheet("color: rgb(255, 255, 255)")
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btn_menu_settings.sizePolicy().hasHeightForWidth())
+        self.btn_menu_settings.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.btn_menu_settings.setFont(font)
+        self.btn_menu_settings.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_menu_settings.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.btn_menu_settings.setStyleSheet("QPushButton {\n"
+"    text-align: right;\n"
+"    border: 0px solid rgba(62, 63, 70, 0);\n"
+"    image: url(GUI/icons/settings.png);\n"
+"    color: rgb(255, 255, 255)\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background: rgb(70, 65, 100);\n"
+"}")
+        self.btn_menu_settings.setIconSize(QtCore.QSize(40, 20))
         self.btn_menu_settings.setObjectName("btn_menu_settings")
-        self.verticalLayout_12.addWidget(self.btn_menu_settings, 0, QtCore.Qt.AlignLeft)
+        self.verticalLayout_12.addWidget(self.btn_menu_settings)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_12.addItem(spacerItem1)
         self.btn_user_close = QtWidgets.QPushButton(self.more_settings)
-        self.btn_user_close.setStyleSheet("color: rgb(255, 255, 255)")
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btn_user_close.sizePolicy().hasHeightForWidth())
+        self.btn_user_close.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.btn_user_close.setFont(font)
+        self.btn_user_close.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_user_close.setStyleSheet("QPushButton {\n"
+"    text-align: right;\n"
+"    border: 0px solid rgba(62, 63, 70, 0);\n"
+"    image: url(GUI/icons/logout.png);\n"
+"    color: rgb(255, 255, 255)\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background: rgb(70, 65, 100);\n"
+"}")
         self.btn_user_close.setObjectName("btn_user_close")
-        self.verticalLayout_12.addWidget(self.btn_user_close, 0, QtCore.Qt.AlignLeft)
+        self.verticalLayout_12.addWidget(self.btn_user_close)
         self.verticalLayout_9.addWidget(self.more_settings)
         self.app_info = QtWidgets.QWidget(self.menu_bar_settings)
         self.app_info.setObjectName("app_info")
@@ -459,7 +570,10 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Месседжер"))
         self.name_user.setText(_translate("MainWindow", "user name"))
-        self.btn_menu_settings.setText(_translate("MainWindow", "Настройки "))
+        self.btn_create_group.setText(_translate("MainWindow", "Создать группу"))
+        self.btn_account.setText(_translate("MainWindow", "Контакты"))
+        self.btn_call.setText(_translate("MainWindow", "Звонки"))
+        self.btn_menu_settings.setText(_translate("MainWindow", "Настройки"))
         self.btn_user_close.setText(_translate("MainWindow", "Выйти"))
         self.app_text.setText(_translate("MainWindow", "KFU Desktop Messaging"))
         self.app_text_2.setText(_translate("MainWindow", "Версия 0.1 - О программе "))
