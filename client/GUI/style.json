@@ -6,7 +6,7 @@
 			"position": "parent",
 			"shadow":[{
 						"color": "#54, 50, 87",
-						"blurRadius": 10,
+						"blurRadius": 0,
 						"xOffset": 0,
 						"yOffset": 0
 			}]

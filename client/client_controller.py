@@ -5,7 +5,7 @@ from PyQt5.QtGui import QPixmap, QImage, QBrush, QPainter, QWindow
 from Custom_Widgets import loadJsonStyle
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
-from PyQt5.QtWidgets import QMainWindow, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QGraphicsBlurEffect
 from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent, QRect
 from Network.client_sender import Sender
 from client_constant import Constant
@@ -133,6 +133,8 @@ class Controller(QMainWindow):
         self.ui.send_text.installEventFilter(self)
         self.installEventFilter(self)
 
+        self.ui.btn_settings.clicked.connect(self.effects)
+
 
     def init_const(self):
         self.shoise_user = None
@@ -140,6 +142,10 @@ class Controller(QMainWindow):
         self.ui.stackedWidget_sms.setCurrentIndex(1)
         self.menu_bar_settings()
         loadJsonStyle(self, self.ui, jsonFiles={"GUI\style.json"})
+        self.blur_effect = QGraphicsBlurEffect()
+        self.ui.widget_right_main.setGraphicsEffect(self.blur_effect)
+        self.blur_effect.setEnabled(False)
+
 
     @Slot(str)
     def notification_author(self, notif):
@@ -223,6 +229,7 @@ class Controller(QMainWindow):
             if key == Qt.Key_Escape:
                 if self.ui.menu_bar_settings.width() != 0:
                     self.ui.menu_bar_settings.collapseMenu()
+                    self.blur_effect.setEnabled(False)
                 else:
                     self.ui.stackedWidget_sms.setCurrentIndex(1)
                     self.ui.user_label.clear()
@@ -245,6 +252,9 @@ class Controller(QMainWindow):
 
     def put_text_search(self):
         self.ui.search_text.clear()
+
+    def effects(self):
+        self.blur_effect.setEnabled(True)
 
 
     def mousePressEvent(self, event):
@@ -288,9 +298,7 @@ class Controller(QMainWindow):
             pixmap = self.mask_image(imgdata, imgtype)
             self.ui.icon_user.setStyleSheet('')
             self.ui.icon_user.setPixmap(pixmap)
-
-            # icon = open(file_path, mode='rb')
-            # self.sender.send_ico(icon)
+            # self.sender.send_ico(file_path)
 
     def mask_image(self, imgdata, imgtype='jpg', size=64):
 

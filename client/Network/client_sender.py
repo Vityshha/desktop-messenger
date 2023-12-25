@@ -1,3 +1,4 @@
+import os.path
 import socket
 import threading
 import time
@@ -58,14 +59,24 @@ class Sender(QObject):
             except:
                 print('[SEND ERROR] Не авторизовался')
 
-    def send_ico(self, icon):
-        file = icon
-        image_data = file.read(2048)
-
-        while image_data:
-            self.client.send(image_data)
-            image_data = file.read(2048)
+    def send_ico(self, image_path):
+        file = open(image_path, 'rb')
+        file_size = os.path.getsize(image_path)
+        message = file.read()
+        send_lenght = str(file_size).encode(self.FORMAT)
+        send_lenght += b' ' * (self.HEADER - len(send_lenght))
+        self.client.send(send_lenght)
+        self.client.sendall(message)
         file.close()
+
+        # self.client.send(''.encode(self.FORMAT))
+        # self.client.send(str(file_size).encode(self.FORMAT))
+        #
+        # data = file.read()
+        # self.client.sendall(data)
+        # self.client.send(b"<END>")
+        # file.close()
+        # self.client.close()
 
     def listen_server(self):
         while True:
