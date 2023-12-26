@@ -35,6 +35,7 @@ class Sender(QObject):
         self.listen_thread.start()
 
     def send_message(self, msg):
+        self.client.send(b"TEXT")
         message = msg.encode(self.FORMAT)
         msg_lenght = len(message)
         send_lenght = str(msg_lenght).encode(self.FORMAT)
@@ -49,6 +50,7 @@ class Sender(QObject):
 
     def send_authorization(self, msg):
         if msg:
+            self.client.send(b"TEXT")
             message = msg.encode(self.FORMAT)
             msg_lenght = len(message)
             send_lenght = str(msg_lenght).encode(self.FORMAT)
@@ -60,23 +62,22 @@ class Sender(QObject):
                 print('[SEND ERROR] Не авторизовался')
 
     def send_ico(self, image_path):
-        file = open(image_path, 'rb')
-        file_size = os.path.getsize(image_path)
-        message = file.read()
-        send_lenght = str(file_size).encode(self.FORMAT)
-        send_lenght += b' ' * (self.HEADER - len(send_lenght))
-        self.client.send(send_lenght)
-        self.client.sendall(message)
-        file.close()
+        try:
+            with open(image_path, 'rb') as image_file:
+                image_data = image_file.read()
 
-        # self.client.send(''.encode(self.FORMAT))
-        # self.client.send(str(file_size).encode(self.FORMAT))
-        #
-        # data = file.read()
-        # self.client.sendall(data)
-        # self.client.send(b"<END>")
-        # file.close()
-        # self.client.close()
+            self.client.send(b"IMAGE")
+
+            image_length = len(image_data)
+            send_length = str(image_length).encode(self.FORMAT)
+            send_length += b' ' * (self.HEADER - len(send_length))
+            self.client.send(send_length)
+
+            self.client.sendall(image_data)
+
+        except Exception as e:
+            print('[SEND IMAGE ERROR]', str(e))
+            self.notification = 'Ошибка при отправке изображения!'
 
     def listen_server(self):
         while True:

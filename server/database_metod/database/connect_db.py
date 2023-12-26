@@ -91,7 +91,9 @@ class Connect_DB:
         sq.connect(self.database).close()
 
 
-    def load_icon(self, login, icon):
+    def load_icon(self, image_data, addr):
+        with open(f'./database_metod/database/icons/received_image_{addr}.jpg', 'wb') as received_image_file:
+            received_image_file.write(image_data)
         # with sq.connect(self.database) as con:
         #     cur = con.cursor()
         #     path_image_save = f'./icons/{login}'

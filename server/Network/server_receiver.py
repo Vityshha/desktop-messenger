@@ -40,15 +40,34 @@ class Receiver(QObject):
 
         connected = True
         while connected:
+
             try:
-                msg_lenght = conn.recv(self.HEADER).decode(self.FORMAT)
+                msg_type = conn.recv(self.HEADER).decode(self.FORMAT)
+                print(msg_type)
             except:
                 print(f'[CLIETN] Клиент {addr} разорвал подключение')
                 return
-            if msg_lenght:
-                msg_lenght = int(msg_lenght)
-                msg = conn.recv(msg_lenght).decode(self.FORMAT)
-                print(msg)
+
+            if msg_type == "IMAGE":
+                try:
+                    image_length = int(conn.recv(self.HEADER).decode(self.FORMAT))
+                    image_data = conn.recv(image_length)
+                    self.db_method.load_icon(image_data, addr)
+                except:
+                    print(f'[CLIENT] Ошибка при приеме изображения от {addr}')
+
+            elif msg_type == "TEXT":
+                try:
+                    msg_lenght = conn.recv(self.HEADER).decode(self.FORMAT)
+                except:
+                    print(f'[CLIETN] Клиент {addr} разорвал подключение')
+                    return
+                if msg_lenght:
+                    msg_lenght = int(msg_lenght)
+                    msg = conn.recv(msg_lenght).decode(self.FORMAT)
+                else:
+                    return
+
                 if msg[0:6] == '#!info':
                     if msg[7:18] == self.DISCONNECT_MESSAGE:
                         self.activ_disconnect_user(msg[19:])
@@ -138,7 +157,6 @@ class Receiver(QObject):
         self.db_method.select_db(request)
         request = f'UPDATE users SET addres = "{str(addr)}" WHERE login = "{str(user)}";'
         self.db_method.select_db(request)
-
 
     def show_user_sms(self, user=None, conn=None):
         id = user.split("user:")[1].split("user_send:")[0].strip()
