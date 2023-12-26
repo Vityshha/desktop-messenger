@@ -49,13 +49,9 @@ class Receiver(QObject):
                 return
 
             if msg_type == "IMAGE":
-                try:
-                    image_length = int(conn.recv(self.HEADER).decode(self.FORMAT))
-                    image_data = conn.recv(image_length)
-                    self.process_received_image(image_data, addr)
-                except:
-                    print(f'[CLIENT] Ошибка при приеме изображения от {addr}')
-                    return
+                image_length = int(conn.recv(self.HEADER).decode(self.FORMAT))
+                image_data = conn.recv(image_length)
+                self.db_method.load_icon(image_data, addr)
 
             elif msg_type == "TEXT":
                 try:
@@ -158,11 +154,6 @@ class Receiver(QObject):
         self.db_method.select_db(request)
         request = f'UPDATE users SET addres = "{str(addr)}" WHERE login = "{str(user)}";'
         self.db_method.select_db(request)
-
-    def process_received_image(self, image_data, addr):
-        with open(f'received_image_{addr}.jpg', 'wb') as received_image_file:
-            received_image_file.write(image_data)
-
 
     def show_user_sms(self, user=None, conn=None):
         id = user.split("user:")[1].split("user_send:")[0].strip()
