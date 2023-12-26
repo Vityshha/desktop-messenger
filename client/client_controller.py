@@ -302,7 +302,7 @@ class Controller(QMainWindow):
             pixmap = self.mask_image(imgdata, imgtype)
             self.ui.icon_user.setStyleSheet('')
             self.ui.icon_user.setPixmap(pixmap)
-            # self.sender.send_ico(file_path)
+            self.sender.send_ico(file_path)
 
     def mask_image(self, imgdata, imgtype='jpg', size=64):
 
