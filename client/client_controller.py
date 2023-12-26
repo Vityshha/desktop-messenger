@@ -189,17 +189,40 @@ class Controller(QMainWindow):
 
     @Slot(str)
     def add_messages(self, messages):
+        # self.ui.sms_label.setStyleSheet(
+        #     "QLabel {"
+        #     "   border: 2px solid black;"
+        #     "   border-radius: 10px;"  # Установка радиуса для круглой рамки
+        #     "   padding: 8px;"  # Отступ внутри рамки
+        #     "}"
+        # )
         messages = messages[1:-1]
         result = re.findall(r'\((.*?)\)', messages)
         ite = [item.replace("'", "") for item in result]
         ite = [item.split(', ') for item in ite]
         messages = ''
         for itt in ite:
+            print_time = itt[3].split(' ')
+            print_data = print_time[1]
+            print_time = print_time[1][:5]
             if itt[0] != Constant().login:
-                messages += f"<div style='text-align:left;'>{itt[2]}<div style='text-align:right;'>{itt[3]}</div></div>" + '\n'
+                direct = 'left'
             else:
-                messages += f"<div style='text-align:left;'>{itt[2]}<div style='text-align:right;'>{itt[3]}</div></div>" + '\n'
+                direct = 'right'
+            messages += (
+                f"<div style='text-align:{direct};'>"
+                f"<span style='display: inline-block; border: 2px solid red; border-radius: 50%; padding: 5px;'>"
+                f"<span style='font-size: larger;'>{itt[2]}</span>"
+                f"</span>"
+                f" "
+                f"<span style='display: inline-block; border: 2px solid blue; border-radius: 50%; padding: 5px;'>"
+                f"<span style='font-size: 8pt;'>{print_time}</span>"
+                f"</span>"
+                f"</div>\n"
+            )
+
         self.ui.sms_label.setText(messages)
+
 
     def send_message(self):
             msg = str(self.ui.send_text.toPlainText())
