@@ -49,9 +49,12 @@ class Receiver(QObject):
                 return
 
             if msg_type == "IMAGE":
-                image_length = int(conn.recv(self.HEADER).decode(self.FORMAT))
-                image_data = conn.recv(image_length)
-                self.db_method.load_icon(image_data, addr)
+                try:
+                    image_length = int(conn.recv(self.HEADER).decode(self.FORMAT))
+                    image_data = conn.recv(image_length)
+                    self.db_method.load_icon(image_data, addr)
+                except:
+                    print(f'[CLIENT] Ошибка при приеме изображения от {addr}')
 
             elif msg_type == "TEXT":
                 try:
