@@ -145,7 +145,7 @@ class Controller(QMainWindow):
         self.blur_effect = QGraphicsBlurEffect()
         self.ui.widget_right_main.setGraphicsEffect(self.blur_effect)
         self.blur_effect.setEnabled(False)
-
+        self.ui.app_text.setText('<a href="https://github.com/Vityshha/desktop-messenger/tree/main" style="color: white; text-decoration: none;">KFU Desktop Messaging</a>')
 
     @Slot(str)
     def notification_author(self, notif):
