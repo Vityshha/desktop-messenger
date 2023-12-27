@@ -157,6 +157,10 @@ class Receiver(QObject):
         request = f'UPDATE users SET addres = "{str(addr)}" WHERE login = "{str(user)}";'
         self.db_method.select_db(request)
 
+        request = f"SELECT icon FROM users WHERE login = '{user}'"
+        user_icon_path = self.db_method.select_db(request)[0][0]
+        self.send_icon_client(user_icon_path, conn)
+
     def show_user_sms(self, user=None, conn=None):
         id = user.split("user:")[1].split("user_send:")[0].strip()
         id_send = user.split("user_send:")[1].strip()
@@ -178,3 +182,25 @@ class Receiver(QObject):
         time_last_connect = str(datetime.datetime.now())
         request = f"UPDATE users SET time_activ = '{time_last_connect}' WHERE login = '{login}'"
         self.db_method.update_db(request)
+
+
+    def send_icon_client(self, path, conn):
+        try:
+            with open(path, 'rb') as image_file:
+                image_data = image_file.read()
+
+            conn.send(b"IMAGE")
+
+            confirmation = conn.recv(self.HEADER).decode(self.FORMAT)
+            print('Подтверждение от клиента')
+            if confirmation == "OK":
+                image_length = len(image_data)
+                send_length = str(image_length).encode(self.FORMAT)
+                send_length += b' ' * (self.HEADER - len(send_length))
+
+                conn.send(send_length)
+
+                conn.sendall(image_data)
+
+        except Exception as e:
+            print('[SEND IMAGE ERROR]', str(e))

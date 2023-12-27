@@ -1,4 +1,3 @@
-import os.path
 import socket
 import threading
 import time
@@ -13,6 +12,7 @@ class Sender(QObject):
     signal_sears_user_bd = Signal(str)
     signal_add_users = Signal(str)
     signal_db_messages = Signal(str)
+    signal_image = Signal(bytes)
 
     def __init__(self):
         super(Sender, self).__init__()
@@ -81,18 +81,26 @@ class Sender(QObject):
 
     def listen_server(self):
         while True:
+
             try:
-                msg = self.client.recv(2048).decode(self.FORMAT)
-                if not msg:
-                    break
-                self.process_received_message(msg)
-            except Exception as e:
-                print('[LISTEN ERROR]', str(e))
-                break
+                msg_type = self.client.recv(self.HEADER).decode(self.FORMAT)
+            except:
+                print(f'[CLIETN] Сервер разорвал подключение')
+                return
+
+            if msg_type == "IMAGE":
+                try:
+                    self.client.send("OK".encode(self.FORMAT))
+                    image_length = int(self.client.recv(self.HEADER).decode(self.FORMAT))
+                    image_data = self.client.recv(image_length)
+                    self.signal_image.emit(image_data)
+                except:
+                    print(f'[CLIENT] Ошибка при приеме изображения')
+            else:
+                self.process_received_message(msg_type)
 
     #Слушаем сервер
     def process_received_message(self, msg):
-        print(msg)
         if msg == '#!ay':
             self.signal_authorization_status.emit()
         elif msg == '#!an':
@@ -116,3 +124,4 @@ class Sender(QObject):
             self.signal_db_messages.emit(messages)
         else:
             print('[LISTEN ERROR] Проверьте что пришло')
+            print(msg)

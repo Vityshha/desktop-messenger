@@ -6,7 +6,8 @@ from Custom_Widgets import loadJsonStyle
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QGraphicsBlurEffect, QGridLayout, QLabel
-from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent, QRect, QSize
+from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent, QRect, QSize, QByteArray, QBuffer, \
+    QIODevice
 from Network.client_sender import Sender
 from client_constant import Constant
 import re
@@ -128,6 +129,8 @@ class Controller(QMainWindow):
         self.sender.signal_add_users.connect(self.user_add_db)
         self.sender.signal_db_messages.connect(self.add_messages)
 
+        self.sender.signal_image.connect(self.client_image)
+
         self.ui.btn_user_close.clicked.connect(self.user_exit)
 
         self.ui.send_text.installEventFilter(self)
@@ -168,6 +171,19 @@ class Controller(QMainWindow):
     def remove_window(self):
         self.showMinimized()
 
+    def client_image(self, qimage):
+        self.save_image(qimage)
+        file_path = './GUI/icons/ava.jpg'
+        imgdata = open(file_path, 'rb').read()
+        imgtype = file_path[-3:]
+        pixmap = self.mask_image(imgdata, imgtype)
+        self.ui.icon_user.setStyleSheet('')
+        self.ui.icon_user.setPixmap(pixmap)
+
+    def save_image(self, qimage):
+        with open(f'./GUI/icons/ava.jpg', 'wb') as received_image_file:
+            received_image_file.write(qimage)
+
     @Slot(str)
     def user_add(self, user):
         self.books = []
@@ -189,13 +205,6 @@ class Controller(QMainWindow):
 
     @Slot(str)
     def add_messages(self, messages):
-        # self.ui.sms_label.setStyleSheet(
-        #     "QLabel {"
-        #     "   border: 2px solid black;"
-        #     "   border-radius: 10px;"  # Установка радиуса для круглой рамки
-        #     "   padding: 8px;"  # Отступ внутри рамки
-        #     "}"
-        # )
         messages = messages[1:-1]
         result = re.findall(r'\((.*?)\)', messages)
         ite = [item.replace("'", "") for item in result]
