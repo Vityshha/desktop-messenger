@@ -83,7 +83,7 @@ class Sender(QObject):
         while True:
 
             try:
-                msg_type = self.client.recv(self.HEADER).decode(self.FORMAT)
+                msg_type = self.client.recv(2048).decode(self.FORMAT)
             except:
                 print(f'[CLIETN] Сервер разорвал подключение')
                 return
@@ -123,5 +123,5 @@ class Sender(QObject):
             messages = msg[9:]
             self.signal_db_messages.emit(messages)
         else:
-            print('[LISTEN ERROR] Проверьте что пришло')
-            print(msg)
+            return
+

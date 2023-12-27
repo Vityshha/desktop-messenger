@@ -327,10 +327,12 @@ class Controller(QMainWindow):
         self.close()
 
     def load_icon(self):
-        file_path, _ = QFileDialog.getOpenFileName(self, "Выберите изображение", "", "Images (*.png *.xpm *.jpg)")
+        file_path, _ = QFileDialog.getOpenFileName(self, "Выберите изображение", "", "Images (*.jpg)")
         if file_path:
             imgdata = open(file_path, 'rb').read()
             imgtype = file_path[-3:]
+            if imgtype == 'png':
+                return
             pixmap = self.mask_image(imgdata, imgtype)
             self.ui.icon_user.setStyleSheet('')
             self.ui.icon_user.setPixmap(pixmap)

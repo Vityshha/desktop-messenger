@@ -2,6 +2,7 @@ import socket
 import threading
 import time
 import datetime
+import os
 
 from PyQt5.QtCore import pyqtSignal as Signal, QObject
 from server.Network.check_db import CheckThread
@@ -186,8 +187,12 @@ class Receiver(QObject):
 
     def send_icon_client(self, path, conn):
         try:
-            with open(path, 'rb') as image_file:
-                image_data = image_file.read()
+            if os.path.exists(path):
+                with open(path, 'rb') as image_file:
+                    image_data = image_file.read()
+            else:
+                print(f"Файл {path} не существует.")
+                return
 
             conn.send(b"IMAGE")
 
