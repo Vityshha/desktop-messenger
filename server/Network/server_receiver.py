@@ -43,7 +43,6 @@ class Receiver(QObject):
 
             try:
                 msg_type = conn.recv(self.HEADER).decode(self.FORMAT)
-                print(msg_type)
             except:
                 print(f'[CLIETN] Клиент {addr} разорвал подключение')
                 return

@@ -92,20 +92,18 @@ class Connect_DB:
 
 
     def load_icon(self, image_data, addr):
-        with open(f'./database_metod/database/icons/received_image_{addr}.jpg', 'wb') as received_image_file:
+        request = f'SELECT login FROM users WHERE addres = "{addr}"'
+        user = self.select_db(request)[0][0]
+
+        with open(f'./database_metod/database/icons/{user}.jpg', 'wb') as received_image_file:
             received_image_file.write(image_data)
-        # with sq.connect(self.database) as con:
-        #     cur = con.cursor()
-        #     path_image_save = f'./icons/{login}'
-        #     img = Image.open(icon)
-        #     img.save(f"{path_image_save}.png")
-        #
-        #     request = f"UPDATE users SET icon = {str(path_image_save)} WHERE login = '{login}';"
-        #     cur.execute(request)
-        #     con.commit()
-        pass
 
-
+        with sq.connect(self.database) as con:
+            cur = con.cursor()
+            path_image_save = f'./database_metod/database/icons/{user}.jpg'
+            request = f"UPDATE users SET icon = '{str(path_image_save)}' WHERE login = '{str(user)}';"
+            cur.execute(request)
+            con.commit()
 
 
 
