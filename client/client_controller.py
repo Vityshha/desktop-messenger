@@ -131,13 +131,10 @@ class Controller(QMainWindow):
 
         self.sender.signal_image.connect(self.client_image)
 
-        self.ui.btn_user_close.clicked.connect(self.user_exit)
-
         self.ui.send_text.installEventFilter(self)
         self.installEventFilter(self)
 
         self.ui.btn_settings.clicked.connect(self.effects)
-
 
     def init_const(self):
         self.shoise_user = None
@@ -298,6 +295,10 @@ class Controller(QMainWindow):
             if self.ui.menu_bar_settings.width() != 0:
                 self.ui.menu_bar_settings.collapseMenu()
                 self.blur_effect.setEnabled(False)
+        if event.button() == Qt.LeftButton and self.ui.menu_bar_settings.geometry().contains(event.pos()):
+            self.user_exit()
+        return super().mousePressEvent(event)
+
 
     def mouseMoveEvent(self, event):
         try:

@@ -187,6 +187,8 @@ class Receiver(QObject):
 
     def send_icon_client(self, path, conn):
         try:
+            if path is None:
+                return
             if os.path.exists(path):
                 with open(path, 'rb') as image_file:
                     image_data = image_file.read()

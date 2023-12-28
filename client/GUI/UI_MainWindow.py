@@ -164,203 +164,161 @@ class Ui_MainWindow(object):
         self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.more_settings)
         self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_12.setObjectName("verticalLayout_12")
-        self.widget_2 = QtWidgets.QWidget(self.more_settings)
-        self.widget_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.widget_2.setMouseTracking(True)
-        self.widget_2.setStyleSheet("QWidget:hover  {\n"
+        self.wd_create_group = QtWidgets.QWidget(self.more_settings)
+        self.wd_create_group.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.wd_create_group.setMouseTracking(True)
+        self.wd_create_group.setStyleSheet("QWidget:hover  {\n"
 "    background: rgb(70, 65, 100);\n"
 "}\n"
 "\n"
 "")
-        self.widget_2.setObjectName("widget_2")
-        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.widget_2)
+        self.wd_create_group.setObjectName("wd_create_group")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.wd_create_group)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.label_2 = QtWidgets.QLabel(self.widget_2)
+        self.label_2 = QtWidgets.QLabel(self.wd_create_group)
         self.label_2.setMinimumSize(QtCore.QSize(50, 0))
         self.label_2.setStyleSheet("image: url(GUI/icons/group.png);\n"
+"border : 0;\n"
+"background: transparent;\n"
 "")
         self.label_2.setText("")
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_6.addWidget(self.label_2)
-        self.btn_create_group = QtWidgets.QPushButton(self.widget_2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_create_group.sizePolicy().hasHeightForWidth())
-        self.btn_create_group.setSizePolicy(sizePolicy)
+        self.label_12 = QtWidgets.QLabel(self.wd_create_group)
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.btn_create_group.setFont(font)
-        self.btn_create_group.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_create_group.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.btn_create_group.setStyleSheet("QPushButton {\n"
-"    text-align: right;\n"
-"    border: 0px solid rgba(62, 63, 70, 0);\n"
-"    color: rgb(255, 255, 255)\n"
-"}")
-        self.btn_create_group.setIconSize(QtCore.QSize(40, 20))
-        self.btn_create_group.setObjectName("btn_create_group")
-        self.horizontalLayout_6.addWidget(self.btn_create_group)
+        self.label_12.setFont(font)
+        self.label_12.setStyleSheet(" border : 0;\n"
+"    background: transparent;\n"
+"    color: rgb(255, 255, 255)")
+        self.label_12.setObjectName("label_12")
+        self.horizontalLayout_6.addWidget(self.label_12)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_6.addItem(spacerItem1)
-        self.verticalLayout_12.addWidget(self.widget_2)
-        self.widget_3 = QtWidgets.QWidget(self.more_settings)
-        self.widget_3.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.widget_3.setMouseTracking(True)
-        self.widget_3.setStyleSheet("QWidget:hover{\n"
+        self.verticalLayout_12.addWidget(self.wd_create_group)
+        self.wd_account = QtWidgets.QWidget(self.more_settings)
+        self.wd_account.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.wd_account.setMouseTracking(True)
+        self.wd_account.setStyleSheet("QWidget:hover{\n"
 "    background: rgb(70, 65, 100);\n"
 "}")
-        self.widget_3.setObjectName("widget_3")
-        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.widget_3)
+        self.wd_account.setObjectName("wd_account")
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.wd_account)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        self.label_3 = QtWidgets.QLabel(self.widget_3)
+        self.label_3 = QtWidgets.QLabel(self.wd_account)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy)
         self.label_3.setMinimumSize(QtCore.QSize(50, 0))
-        self.label_3.setStyleSheet("image: url(GUI/icons/account.png);")
+        self.label_3.setStyleSheet("image: url(GUI/icons/account.png);\n"
+"border : 0;\n"
+"background: transparent;")
         self.label_3.setText("")
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_7.addWidget(self.label_3)
-        self.btn_account = QtWidgets.QPushButton(self.widget_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_account.sizePolicy().hasHeightForWidth())
-        self.btn_account.setSizePolicy(sizePolicy)
+        self.label_11 = QtWidgets.QLabel(self.wd_account)
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.btn_account.setFont(font)
-        self.btn_account.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_account.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.btn_account.setStyleSheet("QPushButton {\n"
-"    text-align: right;\n"
-"    border: 0px solid rgba(62, 63, 70, 0);\n"
-"    color: rgb(255, 255, 255)\n"
-"}\n"
-"")
-        self.btn_account.setIconSize(QtCore.QSize(40, 20))
-        self.btn_account.setObjectName("btn_account")
-        self.horizontalLayout_7.addWidget(self.btn_account)
+        self.label_11.setFont(font)
+        self.label_11.setStyleSheet(" border : 0;\n"
+"    background: transparent;\n"
+"    color: rgb(255, 255, 255)")
+        self.label_11.setObjectName("label_11")
+        self.horizontalLayout_7.addWidget(self.label_11)
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_7.addItem(spacerItem2)
-        self.verticalLayout_12.addWidget(self.widget_3)
-        self.widget_4 = QtWidgets.QWidget(self.more_settings)
-        self.widget_4.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.widget_4.setMouseTracking(True)
-        self.widget_4.setStyleSheet("QWidget:hover{\n"
+        self.verticalLayout_12.addWidget(self.wd_account)
+        self.wd_call = QtWidgets.QWidget(self.more_settings)
+        self.wd_call.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.wd_call.setMouseTracking(True)
+        self.wd_call.setStyleSheet("QWidget:hover{\n"
 "    background: rgb(70, 65, 100);\n"
 "}")
-        self.widget_4.setObjectName("widget_4")
-        self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.widget_4)
+        self.wd_call.setObjectName("wd_call")
+        self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.wd_call)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        self.label_4 = QtWidgets.QLabel(self.widget_4)
+        self.label_4 = QtWidgets.QLabel(self.wd_call)
         self.label_4.setMinimumSize(QtCore.QSize(50, 0))
-        self.label_4.setStyleSheet("image: url(GUI/icons/call.png);")
+        self.label_4.setStyleSheet("image: url(GUI/icons/call.png);\n"
+"border : 0;\n"
+"background: transparent;")
         self.label_4.setText("")
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_8.addWidget(self.label_4)
-        self.btn_call = QtWidgets.QPushButton(self.widget_4)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_call.sizePolicy().hasHeightForWidth())
-        self.btn_call.setSizePolicy(sizePolicy)
+        self.label_9 = QtWidgets.QLabel(self.wd_call)
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.btn_call.setFont(font)
-        self.btn_call.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_call.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.btn_call.setStyleSheet("QPushButton {\n"
-"    text-align: right;\n"
-"    border: 0px solid rgba(62, 63, 70, 0);\n"
-"    color: rgb(255, 255, 255)\n"
-"}\n"
-"")
-        self.btn_call.setIconSize(QtCore.QSize(40, 20))
-        self.btn_call.setObjectName("btn_call")
-        self.horizontalLayout_8.addWidget(self.btn_call)
+        self.label_9.setFont(font)
+        self.label_9.setStyleSheet(" border : 0;\n"
+"    background: transparent;\n"
+"    color: rgb(255, 255, 255)")
+        self.label_9.setObjectName("label_9")
+        self.horizontalLayout_8.addWidget(self.label_9)
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_8.addItem(spacerItem3)
-        self.verticalLayout_12.addWidget(self.widget_4)
-        self.widget_5 = QtWidgets.QWidget(self.more_settings)
-        self.widget_5.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.widget_5.setMouseTracking(True)
-        self.widget_5.setStyleSheet("QWidget:hover{\n"
+        self.verticalLayout_12.addWidget(self.wd_call)
+        self.wd_settings = QtWidgets.QWidget(self.more_settings)
+        self.wd_settings.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.wd_settings.setMouseTracking(True)
+        self.wd_settings.setStyleSheet("QWidget:hover{\n"
 "    background: rgb(70, 65, 100);\n"
 "}")
-        self.widget_5.setObjectName("widget_5")
-        self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.widget_5)
+        self.wd_settings.setObjectName("wd_settings")
+        self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.wd_settings)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.label_5 = QtWidgets.QLabel(self.widget_5)
+        self.label_5 = QtWidgets.QLabel(self.wd_settings)
         self.label_5.setMinimumSize(QtCore.QSize(50, 0))
-        self.label_5.setStyleSheet("image: url(GUI/icons/settings.png);")
+        self.label_5.setStyleSheet("image: url(GUI/icons/settings.png);\n"
+"border : 0;\n"
+"background: transparent;")
         self.label_5.setText("")
         self.label_5.setObjectName("label_5")
         self.horizontalLayout_9.addWidget(self.label_5)
-        self.btn_menu_settings = QtWidgets.QPushButton(self.widget_5)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_menu_settings.sizePolicy().hasHeightForWidth())
-        self.btn_menu_settings.setSizePolicy(sizePolicy)
+        self.label_8 = QtWidgets.QLabel(self.wd_settings)
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.btn_menu_settings.setFont(font)
-        self.btn_menu_settings.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_menu_settings.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.btn_menu_settings.setStyleSheet("QPushButton {\n"
-"    text-align: right;\n"
-"    border: 0px solid rgba(62, 63, 70, 0);\n"
-"    color: rgb(255, 255, 255)\n"
-"}\n"
-"")
-        self.btn_menu_settings.setIconSize(QtCore.QSize(40, 20))
-        self.btn_menu_settings.setObjectName("btn_menu_settings")
-        self.horizontalLayout_9.addWidget(self.btn_menu_settings)
+        self.label_8.setFont(font)
+        self.label_8.setStyleSheet(" border : 0;\n"
+"    background: transparent;\n"
+"    color: rgb(255, 255, 255)")
+        self.label_8.setObjectName("label_8")
+        self.horizontalLayout_9.addWidget(self.label_8)
         spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_9.addItem(spacerItem4)
-        self.verticalLayout_12.addWidget(self.widget_5)
+        self.verticalLayout_12.addWidget(self.wd_settings)
         spacerItem5 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_12.addItem(spacerItem5)
-        self.widget_6 = QtWidgets.QWidget(self.more_settings)
-        self.widget_6.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.widget_6.setMouseTracking(True)
-        self.widget_6.setStyleSheet("QWidget:hover{\n"
+        self.wd_close = QtWidgets.QWidget(self.more_settings)
+        self.wd_close.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.wd_close.setMouseTracking(True)
+        self.wd_close.setStyleSheet("QWidget:hover{\n"
 "    background: rgb(70, 65, 100);\n"
 "}")
-        self.widget_6.setObjectName("widget_6")
-        self.horizontalLayout_10 = QtWidgets.QHBoxLayout(self.widget_6)
+        self.wd_close.setObjectName("wd_close")
+        self.horizontalLayout_10 = QtWidgets.QHBoxLayout(self.wd_close)
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
-        self.label_6 = QtWidgets.QLabel(self.widget_6)
+        self.label_6 = QtWidgets.QLabel(self.wd_close)
         self.label_6.setMinimumSize(QtCore.QSize(50, 0))
-        self.label_6.setStyleSheet("image: url(GUI/icons/logout.png);")
+        self.label_6.setStyleSheet("image: url(GUI/icons/logout.png);\n"
+"border : 0;\n"
+"background: transparent;")
         self.label_6.setText("")
         self.label_6.setObjectName("label_6")
         self.horizontalLayout_10.addWidget(self.label_6)
-        self.btn_user_close = QtWidgets.QPushButton(self.widget_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_user_close.sizePolicy().hasHeightForWidth())
-        self.btn_user_close.setSizePolicy(sizePolicy)
+        self.label_7 = QtWidgets.QLabel(self.wd_close)
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.btn_user_close.setFont(font)
-        self.btn_user_close.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_user_close.setStyleSheet("QPushButton {\n"
-"    text-align: right;\n"
-"    border: 0px solid rgba(62, 63, 70, 0);\n"
-"    color: rgb(255, 255, 255)\n"
-"}\n"
-"")
-        self.btn_user_close.setObjectName("btn_user_close")
-        self.horizontalLayout_10.addWidget(self.btn_user_close)
+        self.label_7.setFont(font)
+        self.label_7.setStyleSheet(" border : 0;\n"
+"    background: transparent;\n"
+"    color: rgb(255, 255, 255)")
+        self.label_7.setObjectName("label_7")
+        self.horizontalLayout_10.addWidget(self.label_7)
         spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_10.addItem(spacerItem6)
-        self.verticalLayout_12.addWidget(self.widget_6)
+        self.verticalLayout_12.addWidget(self.wd_close)
         self.verticalLayout_9.addWidget(self.more_settings)
         self.app_info = QtWidgets.QWidget(self.menu_bar_settings)
         self.app_info.setObjectName("app_info")
@@ -648,11 +606,11 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Месседжер"))
         self.name_user.setText(_translate("MainWindow", "user name"))
-        self.btn_create_group.setText(_translate("MainWindow", "Создать группу     "))
-        self.btn_account.setText(_translate("MainWindow", "Контакты     "))
-        self.btn_call.setText(_translate("MainWindow", "Звонки     "))
-        self.btn_menu_settings.setText(_translate("MainWindow", "Настройки     "))
-        self.btn_user_close.setText(_translate("MainWindow", "Выйти     "))
+        self.label_12.setText(_translate("MainWindow", "Создать группу     "))
+        self.label_11.setText(_translate("MainWindow", "Контакты     "))
+        self.label_9.setText(_translate("MainWindow", "Звонки     "))
+        self.label_8.setText(_translate("MainWindow", "Настройки     "))
+        self.label_7.setText(_translate("MainWindow", "Выйти     "))
         self.app_text.setText(_translate("MainWindow", "KFU Desktop Messaging"))
         self.app_text_2.setText(_translate("MainWindow", "Версия 0.1 - О программе "))
         self.search_text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

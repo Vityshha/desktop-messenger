@@ -309,7 +309,7 @@ border-radius: 40px;</string>
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QWidget" name="widget_2" native="true">
+                 <widget class="QWidget" name="wd_create_group" native="true">
                   <property name="cursor">
                    <cursorShape>PointingHandCursor</cursorShape>
                   </property>
@@ -334,6 +334,8 @@ border-radius: 40px;</string>
                      </property>
                      <property name="styleSheet">
                       <string notr="true">image: url(GUI/icons/group.png);
+border : 0;
+background: transparent;
 </string>
                      </property>
                      <property name="text">
@@ -342,39 +344,19 @@ border-radius: 40px;</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="btn_create_group">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
+                    <widget class="QLabel" name="label_12">
                      <property name="font">
                       <font>
                        <pointsize>12</pointsize>
                       </font>
                      </property>
-                     <property name="cursor">
-                      <cursorShape>PointingHandCursor</cursorShape>
-                     </property>
-                     <property name="layoutDirection">
-                      <enum>Qt::LeftToRight</enum>
-                     </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-	text-align: right;
-    border: 0px solid rgba(62, 63, 70, 0);
-	color: rgb(255, 255, 255)
-}</string>
+                      <string notr="true"> border : 0;
+	background: transparent;
+	color: rgb(255, 255, 255)</string>
                      </property>
                      <property name="text">
                       <string>Создать группу     </string>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
                      </property>
                     </widget>
                    </item>
@@ -395,7 +377,7 @@ border-radius: 40px;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QWidget" name="widget_3" native="true">
+                 <widget class="QWidget" name="wd_account" native="true">
                   <property name="cursor">
                    <cursorShape>PointingHandCursor</cursorShape>
                   </property>
@@ -423,7 +405,9 @@ border-radius: 40px;</string>
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">image: url(GUI/icons/account.png);</string>
+                      <string notr="true">image: url(GUI/icons/account.png);
+border : 0;
+background: transparent;</string>
                      </property>
                      <property name="text">
                       <string/>
@@ -431,40 +415,19 @@ border-radius: 40px;</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="btn_account">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
+                    <widget class="QLabel" name="label_11">
                      <property name="font">
                       <font>
                        <pointsize>12</pointsize>
                       </font>
                      </property>
-                     <property name="cursor">
-                      <cursorShape>PointingHandCursor</cursorShape>
-                     </property>
-                     <property name="layoutDirection">
-                      <enum>Qt::LeftToRight</enum>
-                     </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-	text-align: right;
-    border: 0px solid rgba(62, 63, 70, 0);
-	color: rgb(255, 255, 255)
-}
-</string>
+                      <string notr="true"> border : 0;
+	background: transparent;
+	color: rgb(255, 255, 255)</string>
                      </property>
                      <property name="text">
                       <string>Контакты     </string>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
                      </property>
                     </widget>
                    </item>
@@ -485,7 +448,7 @@ border-radius: 40px;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QWidget" name="widget_4" native="true">
+                 <widget class="QWidget" name="wd_call" native="true">
                   <property name="cursor">
                    <cursorShape>PointingHandCursor</cursorShape>
                   </property>
@@ -507,7 +470,9 @@ border-radius: 40px;</string>
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">image: url(GUI/icons/call.png);</string>
+                      <string notr="true">image: url(GUI/icons/call.png);
+border : 0;
+background: transparent;</string>
                      </property>
                      <property name="text">
                       <string/>
@@ -515,40 +480,19 @@ border-radius: 40px;</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="btn_call">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
+                    <widget class="QLabel" name="label_9">
                      <property name="font">
                       <font>
                        <pointsize>12</pointsize>
                       </font>
                      </property>
-                     <property name="cursor">
-                      <cursorShape>PointingHandCursor</cursorShape>
-                     </property>
-                     <property name="layoutDirection">
-                      <enum>Qt::LeftToRight</enum>
-                     </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-	text-align: right;
-    border: 0px solid rgba(62, 63, 70, 0);
-	color: rgb(255, 255, 255)
-}
-</string>
+                      <string notr="true"> border : 0;
+	background: transparent;
+	color: rgb(255, 255, 255)</string>
                      </property>
                      <property name="text">
                       <string>Звонки     </string>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
                      </property>
                     </widget>
                    </item>
@@ -569,7 +513,7 @@ border-radius: 40px;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QWidget" name="widget_5" native="true">
+                 <widget class="QWidget" name="wd_settings" native="true">
                   <property name="cursor">
                    <cursorShape>PointingHandCursor</cursorShape>
                   </property>
@@ -591,7 +535,9 @@ border-radius: 40px;</string>
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">image: url(GUI/icons/settings.png);</string>
+                      <string notr="true">image: url(GUI/icons/settings.png);
+border : 0;
+background: transparent;</string>
                      </property>
                      <property name="text">
                       <string/>
@@ -599,40 +545,19 @@ border-radius: 40px;</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="btn_menu_settings">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
+                    <widget class="QLabel" name="label_8">
                      <property name="font">
                       <font>
                        <pointsize>12</pointsize>
                       </font>
                      </property>
-                     <property name="cursor">
-                      <cursorShape>PointingHandCursor</cursorShape>
-                     </property>
-                     <property name="layoutDirection">
-                      <enum>Qt::LeftToRight</enum>
-                     </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-	text-align: right;
-    border: 0px solid rgba(62, 63, 70, 0);
-	color: rgb(255, 255, 255)
-}
-</string>
+                      <string notr="true"> border : 0;
+	background: transparent;
+	color: rgb(255, 255, 255)</string>
                      </property>
                      <property name="text">
                       <string>Настройки     </string>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>40</width>
-                       <height>20</height>
-                      </size>
                      </property>
                     </widget>
                    </item>
@@ -666,7 +591,7 @@ border-radius: 40px;</string>
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QWidget" name="widget_6" native="true">
+                 <widget class="QWidget" name="wd_close" native="true">
                   <property name="cursor">
                    <cursorShape>PointingHandCursor</cursorShape>
                   </property>
@@ -688,7 +613,9 @@ border-radius: 40px;</string>
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">image: url(GUI/icons/logout.png);</string>
+                      <string notr="true">image: url(GUI/icons/logout.png);
+border : 0;
+background: transparent;</string>
                      </property>
                      <property name="text">
                       <string/>
@@ -696,28 +623,16 @@ border-radius: 40px;</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="btn_user_close">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
+                    <widget class="QLabel" name="label_7">
                      <property name="font">
                       <font>
                        <pointsize>12</pointsize>
                       </font>
                      </property>
-                     <property name="cursor">
-                      <cursorShape>PointingHandCursor</cursorShape>
-                     </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-	text-align: right;
-    border: 0px solid rgba(62, 63, 70, 0);
-	color: rgb(255, 255, 255)
-}
-</string>
+                      <string notr="true"> border : 0;
+	background: transparent;
+	color: rgb(255, 255, 255)</string>
                      </property>
                      <property name="text">
                       <string>Выйти     </string>
