@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QPoint, Qt
+from PyQt5.QtCore import QPoint, Qt, QEvent
 from PyQt5.QtWidgets import QMainWindow
 from GUI.UI_Authorization import Ui_Authorization
 from PyQt5.QtCore import Qt, pyqtSignal as Signal
@@ -19,6 +19,9 @@ class Authorization(QMainWindow):
         self.base_line_edit = [self.ui_authorization.login, self.ui_authorization.password]
 
         self.init_connect()
+        self.installEventFilter(self)
+        self.ui_authorization.login.installEventFilter(self)
+        self.ui_authorization.password.installEventFilter(self)
 
 
     def init_connect(self):
@@ -48,6 +51,23 @@ class Authorization(QMainWindow):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.oldPosition = None
+
+    def eventFilter(self, obj, event):
+        if obj in [self.ui_authorization.login, self.ui_authorization.password] and event.type() == QEvent.KeyPress:
+            if event.key() in [Qt.Key_Return, Qt.Key_Enter] and not event.modifiers():
+                if self.ui_authorization.login.toPlainText() == '':
+                    self.ui_authorization.notif_label.setText('Введите логин!')
+                else:
+                    if obj is self.ui_authorization.login:
+                        self.ui_authorization.password.setFocus()
+                        self.ui_authorization.notif_label.setText('')
+                    elif self.ui_authorization.password.toPlainText() == '':
+                        self.ui_authorization.notif_label.setText('Введите пароль!')
+                    else:
+                        self.auth()
+
+                return True
+        return super().eventFilter(obj, event)
 
     def close_app(self):
         message = '!DISCONNECT'

@@ -295,8 +295,9 @@ class Controller(QMainWindow):
             if self.ui.menu_bar_settings.width() != 0:
                 self.ui.menu_bar_settings.collapseMenu()
                 self.blur_effect.setEnabled(False)
-        if event.button() == Qt.LeftButton and self.ui.menu_bar_settings.geometry().contains(event.pos()):
-            self.user_exit()
+        if event.button() == Qt.LeftButton and self.ui.wd_close.geometry().contains(event.pos()):
+            # self.user_exit()
+            print('exit_user')
         return super().mousePressEvent(event)
 
 

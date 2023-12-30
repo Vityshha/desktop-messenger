@@ -133,6 +133,8 @@ class Receiver(QObject):
             conn.send(send_client_text.encode(self.FORMAT))
 
     def messages_to_db(self, msg=None, conn=None):
+        #Вот тут можно смотреть в сети он или нет и сразу отправлтяь уведомления об этом.
+        #Если не в сети, то просто в бд и потом при входе говорить что есть новые смс
         id = msg.split("user:")[1].split("to:")[0].strip()
         id_send = msg.split("to:")[1].split("#!msg:")[0].strip()
         msg = msg.split("#!msg:")[1].strip()
@@ -171,7 +173,7 @@ class Receiver(QObject):
             msg_full = '#!msg_u: ' + str(msg)
             conn.send(msg_full.encode(self.FORMAT))
 
-            request = f'UPDATE messages SET read = 1 WHERE (id = "{str(id)}" AND id_send = "{str(id_send)}");'
+            request = f'UPDATE messages SET read = 1 WHERE id_send = "{str(id)}";'
             self.db_method.select_db(request)
         except:
             print(f'[BD ERROR] Ошибка поиска сообщений в БД')
