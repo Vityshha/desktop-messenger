@@ -152,7 +152,6 @@ class Receiver(QObject):
         if result_string == '':
             return
         msg = 'user: ' + result_string
-        time.sleep(0.5)
         conn.send(msg.encode(self.FORMAT))
 
         request = f'UPDATE users SET activ = 1 WHERE login = "{str(user)}";'
@@ -167,16 +166,24 @@ class Receiver(QObject):
     def show_user_sms(self, user=None, conn=None):
         id = user.split("user:")[1].split("user_send:")[0].strip()
         id_send = user.split("user_send:")[1].strip()
-        request = f"SELECT id, id_send, message, time_sms, read  FROM messages WHERE ((id = '{str(id)}' AND id_send = '{str(id_send)}') OR (id = '{str(id_send)}' AND id_send = '{str(id)}'))"
-        try:
-            msg = self.db_method.select_db(request)
-            msg_full = '#!msg_u: ' + str(msg)
+        request = f"SELECT id, id_send, message, time_sms, read  FROM messages WHERE ((id = '{str(id)}' AND id_send = '{str(id_send)}') OR (id = '{str(id_send)}' AND id_send = '{str(id)}'));"
+        # try:
+        msg = self.db_method.select_db(request)
+        msg_full = '#!msg_u: ' + str(msg)
+        conn.send(msg_full.encode(self.FORMAT))
+
+        confirmation = conn.recv(self.HEADER).decode(self.FORMAT)
+        print('Подтверждение от клиента')
+        if confirmation == "OK":
+            request = f"SELECT activ, time_activ FROM users WHERE login = '{str(id_send)}';"
+            activ = self.db_method.select_db(request)
+            msg_full = '#!msg_a: ' + str(activ)
             conn.send(msg_full.encode(self.FORMAT))
 
-            request = f'UPDATE messages SET read = 1 WHERE id_send = "{str(id)}";'
-            self.db_method.select_db(request)
-        except:
-            print(f'[BD ERROR] Ошибка поиска сообщений в БД')
+        request = f'UPDATE messages SET read = 1 WHERE id_send = "{str(id)}";'
+        self.db_method.select_db(request)
+        # except:
+        #     print(f'[BD ERROR] Ошибка поиска сообщений в БД')
 
     def activ_disconnect_user(self, login):
         request = f"UPDATE users SET activ = 0 WHERE login = '{login}'"

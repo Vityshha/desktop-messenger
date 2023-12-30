@@ -1,4 +1,5 @@
 import sys
+import datetime
 
 from PyQt5.QtGui import QPixmap, QImage, QBrush, QPainter, QWindow, QIcon
 
@@ -128,6 +129,7 @@ class Controller(QMainWindow):
 
         self.sender.signal_add_users.connect(self.user_add_db)
         self.sender.signal_db_messages.connect(self.add_messages)
+        self.sender.signal_activ.connect(self.show_activ_user)
 
         self.sender.signal_image.connect(self.client_image)
 
@@ -270,14 +272,27 @@ class Controller(QMainWindow):
                 return True
         return super().eventFilter(obj, event)
 
-
     def user_choise(self):
-        self.ui.stackedWidget_sms.setCurrentIndex(0)
-        self.shoise_user = self.ui.list_users.currentItem().text()
-        self.ui.user_label.setText(self.shoise_user)
-        msg = 'select: ' + 'user: ' + Constant().login + ' user_send: ' + self.shoise_user
+        msg = 'select: ' + 'user: ' + Constant().login + ' user_send: ' + self.ui.list_users.currentItem().text()
         self.signal_send_message.emit(msg)
 
+    @Slot(str)
+    def show_activ_user(self, activ):
+        time = str(datetime.datetime.now())
+        if int(activ[2:3]) == 0:
+            print(activ)
+            if time[:11] == activ[6:17]:
+                status = ' - Был в сети ' + activ[11:22]
+            else:
+                status = ' - Был в сети ' + activ[6:22]
+        elif int(activ[2:3]) == 1:
+            status = ' - В сети'
+        else:
+            status = 'Error'
+
+        self.ui.stackedWidget_sms.setCurrentIndex(0)
+        self.shoise_user = self.ui.list_users.currentItem().text()
+        self.ui.user_label.setText(self.shoise_user + status)
 
     def put_text_search(self):
         self.ui.search_text.clear()
@@ -329,6 +344,8 @@ class Controller(QMainWindow):
         self.close()
 
     def load_icon(self):
+        if self.ui.menu_bar_settings.width() == 0:
+            return
         file_path, _ = QFileDialog.getOpenFileName(self, "Выберите изображение", "", "Images (*.jpg)")
         if file_path:
             imgdata = open(file_path, 'rb').read()

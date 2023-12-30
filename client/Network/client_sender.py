@@ -13,6 +13,7 @@ class Sender(QObject):
     signal_add_users = Signal(str)
     signal_db_messages = Signal(str)
     signal_image = Signal(bytes)
+    signal_activ = Signal(str)
 
     def __init__(self):
         super(Sender, self).__init__()
@@ -123,6 +124,10 @@ class Sender(QObject):
         elif msg[:7] == '#!msg_u':
             messages = msg[9:]
             self.signal_db_messages.emit(messages)
+            self.client.send("OK".encode(self.FORMAT))
+        elif msg[:7] == '#!msg_a':
+            activ = msg[9:]
+            self.signal_activ.emit(activ)
         else:
             return
 
