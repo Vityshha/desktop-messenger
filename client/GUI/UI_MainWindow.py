@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(894, 614)
+        MainWindow.resize(1096, 672)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -450,8 +450,8 @@ class Ui_MainWindow(object):
         self.widget_user.setStyleSheet("background-color: rgb(54, 50, 87);")
         self.widget_user.setObjectName("widget_user")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.widget_user)
-        self.verticalLayout_5.setContentsMargins(-1, -1, 0, 16)
-        self.verticalLayout_5.setSpacing(0)
+        self.verticalLayout_5.setContentsMargins(-1, 5, 0, 5)
+        self.verticalLayout_5.setSpacing(3)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.user_label = QtWidgets.QLabel(self.widget_user)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
@@ -459,11 +459,31 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.user_label.sizePolicy().hasHeightForWidth())
         self.user_label.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.user_label.setFont(font)
         self.user_label.setStyleSheet("color: rgb(255, 255, 255);")
         self.user_label.setText("")
         self.user_label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.user_label.setObjectName("user_label")
         self.verticalLayout_5.addWidget(self.user_label)
+        self.user_status = QtWidgets.QLabel(self.widget_user)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.user_status.sizePolicy().hasHeightForWidth())
+        self.user_status.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setBold(False)
+        font.setWeight(50)
+        self.user_status.setFont(font)
+        self.user_status.setStyleSheet("color: rgb(95, 85, 100);\n"
+"")
+        self.user_status.setText("")
+        self.user_status.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.user_status.setObjectName("user_status")
+        self.verticalLayout_5.addWidget(self.user_status)
         self.verticalLayout_4.addWidget(self.widget_user)
         self.stackedWidget_sms = QtWidgets.QStackedWidget(self.widget_right_main)
         self.stackedWidget_sms.setObjectName("stackedWidget_sms")
@@ -512,7 +532,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 318, 502))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 409, 576))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout_5.setContentsMargins(10, 0, 10, 0)
@@ -616,14 +636,14 @@ class Ui_MainWindow(object):
         self.search_text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Segoe UI\'; font-size:9pt;\"><br /></p></body></html>"))
         self.search_text.setPlaceholderText(_translate("MainWindow", "Поиск"))
         self.label.setText(_translate("MainWindow", "Выберите, кому хотели бы написать"))
         self.send_text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Segoe UI\'; font-size:9pt;\"><br /></p></body></html>"))
         self.send_text.setPlaceholderText(_translate("MainWindow", "Введите сообщение..."))
         self.btn_send.setShortcut(_translate("MainWindow", "Return"))

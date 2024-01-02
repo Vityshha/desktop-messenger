@@ -218,7 +218,7 @@ class Controller(QMainWindow):
             else:
                 direct = 'right'
             messages += (
-                f"<div style='text-align:{direct};'>"
+                f"\n<div style='text-align:{direct};'>"
                 f"<span style='display: inline-block; border: 2px solid red; border-radius: 50%; padding: 5px;'>"
                 f"<span style='font-size: larger;'>{itt[2]}</span>"
                 f"</span>"
@@ -226,7 +226,7 @@ class Controller(QMainWindow):
                 f"<span style='display: inline-block; border: 2px solid blue; border-radius: 50%; padding: 5px;'>"
                 f"<span style='font-size: 8pt;'>{print_time}</span>"
                 f"</span>"
-                f"</div>\n"
+                f"</div>"
             )
 
         self.ui.sms_label.setText(messages)
@@ -243,7 +243,18 @@ class Controller(QMainWindow):
             else:
                 message = f'user: {Constant().login} ' + 'to: ' + user_send + ' #!msg: ' + msg
                 self.signal_send_message.emit(message)
-                msg = f"<div style='text-align:right;'>{msg}</div>" + '\n'
+                print_time = str(datetime.datetime.now())[11:16]
+                msg = (
+                f"\n<div style='text-align:right;'>"
+                f"<span style='display: inline-block; border: 2px solid red; border-radius: 50%; padding: 5px;'>"
+                f"<span style='font-size: larger;'>{msg}</span>"
+                f"</span>"
+                f" "
+                f"<span style='display: inline-block; border: 2px solid blue; border-radius: 50%; padding: 5px;'>"
+                f"<span style='font-size: 8pt;'>{print_time}</span>"
+                f"</span>"
+                f"</div>"
+            )
                 messages = self.ui.sms_label.text()
                 messages += msg
                 self.ui.sms_label.setText(messages)
@@ -280,19 +291,24 @@ class Controller(QMainWindow):
     def show_activ_user(self, activ):
         time = str(datetime.datetime.now())
         if int(activ[2:3]) == 0:
-            print(activ)
             if time[:11] == activ[6:17]:
-                status = ' - Был в сети ' + activ[11:22]
+                if int(time[14:16]) - int(activ[20:22]) > 30:
+                    status = 'Был в сети ' + str(int(int(activ[20:22]) - int(time[14:16]))) + ' минут назад'
+                else:
+                    status = 'Был в сети ' + activ[17:22]
             else:
-                status = ' - Был в сети ' + activ[6:22]
+                day = activ[14:16]
+                month = activ[11:13]
+                status = 'Был(а) ' + day + "." + month + "." + activ[6:10] + ' в ' + activ[17:22]
         elif int(activ[2:3]) == 1:
-            status = ' - В сети'
+            status = 'В сети'
         else:
             status = 'Error'
 
         self.ui.stackedWidget_sms.setCurrentIndex(0)
         self.shoise_user = self.ui.list_users.currentItem().text()
-        self.ui.user_label.setText(self.shoise_user + status)
+        self.ui.user_label.setText(self.shoise_user)
+        self.ui.user_status.setText(status)
 
     def put_text_search(self):
         self.ui.search_text.clear()
