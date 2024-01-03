@@ -1,12 +1,13 @@
 import sys
 import datetime
-
+import os
+import subprocess
 from PyQt5.QtGui import QPixmap, QImage, QBrush, QPainter, QWindow, QIcon
 
 from Custom_Widgets import loadJsonStyle
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QGraphicsBlurEffect, QGridLayout, QLabel
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QGraphicsBlurEffect, QGridLayout, QLabel, QApplication
 from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent, QRect, QSize, QByteArray, QBuffer, \
     QIODevice
 from Network.client_sender import Sender
@@ -275,6 +276,7 @@ class Controller(QMainWindow):
                 else:
                     self.ui.stackedWidget_sms.setCurrentIndex(1)
                     self.ui.user_label.clear()
+                    self.ui.user_status.clear()
                     self.ui.list_users.clearSelection()
         if obj is self.ui.send_text and event.type() == QEvent.KeyPress:
             if event.key() == Qt.Key_Return and not event.modifiers():
@@ -292,10 +294,10 @@ class Controller(QMainWindow):
         time = str(datetime.datetime.now())
         if int(activ[2:3]) == 0:
             if time[:11] == activ[6:17]:
-                if int(time[14:16]) - int(activ[20:22]) > 30:
-                    status = 'Был в сети ' + str(int(int(activ[20:22]) - int(time[14:16]))) + ' минут назад'
+                if int(time[14:16]) - int(activ[20:22]) < 30:
+                    status = 'Был(а) в сети ' + str(abs(int(activ[20:22]) - int(time[14:16]))) + ' минут назад'
                 else:
-                    status = 'Был в сети ' + activ[17:22]
+                    status = 'Был(а) в сети ' + activ[17:22]
             else:
                 day = activ[14:16]
                 month = activ[11:13]
@@ -326,9 +328,12 @@ class Controller(QMainWindow):
             if self.ui.menu_bar_settings.width() != 0:
                 self.ui.menu_bar_settings.collapseMenu()
                 self.blur_effect.setEnabled(False)
-        if event.button() == Qt.LeftButton and self.ui.wd_close.geometry().contains(event.pos()):
-            # self.user_exit()
-            print('exit_user')
+
+        if event.button() == Qt.LeftButton:
+            wd_close_global_pos = self.ui.wd_close.mapToGlobal(QPoint(0, 0))
+            if wd_close_global_pos.x() <= event.globalX() <= wd_close_global_pos.x() + self.ui.wd_close.width() and \
+                    wd_close_global_pos.y() <= event.globalY() <= wd_close_global_pos.y() + self.ui.wd_close.height():
+                self.user_exit()
         return super().mousePressEvent(event)
 
 
@@ -350,14 +355,27 @@ class Controller(QMainWindow):
 
 
     def user_exit(self):
+        message = '#!info ' + '!RESTART ' + Constant().login
+        self.signal_send_message.emit(message)
         paragraph = 'Authentication parameters'
         Constant().shanges(paragraph, 'AUTHORIZED', 'False')
         Constant().shanges(paragraph, 'login', '')
         Constant().shanges(paragraph, 'password', '')
 
-        message = '#!info ' + '!DISCONNECT ' + Constant().login
-        self.signal_send_message.emit(message)
-        self.close()
+        #restart app
+        self.ui.list_users.clear()
+        self.ui.icon_user.clear()
+        self.ui.sms_label.clear()
+        self.ui.user_status.clear()
+        self.ui.user_label.clear()
+        self.ui.stackedWidget_sms.setCurrentIndex(1)
+        self.Authorization.ui_authorization.password.clear()
+        self.Authorization.ui_authorization.login.clear()
+        self.Authorization.ui_authorization.login.setFocus()
+        self.ui.menu_bar_settings.collapseMenu()
+        self.blur_effect.setEnabled(False)
+        self.hide()
+        self.login_messager()
 
     def load_icon(self):
         if self.ui.menu_bar_settings.width() == 0:

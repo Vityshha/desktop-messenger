@@ -12,6 +12,7 @@ class Authorization(QMainWindow):
         super(Authorization, self).__init__(parent)
         self.ui_authorization = Ui_Authorization()
         self.ui_authorization.setupUi(self)
+        self.ui_authorization.password.setFocus()
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
 
         self.ui_authorization.btn_reg.clicked.connect(self.reg)
