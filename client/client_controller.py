@@ -31,7 +31,7 @@ class Controller(QMainWindow):
         self.model = isModel
         self.login_messager()
         self.init_connect()
-
+        self.drag_start_position = None
 
     def login_messager(self):
         if Constant().AUTHORIZED == 'True':
@@ -294,9 +294,6 @@ class Controller(QMainWindow):
         time = str(datetime.datetime.now())
         if int(activ[2:3]) == 0:
             if time[:11] == activ[6:17]:
-                if int(time[14:16]) - int(activ[20:22]) < 30:
-                    status = 'Был(а) в сети ' + str(abs(int(activ[20:22]) - int(time[14:16]))) + ' минут назад'
-                else:
                     status = 'Был(а) в сети ' + activ[17:22]
             else:
                 day = activ[14:16]
@@ -320,6 +317,11 @@ class Controller(QMainWindow):
 
 
     def mousePressEvent(self, event):
+        # Запоминаем начальную позицию мыши при клике
+        if event.buttons() == Qt.LeftButton and not self.ui.widget_btn.geometry().contains(event.pos()):
+            self.drag_start_position = event.globalPos()
+            event.accept()
+
         if event.button() == Qt.LeftButton and self.ui.icon_user.geometry().contains(event.pos()):
             self.load_icon()
         if event.button() == Qt.LeftButton and self.ui.widget_btn.geometry().contains(event.pos()):
@@ -338,6 +340,22 @@ class Controller(QMainWindow):
 
 
     def mouseMoveEvent(self, event):
+        # Изменяем размер окна при перемещении мыши
+
+        if self.drag_start_position is not None:
+            delta = event.globalPos() - self.drag_start_position
+            self.resize(self.width() + delta.x(), self.height() + delta.y())
+            self.drag_start_position = event.globalPos()
+            event.accept()
+
+        # Изменяем курсор при наведении на границы окна
+        if event.x() >= self.width() - 5:
+            self.setCursor(Qt.SizeHorCursor)
+        elif event.y() >= self.height() - 5:
+            self.setCursor(Qt.SizeVerCursor)
+        else:
+            self.setCursor(Qt.ArrowCursor)
+
         try:
             if self.oldPosition is not None:
                 delta = QPoint(event.pos() - self.oldPosition)
@@ -348,6 +366,9 @@ class Controller(QMainWindow):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.oldPosition = None
+            self.setCursor(Qt.ArrowCursor)
+            self.drag_start_position = None
+            event.accept()
 
 
     def menu_bar_settings(self):

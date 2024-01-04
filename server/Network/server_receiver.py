@@ -74,6 +74,11 @@ class Receiver(QObject):
                         connected = False
                         conn.close()
                         return
+                    elif msg[7:15] == '!RESTART':
+                        print('RESTART ', msg[16:])
+                        self.activ_disconnect_user(msg[16:])
+                    else:
+                        print(msg)
                 elif msg[0:3] == '#!0':
                     self.auth(msg[3:], conn)
                 elif msg[0:3] == '#!1':
