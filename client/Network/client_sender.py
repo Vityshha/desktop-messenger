@@ -12,6 +12,7 @@ class Sender(QObject):
     signal_sears_user_bd = Signal(str)
     signal_add_users = Signal(str)
     signal_db_messages = Signal(str)
+    signal_notiff = Signal(str)
     signal_image = Signal(bytes)
     signal_activ = Signal(str)
 
@@ -118,9 +119,8 @@ class Sender(QObject):
             user = str(msg[5:-3])
             self.signal_sears_user_bd.emit(user)
         elif msg[:5] == '!#new':
-            print('Пришло новое сообщение на клиент')
             messages = msg[7:]
-            self.signal_db_messages.emit(messages)
+            self.signal_notiff.emit(messages)
         elif msg[:4] == 'user':
             user = msg[6:]
             time.sleep(1)

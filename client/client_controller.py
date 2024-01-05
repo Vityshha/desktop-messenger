@@ -130,6 +130,7 @@ class Controller(QMainWindow):
 
         self.sender.signal_add_users.connect(self.user_add_db)
         self.sender.signal_db_messages.connect(self.add_messages)
+        self.sender.signal_notiff.connect(self.notification)
         self.sender.signal_activ.connect(self.show_activ_user)
 
         self.sender.signal_image.connect(self.client_image)
@@ -141,6 +142,7 @@ class Controller(QMainWindow):
 
     def init_const(self):
         self.shoise_user = None
+        self.notif_count = {}
         self.ui.send_text.setAcceptRichText(False)
         self.ui.stackedWidget_sms.setCurrentIndex(1)
         self.menu_bar_settings()
@@ -209,13 +211,48 @@ class Controller(QMainWindow):
         result = re.findall(r'\((.*?)\)', messages)
         ite = [item.replace("'", "") for item in result]
         ite = [item.split(', ') for item in ite]
-        messages = self.ui.sms_label.text()
+        messages = ''
         for itt in ite:
             print_time = itt[3].split(' ')
-            print_data = print_time[1]
             print_time = print_time[1][:5]
             if itt[0] != Constant().login:
                 direct = 'left'
+            else:
+                direct = 'right'
+            messages += (
+                f"\n<div style='text-align:{direct};'>"
+                f"<span style='display: inline-block; border: 2px solid red; border-radius: 50%; padding: 5px;'>"
+                f"<span style='font-size: larger;'>{itt[2]}</span>"
+                f"</span>"
+                f" "
+                f"<span style='display: inline-block; border: 2px solid blue; border-radius: 50%; padding: 5px;'>"
+                f"<span style='font-size: 8pt;'>{print_time}</span>"
+                f"</span>"
+                f"</div>"
+            )
+
+        self.ui.sms_label.setText(messages)
+        self.notif_count[f'{self.ui.list_users.currentItem().text()}'] = 0
+
+    @Slot(str)
+    def notification(self, notif):
+        messages = notif[1:-1]
+        result = re.findall(r'\((.*?)\)', messages)
+        ite = [item.replace("'", "") for item in result]
+        ite = [item.split(', ') for item in ite]
+        messages = self.ui.sms_label.text()
+        for itt in ite:
+            print_time = itt[3].split(' ')
+            print_time = print_time[1][:5]
+            if itt[0] != Constant().login:
+                direct = 'left'
+                if f'{itt[0]}' in self.notif_count:
+                    self.notif_count[f'{itt[0]}'] += 1
+                else:
+                    self.notif_count[f'{itt[0]}'] = 1
+                print('Кольво непрочитанных смс', self.notif_count[f'{itt[0]}'])
+                if itt[0] != self.ui.list_users.currentItem().text():
+                    return
             else:
                 direct = 'right'
             messages += (
@@ -266,6 +303,10 @@ class Controller(QMainWindow):
                 self.ui.send_text.clear()
                 self.ui.send_text.update()
                 self.ui.send_text.setAcceptRichText(False)
+
+                # current_row = self.ui.list_users.currentRow()
+                # item = self.ui.list_users.takeItem(current_row)
+                # self.ui.list_users.insertItem(0, item)
 
     def scrollToBottom(self, minVal=None, maxVal=None):
         self.ui.scrollArea.verticalScrollBar().setValue(self.ui.scrollArea.verticalScrollBar().maximum())
