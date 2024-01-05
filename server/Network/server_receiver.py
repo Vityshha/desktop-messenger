@@ -65,6 +65,7 @@ class Receiver(QObject):
                 if msg_lenght:
                     msg_lenght = int(msg_lenght)
                     msg = conn.recv(msg_lenght).decode(self.FORMAT)
+                    print(msg)
                 else:
                     return
 
@@ -138,6 +139,7 @@ class Receiver(QObject):
             conn.send(send_client_text.encode(self.FORMAT))
 
     def messages_to_db(self, msg=None, conn=None):
+        time_sms = str(datetime.datetime.now())
         #Вот тут можно смотреть в сети он или нет и сразу отправлтяь уведомления об этом.
         #Если не в сети, то просто в бд и потом при входе говорить что есть новые смс
         id = msg.split("user:")[1].split("to:")[0].strip()
@@ -147,6 +149,18 @@ class Receiver(QObject):
             self.db_method.messages_db(id, id_send, msg)
         except:
             print(f'[BD ERROR] Ошибка добавления сообщения в БД')
+
+        request = f'SELECT activ, addres FROM users WHERE login = "{id_send}"'
+        info_status = self.db_method.select_db(request)[0]
+        if int(info_status[0]) == 1:
+            send_client_text = f"!#new: [('{id}', '{id_send}', '{msg}', '{time_sms}')]"
+            conn.send(send_client_text.encode(self.FORMAT))
+        else:
+            pass
+
+        #id, id_send, message, time_sms
+
+
 
 
     def add_old_user(self, user=None, addr=None, conn=None):

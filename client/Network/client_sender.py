@@ -117,6 +117,10 @@ class Sender(QObject):
         elif msg[:3] == '#?1':
             user = str(msg[5:-3])
             self.signal_sears_user_bd.emit(user)
+        elif msg[:5] == '!#new':
+            print('Пришло новое сообщение на клиент')
+            messages = msg[7:]
+            self.signal_db_messages.emit(messages)
         elif msg[:4] == 'user':
             user = msg[6:]
             time.sleep(1)

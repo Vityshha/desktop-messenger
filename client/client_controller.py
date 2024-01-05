@@ -209,7 +209,7 @@ class Controller(QMainWindow):
         result = re.findall(r'\((.*?)\)', messages)
         ite = [item.replace("'", "") for item in result]
         ite = [item.split(', ') for item in ite]
-        messages = ''
+        messages = self.ui.sms_label.text()
         for itt in ite:
             print_time = itt[3].split(' ')
             print_data = print_time[1]
@@ -258,7 +258,11 @@ class Controller(QMainWindow):
             )
                 messages = self.ui.sms_label.text()
                 messages += msg
-                self.ui.sms_label.setText(messages)
+                if Constant().login == self.ui.list_users.currentItem().text():
+                    pass
+                else:
+                    self.ui.sms_label.setText(messages)
+
                 self.ui.send_text.clear()
                 self.ui.send_text.update()
                 self.ui.send_text.setAcceptRichText(False)
