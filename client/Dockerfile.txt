@@ -1,0 +1,17 @@
+FROM python:3.10
+
+# Установка зависимостей для работы с графикой и Qt
+RUN apt-get update && \
+    apt-get install -y libgl1-mesa-glx libxcb-xinerama0 libxkbcommon-x11-0
+
+WORKDIR /client
+
+# Копирование requirements.txt и установка зависимостей
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Копирование остальных файлов внутрь /client
+COPY . .
+
+# Команда для запуска приложения
+CMD [ "python", "./client_main.py" ]

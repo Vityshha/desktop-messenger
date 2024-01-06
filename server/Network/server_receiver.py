@@ -154,13 +154,10 @@ class Receiver(QObject):
         info_status = self.db_method.select_db(request)[0]
         if int(info_status[0]) == 1:
             send_client_text = f"!#new: [('{id}', '{id_send}', '{msg}', '{time_sms}')]"
+            print(send_client_text)
             conn.send(send_client_text.encode(self.FORMAT))
         else:
             pass
-
-        #id, id_send, message, time_sms
-
-
 
 
     def add_old_user(self, user=None, addr=None, conn=None):
