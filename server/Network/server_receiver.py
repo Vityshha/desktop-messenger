@@ -25,6 +25,7 @@ class Receiver(QObject):
         self.database = database
         self.check_db = CheckThread(self.database)
         self.db_method = Connect_DB(self.database)
+        self.clients = {}
 
 
 
@@ -38,6 +39,10 @@ class Receiver(QObject):
 
     def handle_client(self, conn, addr):
         print(f'[NEW CONNECTIONS] {addr} connected')
+
+        client_id = addr  # или любой другой уникальный идентификатор клиента
+        # Сохраняем соединение с клиентом в словаре
+        self.clients[client_id] = conn
 
         connected = True
         while connected:
@@ -74,7 +79,9 @@ class Receiver(QObject):
                         self.activ_disconnect_user(msg[19:])
                         connected = False
                         conn.close()
+                        del self.clients[client_id]  # Удаляем соединение после разрыва
                         return
+
                     elif msg[7:15] == '!RESTART':
                         print('RESTART ', msg[16:])
                         self.activ_disconnect_user(msg[16:])
@@ -152,12 +159,35 @@ class Receiver(QObject):
 
         request = f'SELECT activ, addres FROM users WHERE login = "{id_send}"'
         info_status = self.db_method.select_db(request)[0]
+        print(info_status)
+        import ast
+
         if int(info_status[0]) == 1:
+            try:
+                parsed_address = ast.literal_eval(info_status[1])  # Используем ast.literal_eval
+                ip_address, port = parsed_address
+            except (ValueError, SyntaxError) as e:
+                print(f'[ERROR] Ошибка при преобразовании строки в кортеж: {e}')
+                return
+
             send_client_text = f"!#new: [('{id}', '{id_send}', '{msg}', '{time_sms}')]"
-            print(send_client_text)
-            conn.send(send_client_text.encode(self.FORMAT))
+
+            # Отправляем сообщение определенному клиенту
+            self.send_message_to_client(send_client_text, (ip_address, port))
         else:
             pass
+
+    def send_message_to_client(self, message, client_id):
+        # Проверяем, существует ли соединение с клиентом
+        print(client_id)
+        if client_id in self.clients:
+            client_conn = self.clients[client_id]
+            try:
+                client_conn.sendall(message.encode(self.FORMAT))
+            except Exception as e:
+                print(f"Error sending message to client {client_id}: {e}")
+        else:
+            print(f"Client {client_id} not found in active connections.")
 
 
     def add_old_user(self, user=None, addr=None, conn=None):
