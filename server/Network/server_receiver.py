@@ -3,6 +3,7 @@ import threading
 import time
 import datetime
 import os
+import ast
 
 from PyQt5.QtCore import pyqtSignal as Signal, QObject
 from server.Network.check_db import CheckThread
@@ -147,8 +148,6 @@ class Receiver(QObject):
 
     def messages_to_db(self, msg=None, conn=None):
         time_sms = str(datetime.datetime.now())
-        #Вот тут можно смотреть в сети он или нет и сразу отправлтяь уведомления об этом.
-        #Если не в сети, то просто в бд и потом при входе говорить что есть новые смс
         id = msg.split("user:")[1].split("to:")[0].strip()
         id_send = msg.split("to:")[1].split("#!msg:")[0].strip()
         msg = msg.split("#!msg:")[1].strip()
@@ -159,8 +158,6 @@ class Receiver(QObject):
 
         request = f'SELECT activ, addres FROM users WHERE login = "{id_send}"'
         info_status = self.db_method.select_db(request)[0]
-        print(info_status)
-        import ast
 
         if int(info_status[0]) == 1:
             try:
@@ -169,17 +166,13 @@ class Receiver(QObject):
             except (ValueError, SyntaxError) as e:
                 print(f'[ERROR] Ошибка при преобразовании строки в кортеж: {e}')
                 return
-
             send_client_text = f"!#new: [('{id}', '{id_send}', '{msg}', '{time_sms}')]"
-
             # Отправляем сообщение определенному клиенту
             self.send_message_to_client(send_client_text, (ip_address, port))
         else:
             pass
 
     def send_message_to_client(self, message, client_id):
-        # Проверяем, существует ли соединение с клиентом
-        print(client_id)
         if client_id in self.clients:
             client_conn = self.clients[client_id]
             try:
@@ -192,7 +185,6 @@ class Receiver(QObject):
 
     def add_old_user(self, user=None, addr=None, conn=None):
         request = f'SELECT DISTINCT id_send FROM messages WHERE id = "{str(user)}" UNION SELECT DISTINCT id FROM messages WHERE id_send = "{str(user)}";'
-        # try:
         users = self.db_method.select_db(request)
         result_string = ', '.join([item[0] for item in users])
         if result_string == '':
@@ -213,7 +205,6 @@ class Receiver(QObject):
         id = user.split("user:")[1].split("user_send:")[0].strip()
         id_send = user.split("user_send:")[1].strip()
         request = f"SELECT id, id_send, message, time_sms, read  FROM messages WHERE ((id = '{str(id)}' AND id_send = '{str(id_send)}') OR (id = '{str(id_send)}' AND id_send = '{str(id)}'));"
-        # try:
         msg = self.db_method.select_db(request)
         msg_full = '#!msg_u: ' + str(msg)
         conn.send(msg_full.encode(self.FORMAT))
@@ -228,8 +219,6 @@ class Receiver(QObject):
 
         request = f'UPDATE messages SET read = 1 WHERE id_send = "{str(id)}";'
         self.db_method.select_db(request)
-        # except:
-        #     print(f'[BD ERROR] Ошибка поиска сообщений в БД')
 
     def activ_disconnect_user(self, login):
         request = f"UPDATE users SET activ = 0 WHERE login = '{login}'"

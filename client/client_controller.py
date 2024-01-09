@@ -30,6 +30,7 @@ class Controller(QMainWindow):
         self.login_messager()
         self.init_connect()
         self.drag_start_position = None
+        self.ui.widget_send_text.hide()
 
     def login_messager(self):
         if Constant().AUTHORIZED == 'True':
@@ -249,8 +250,8 @@ class Controller(QMainWindow):
                 else:
                     self.notif_count[f'{itt[0]}'] = 1
                 print('Кольво непрочитанных смс', self.notif_count[f'{itt[0]}'])
-                if itt[0] != self.ui.list_users.currentItem().text():
-                    return
+                # if itt[0] != self.ui.list_users.currentItem().text():
+                #     return
             else:
                 direct = 'right'
             messages += (
@@ -266,6 +267,7 @@ class Controller(QMainWindow):
             )
 
         self.ui.sms_label.setText(messages)
+        print(self.notif_count)
 
 
     def send_message(self):
@@ -321,6 +323,7 @@ class Controller(QMainWindow):
                     self.ui.user_label.clear()
                     self.ui.user_status.clear()
                     self.ui.list_users.clearSelection()
+                    self.ui.widget_send_text.hide()
         if obj is self.ui.send_text and event.type() == QEvent.KeyPress:
             if event.key() == Qt.Key_Return and not event.modifiers():
                 self.send_message()
@@ -329,12 +332,18 @@ class Controller(QMainWindow):
         return super().eventFilter(obj, event)
 
     def user_choise(self):
+        self.ui.widget_send_text.show()
         msg = 'select: ' + 'user: ' + Constant().login + ' user_send: ' + self.ui.list_users.currentItem().text()
         self.signal_send_message.emit(msg)
 
     @Slot(str)
     def show_activ_user(self, activ):
         time = str(datetime.datetime.now())
+
+        #todo вот тут иногда пустота актив
+        if activ == []:
+            return
+
         if int(activ[2:3]) == 0:
             if time[:11] == activ[6:17]:
                     status = 'Был(а) в сети ' + activ[17:22]
