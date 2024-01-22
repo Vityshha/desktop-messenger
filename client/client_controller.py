@@ -31,6 +31,7 @@ class Controller(QMainWindow):
         self.init_connect()
         self.width_size = None
         self.height_size = None
+        self.original_items = []
         self.ui.widget_send_text.hide()
 
     def login_messager(self):
@@ -189,7 +190,6 @@ class Controller(QMainWindow):
 
     @Slot(str)
     def user_add(self, user):
-        self.original_items = [self.ui.list_users.item(i).text() for i in range(self.ui.list_users.count())]
         self.books = []
         for i in range(self.ui.list_users.count()):
             book = self.ui.list_users.item(i).text()
@@ -198,6 +198,7 @@ class Controller(QMainWindow):
             return
         else:
             if user not in self.original_items:
+                self.original_items.append(user)
                 self.ui.list_users.addItem(user)
 
     def compare_dates(self, item):
@@ -205,7 +206,6 @@ class Controller(QMainWindow):
 
     @Slot(str)
     def user_add_db(self, users):
-        self.original_items = [self.ui.list_users.item(i).text() for i in range(self.ui.list_users.count())]
         matches = re.findall(r"\('([^']+)', '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}):\d{2}\.\d{6}'\)", users)
         result = [(match[0], match[1]) for match in matches]
         sorted_data = sorted(result, key=self.compare_dates, reverse=True)
@@ -213,7 +213,7 @@ class Controller(QMainWindow):
             login = user[0]
             time = user[1]
             if user not in self.original_items:
-                print(f'Добавляем юзера {login}, последнее смс {time}')
+                self.original_items.append(login)
                 self.ui.list_users.addItem(login)
 
 
@@ -254,7 +254,7 @@ class Controller(QMainWindow):
         ite = [item.split(', ') for item in ite]
         user = ite[0][0]
         #todo не работает нормально
-        # self.move_item_to_top(notif=True, user=user)
+        self.move_item_to_top(notif=True, user=user)
         messages = self.ui.sms_label.text()
         for itt in ite:
             print_time = itt[3].split(' ')
@@ -286,18 +286,20 @@ class Controller(QMainWindow):
 
     def move_item_to_top(self, notif=None, user=None):
         if notif:
+            print('move_item_to_top ', self.original_items)
             if user not in self.original_items:
+                self.original_items.append(user)
                 list_item = QListWidgetItem(user)
                 self.ui.list_users.addItem(list_item)
 
             items_found = self.ui.list_users.findItems(user, Qt.MatchExactly)
             for item_found in items_found:
                 row = self.ui.list_users.row(item_found)
+                if row == 0:
+                    return
                 self.ui.list_users.takeItem(row)
-
-            self.ui.list_users.insertItem(0, list_item)
+                self.ui.list_users.insertItem(0, user)
         else:
-            print("Сам написал")
             items_found = self.ui.list_users.findItems(user, Qt.MatchExactly)
             if items_found:
                 currentItem = items_found[0]
@@ -341,7 +343,7 @@ class Controller(QMainWindow):
                 self.ui.send_text.update()
                 self.ui.send_text.setAcceptRichText(False)
                 #todo хуйня
-                # self.move_item_to_top(notif=False, user=user_send)
+                self.move_item_to_top(notif=False, user=user_send)
 
     def scrollToBottom(self, minVal=None, maxVal=None):
         self.ui.scrollArea.verticalScrollBar().setValue(self.ui.scrollArea.verticalScrollBar().maximum())

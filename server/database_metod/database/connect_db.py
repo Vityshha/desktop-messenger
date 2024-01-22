@@ -76,10 +76,9 @@ class Connect_DB:
         """
         pass
 
-    def messages_db(self, id, id_send, msg):
+    def messages_db(self, id, id_send, msg, read):
         with sq.connect(self.database) as con:
             cur = con.cursor()
-            read = 0
             time_sms = str(datetime.datetime.now())
             cur.execute(f'INSERT OR IGNORE INTO messages (id, id_send, message, time_sms, read) VALUES ("{id}", "{id_send}", "{msg}", "{time_sms}", "{read}");')
             con.commit()

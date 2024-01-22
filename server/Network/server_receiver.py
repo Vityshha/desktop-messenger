@@ -152,10 +152,8 @@ class Receiver(QObject):
         id = msg.split("user:")[1].split("to:")[0].strip()
         id_send = msg.split("to:")[1].split("#!msg:")[0].strip()
         msg = msg.split("#!msg:")[1].strip()
-        try:
-            self.db_method.messages_db(id, id_send, msg)
-        except:
-            print(f'[BD ERROR] Ошибка добавления сообщения в БД')
+
+        self.db_method.messages_db(id, id_send, msg, read=0)
 
         request = f'SELECT activ, addres FROM users WHERE login = "{id_send}"'
         info_status = self.db_method.select_db(request)[0]
@@ -168,8 +166,6 @@ class Receiver(QObject):
                 return
             send_client_text = f"!#new: [('{id}', '{id_send}', '{msg}', '{time_sms}')]"
             self.send_message_to_client(send_client_text, (ip_address, port))
-        else:
-            pass
 
     def send_message_to_client(self, message, client_id):
         if client_id in self.clients:
