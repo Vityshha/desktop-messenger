@@ -6,7 +6,7 @@ from PyQt5.QtGui import QPixmap, QImage, QBrush, QPainter, QWindow
 from Custom_Widgets import loadJsonStyle
 from GUI.UI_MainWindow import Ui_MainWindow
 from authorization import Authorization
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QGraphicsBlurEffect
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QGraphicsBlurEffect, QListWidgetItem
 from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent, QRect
 from Network.client_sender import Sender
 from client_constant import Constant
@@ -29,7 +29,8 @@ class Controller(QMainWindow):
         self.model = isModel
         self.login_messager()
         self.init_connect()
-        self.drag_start_position = None
+        self.width_size = None
+        self.height_size = None
         self.ui.widget_send_text.hide()
 
     def login_messager(self):
@@ -48,49 +49,50 @@ class Controller(QMainWindow):
 
 
     def func_textchanged(self):
-        if self.ui.list_users.count() == 0:
-            return
-        if self.ui.search_text.toPlainText() == '':
-            for i in range(self.ui.list_users.count()):
-                self.ui.list_users.takeItem(0)
-            for i in range(len(self.original_items)):
-                self.ui.list_users.addItem(self.original_items[i])
-
-        search_text = self.ui.search_text.toPlainText().lower()
-        item_anywhere = self.ui.list_users.findItems(search_text, Qt.MatchContains)
-
-        start_list = list(filter(lambda item: item.text().lower().startswith(search_text), item_anywhere))
-        start_text = [x.text().lower() for x in start_list]
-
-        def bw_filter(item):
-            item_text = item.text().lower()
-            return search_text in item_text[1:-1] and item_text not in start_text
-
-        bw_lst = list(filter(bw_filter, item_anywhere))
-        bw_lst.sort(key=lambda item: item.text().lower().find(search_text))
-        bw_text = [x.text().lower() for x in bw_lst]
-
-        def end_filter(item):
-            item_text = item.text().lower()
-            return item_text.endswith(search_text) and item_text.lower() not in start_text and item_text not in bw_text
-
-        end_lst = list(filter(end_filter, item_anywhere))
-        end_lst.sort(key=lambda item: item.text().lower().find(search_text))
-
-
-        for i in range(self.ui.list_users.count()):
-            self.ui.list_users.takeItem(0)
-
-        for item in start_list + bw_lst + end_lst:
-            self.ui.list_users.addItem(item.text())
-
-        for i in range(len(self.original_items)):
-            item_text = self.original_items[i]
-            existing_items = self.ui.list_users.findItems(item_text, Qt.MatchExactly)
-            if not existing_items:
-                self.ui.list_users.addItem(item_text)
-            else:
-                pass
+        pass
+        # if self.ui.list_users.count() == 0:
+        #     return
+        # if self.ui.search_text.toPlainText() == '':
+        #     for i in range(self.ui.list_users.count()):
+        #         self.ui.list_users.takeItem(0)
+        #     for i in range(len(self.original_items)):
+        #         self.ui.list_users.addItem(self.original_items[i])
+        #
+        # search_text = self.ui.search_text.toPlainText().lower()
+        # item_anywhere = self.ui.list_users.findItems(search_text, Qt.MatchContains)
+        #
+        # start_list = list(filter(lambda item: item.text().lower().startswith(search_text), item_anywhere))
+        # start_text = [x.text().lower() for x in start_list]
+        #
+        # def bw_filter(item):
+        #     item_text = item.text().lower()
+        #     return search_text in item_text[1:-1] and item_text not in start_text
+        #
+        # bw_lst = list(filter(bw_filter, item_anywhere))
+        # bw_lst.sort(key=lambda item: item.text().lower().find(search_text))
+        # bw_text = [x.text().lower() for x in bw_lst]
+        #
+        # def end_filter(item):
+        #     item_text = item.text().lower()
+        #     return item_text.endswith(search_text) and item_text.lower() not in start_text and item_text not in bw_text
+        #
+        # end_lst = list(filter(end_filter, item_anywhere))
+        # end_lst.sort(key=lambda item: item.text().lower().find(search_text))
+        #
+        #
+        # for i in range(self.ui.list_users.count()):
+        #     self.ui.list_users.takeItem(0)
+        #
+        # for item in start_list + bw_lst + end_lst:
+        #     self.ui.list_users.addItem(item.text())
+        #
+        # for i in range(len(self.original_items)):
+        #     item_text = self.original_items[i]
+        #     existing_items = self.ui.list_users.findItems(item_text, Qt.MatchExactly)
+        #     if not existing_items:
+        #         self.ui.list_users.addItem(item_text)
+        #     else:
+        #         pass
 
 
     def authorization_close(self):
@@ -187,6 +189,7 @@ class Controller(QMainWindow):
 
     @Slot(str)
     def user_add(self, user):
+        self.original_items = [self.ui.list_users.item(i).text() for i in range(self.ui.list_users.count())]
         self.books = []
         for i in range(self.ui.list_users.count()):
             book = self.ui.list_users.item(i).text()
@@ -194,15 +197,25 @@ class Controller(QMainWindow):
         if user in self.books:
             return
         else:
-            self.ui.list_users.addItem(user)
-            self.original_items = [self.ui.list_users.item(i).text() for i in range(self.ui.list_users.count())]
+            if user not in self.original_items:
+                self.ui.list_users.addItem(user)
+
+    def compare_dates(self, item):
+        return datetime.datetime.strptime(item[1], '%Y-%m-%d %H:%M')
 
     @Slot(str)
     def user_add_db(self, users):
-        users = users.split(', ')
-        for user in users:
-            self.ui.list_users.addItem(user)
         self.original_items = [self.ui.list_users.item(i).text() for i in range(self.ui.list_users.count())]
+        matches = re.findall(r"\('([^']+)', '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}):\d{2}\.\d{6}'\)", users)
+        result = [(match[0], match[1]) for match in matches]
+        sorted_data = sorted(result, key=self.compare_dates, reverse=True)
+        for user in sorted_data:
+            login = user[0]
+            time = user[1]
+            if user not in self.original_items:
+                print(f'Добавляем юзера {login}, последнее смс {time}')
+                self.ui.list_users.addItem(login)
+
 
     @Slot(str)
     def add_messages(self, messages):
@@ -239,6 +252,9 @@ class Controller(QMainWindow):
         result = re.findall(r'\((.*?)\)', messages)
         ite = [item.replace("'", "") for item in result]
         ite = [item.split(', ') for item in ite]
+        user = ite[0][0]
+        #todo не работает нормально
+        # self.move_item_to_top(notif=True, user=user)
         messages = self.ui.sms_label.text()
         for itt in ite:
             print_time = itt[3].split(' ')
@@ -267,13 +283,34 @@ class Controller(QMainWindow):
             )
 
         self.ui.sms_label.setText(messages)
-        print(self.notif_count)
+
+    def move_item_to_top(self, notif=None, user=None):
+        if notif:
+            if user not in self.original_items:
+                list_item = QListWidgetItem(user)
+                self.ui.list_users.addItem(list_item)
+
+            items_found = self.ui.list_users.findItems(user, Qt.MatchExactly)
+            for item_found in items_found:
+                row = self.ui.list_users.row(item_found)
+                self.ui.list_users.takeItem(row)
+
+            self.ui.list_users.insertItem(0, list_item)
+        else:
+            print("Сам написал")
+            items_found = self.ui.list_users.findItems(user, Qt.MatchExactly)
+            if items_found:
+                currentItem = items_found[0]
+                row = self.ui.list_users.row(currentItem)
+                self.ui.list_users.takeItem(row)
+                self.ui.list_users.insertItem(0, user)
+                self.ui.list_users.setCurrentRow(0)
 
 
     def send_message(self):
             msg = str(self.ui.send_text.toPlainText())
             try:
-                user_send = self.ui.list_users.currentItem().text()
+                user_send = self.ui.user_label.text()
             except:
                 return
             if msg == '' or user_send == '':
@@ -303,10 +340,8 @@ class Controller(QMainWindow):
                 self.ui.send_text.clear()
                 self.ui.send_text.update()
                 self.ui.send_text.setAcceptRichText(False)
-
-                # current_row = self.ui.list_users.currentRow()
-                # item = self.ui.list_users.takeItem(current_row)
-                # self.ui.list_users.insertItem(0, item)
+                #todo хуйня
+                # self.move_item_to_top(notif=False, user=user_send)
 
     def scrollToBottom(self, minVal=None, maxVal=None):
         self.ui.scrollArea.verticalScrollBar().setValue(self.ui.scrollArea.verticalScrollBar().maximum())
@@ -369,10 +404,18 @@ class Controller(QMainWindow):
 
 
     def mousePressEvent(self, event):
-        # Запоминаем начальную позицию мыши при клике
         if event.buttons() == Qt.LeftButton and not self.ui.widget_btn.geometry().contains(event.pos()):
-            self.drag_start_position = event.globalPos()
-            event.accept()
+            if event.x() >= self.width() - 5:
+                self.width_size = event.globalPos()
+                event.accept()
+                self.setCursor(Qt.SizeHorCursor)
+            elif event.y() >= self.height() - 5:
+                self.height_size = event.globalPos()
+                event.accept()
+                self.setCursor(Qt.SizeVerCursor)
+            else:
+                pass
+
 
         if event.button() == Qt.LeftButton and self.ui.icon_user.geometry().contains(event.pos()):
             self.load_icon()
@@ -392,21 +435,18 @@ class Controller(QMainWindow):
 
 
     def mouseMoveEvent(self, event):
-        # Изменяем размер окна при перемещении мыши
 
-        if self.drag_start_position is not None:
-            delta = event.globalPos() - self.drag_start_position
-            self.resize(self.width() + delta.x(), self.height() + delta.y())
-            self.drag_start_position = event.globalPos()
+        if self.width_size is not None:
+            delta = event.globalPos() - self.width_size
+            self.resize(self.width() + delta.x(), self.height())
+            self.width_size = event.globalPos()
             event.accept()
 
-        # Изменяем курсор при наведении на границы окна
-        if event.x() >= self.width() - 5:
-            self.setCursor(Qt.SizeHorCursor)
-        elif event.y() >= self.height() - 5:
-            self.setCursor(Qt.SizeVerCursor)
-        else:
-            self.setCursor(Qt.ArrowCursor)
+        if self.height_size is not None:
+            delta = event.globalPos() - self.height_size
+            self.resize(self.width(), self.height() + delta.y())
+            self.height_size = event.globalPos()
+            event.accept()
 
         try:
             if self.oldPosition is not None:
@@ -419,7 +459,8 @@ class Controller(QMainWindow):
         if event.button() == Qt.LeftButton:
             self.oldPosition = None
             self.setCursor(Qt.ArrowCursor)
-            self.drag_start_position = None
+            self.width_size = None
+            self.height_size = None
             event.accept()
 
 

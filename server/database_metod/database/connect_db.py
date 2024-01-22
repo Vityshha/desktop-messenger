@@ -1,7 +1,4 @@
 import sqlite3 as sq
-from PIL import Image
-
-import time
 import datetime
 
 

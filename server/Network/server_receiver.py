@@ -41,8 +41,7 @@ class Receiver(QObject):
     def handle_client(self, conn, addr):
         print(f'[NEW CONNECTIONS] {addr} connected')
 
-        client_id = addr  # или любой другой уникальный идентификатор клиента
-        # Сохраняем соединение с клиентом в словаре
+        client_id = addr
         self.clients[client_id] = conn
 
         connected = True
@@ -52,6 +51,7 @@ class Receiver(QObject):
                 msg_type = conn.recv(self.HEADER).decode(self.FORMAT)
             except:
                 print(f'[CLIETN] Клиент {addr} разорвал подключение')
+                self.disconnect_connect(addr)
                 return
 
             if msg_type == "IMAGE":
@@ -67,6 +67,7 @@ class Receiver(QObject):
                     msg_lenght = conn.recv(self.HEADER).decode(self.FORMAT)
                 except:
                     print(f'[CLIETN] Клиент {addr} разорвал подключение')
+                    self.disconnect_connect(addr)
                     return
                 if msg_lenght:
                     msg_lenght = int(msg_lenght)
@@ -80,7 +81,7 @@ class Receiver(QObject):
                         self.activ_disconnect_user(msg[19:])
                         connected = False
                         conn.close()
-                        del self.clients[client_id]  # Удаляем соединение после разрыва
+                        del self.clients[client_id]
                         return
 
                     elif msg[7:15] == '!RESTART':
@@ -161,13 +162,11 @@ class Receiver(QObject):
 
         if int(info_status[0]) == 1:
             try:
-                parsed_address = ast.literal_eval(info_status[1])  # Используем ast.literal_eval
+                parsed_address = ast.literal_eval(info_status[1])
                 ip_address, port = parsed_address
             except (ValueError, SyntaxError) as e:
-                print(f'[ERROR] Ошибка при преобразовании строки в кортеж: {e}')
                 return
             send_client_text = f"!#new: [('{id}', '{id_send}', '{msg}', '{time_sms}')]"
-            # Отправляем сообщение определенному клиенту
             self.send_message_to_client(send_client_text, (ip_address, port))
         else:
             pass
@@ -184,9 +183,15 @@ class Receiver(QObject):
 
 
     def add_old_user(self, user=None, addr=None, conn=None):
-        request = f'SELECT DISTINCT id_send FROM messages WHERE id = "{str(user)}" UNION SELECT DISTINCT id FROM messages WHERE id_send = "{str(user)}";'
+        request = f'''SELECT id_send, MAX(time_sms) AS last_message_time
+FROM (
+    SELECT id_send, time_sms FROM messages WHERE id = "{str(user)}"
+    UNION
+    SELECT id, time_sms FROM messages WHERE id_send = "{str(user)}"
+) AS combined_messages
+GROUP BY id_send;'''
         users = self.db_method.select_db(request)
-        result_string = ', '.join([item[0] for item in users])
+        result_string = str(users)
         if result_string == '':
             return
         msg = 'user: ' + result_string
@@ -228,6 +233,14 @@ class Receiver(QObject):
         request = f"UPDATE users SET time_activ = '{time_last_connect}' WHERE login = '{login}'"
         self.db_method.update_db(request)
 
+
+    def disconnect_connect(self, addr):
+        request = f"UPDATE users SET activ = 0 WHERE addres = '{addr}'"
+        self.db_method.update_db(request)
+
+        time_last_connect = str(datetime.datetime.now())
+        request = f"UPDATE users SET time_activ = '{time_last_connect}' WHERE addres = '{addr}'"
+        self.db_method.update_db(request)
 
     def send_icon_client(self, path, conn):
         try:
