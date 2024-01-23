@@ -100,7 +100,10 @@ class Receiver(QObject):
                 elif msg[0:5] == 'start':
                     self.add_old_user(msg[6:], addr, conn)
                 elif msg[0:6] == 'select':
-                    self.show_user_sms(msg[7:], conn)
+                    if msg[7:] == '':
+                        return
+                    else:
+                        self.show_user_sms(msg[7:], conn)
                 else:
                     print(f'Непонятное смс {msg}')
         conn.close()
@@ -179,13 +182,13 @@ class Receiver(QObject):
 
 
     def add_old_user(self, user=None, addr=None, conn=None):
-        request = f'''SELECT id_send, MAX(time_sms) AS last_message_time
-FROM (
-    SELECT id_send, time_sms FROM messages WHERE id = "{str(user)}"
-    UNION
-    SELECT id, time_sms FROM messages WHERE id_send = "{str(user)}"
-) AS combined_messages
-GROUP BY id_send;'''
+        request = f'''SELECT id_send, MAX(time_sms), message AS last_message_time
+                        FROM (
+                            SELECT id_send, time_sms, message FROM messages WHERE id = "{str(user)}"
+                            UNION
+                            SELECT id, time_sms, message FROM messages WHERE id_send = "{str(user)}"
+                        ) AS combined_messages
+                        GROUP BY id_send;'''
         users = self.db_method.select_db(request)
         result_string = str(users)
         if result_string == '':

@@ -5,9 +5,10 @@ from PyQt5.QtGui import QPixmap, QImage, QBrush, QPainter, QWindow
 
 from Custom_Widgets import loadJsonStyle
 from GUI.UI_MainWindow import Ui_MainWindow
+from Custom.CustomQListWidget import CustomQListWidget
 from authorization import Authorization
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QGraphicsBlurEffect, QListWidgetItem
-from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent, QRect
+from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent, QRect, QSize
 from Network.client_sender import Sender
 from client_constant import Constant
 import re
@@ -33,6 +34,8 @@ class Controller(QMainWindow):
         self.height_size = None
         self.original_items = []
         self.ui.widget_send_text.hide()
+        self.custom_list_widget = CustomQListWidget(wight=self.ui.list_users.width())
+        self.ui.list_users.setSpacing(5)
 
     def login_messager(self):
         if Constant().AUTHORIZED == 'True':
@@ -199,22 +202,31 @@ class Controller(QMainWindow):
         else:
             if user not in self.original_items:
                 self.original_items.append(user)
-                self.ui.list_users.addItem(user)
+                # self.ui.list_users.addItem(user)
 
     def compare_dates(self, item):
         return datetime.datetime.strptime(item[1], '%Y-%m-%d %H:%M')
 
     @Slot(str)
     def user_add_db(self, users):
-        matches = re.findall(r"\('([^']+)', '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}):\d{2}\.\d{6}'\)", users)
-        result = [(match[0], match[1]) for match in matches]
+        matches = re.findall(r"\('([^']+)', '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}):\d{2}\.\d{6}', '([^']+)'\)", users)
+        result = [(match[0], match[1], match[2]) for match in matches]
         sorted_data = sorted(result, key=self.compare_dates, reverse=True)
         for user in sorted_data:
             login = user[0]
-            time = user[1]
+            time = user[1][11:]
+            last_sms = user[2]
             if user not in self.original_items:
                 self.original_items.append(login)
-                self.ui.list_users.addItem(login)
+                # self.ui.list_users.addItem(login)
+                self.add_item({"login": login, 'avatar': 'C:\\Users\\KFU\\Desktop\\desktop-messenger\\client\\GUI\\icons\\ava.jpg', 'last_sms': last_sms, 'time_sms': time})
+
+    def add_item(self, user_data):
+        item = QListWidgetItem()
+        item.setSizeHint(QSize(self.ui.list_users.width(), 40))
+        widget = self.custom_list_widget.get_item_widget(user_data)
+        self.ui.list_users.addItem(item)
+        self.ui.list_users.setItemWidget(item, widget)
 
 
     @Slot(str)
@@ -286,7 +298,6 @@ class Controller(QMainWindow):
 
     def move_item_to_top(self, notif=None, user=None):
         if notif:
-            print('move_item_to_top ', self.original_items)
             if user not in self.original_items:
                 self.original_items.append(user)
                 list_item = QListWidgetItem(user)
@@ -378,7 +389,7 @@ class Controller(QMainWindow):
         time = str(datetime.datetime.now())
 
         #todo вот тут иногда пустота актив
-        if activ == []:
+        if activ == [] or activ == '[]':
             return
 
         if int(activ[2:3]) == 0:
