@@ -421,6 +421,7 @@ class Ui_MainWindow(object):
         self.widget_users_list.setSizePolicy(sizePolicy)
         self.widget_users_list.setObjectName("widget_users_list")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.widget_users_list)
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.list_users = QtWidgets.QListWidget(self.widget_users_list)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
@@ -433,7 +434,7 @@ class Ui_MainWindow(object):
         self.list_users.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.list_users.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.list_users.setObjectName("list_users")
-        self.verticalLayout_7.addWidget(self.list_users, 0, QtCore.Qt.AlignLeft)
+        self.verticalLayout_7.addWidget(self.list_users)
         self.verticalLayout_3.addWidget(self.widget_users_list)
         self.horizontalLayout_2.addWidget(self.widget_left_main, 0, QtCore.Qt.AlignLeft)
         self.widget_right_main = QtWidgets.QWidget(self.widget_main)
@@ -533,7 +534,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 409, 570))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 409, 558))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout_5.setContentsMargins(10, 0, 10, 0)
@@ -637,14 +638,14 @@ class Ui_MainWindow(object):
         self.search_text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:9.75pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Segoe UI\'; font-size:9pt;\"><br /></p></body></html>"))
         self.search_text.setPlaceholderText(_translate("MainWindow", "Поиск"))
         self.label.setText(_translate("MainWindow", "Выберите, кому хотели бы написать"))
         self.send_text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:9.75pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Segoe UI\'; font-size:9pt;\"><br /></p></body></html>"))
         self.send_text.setPlaceholderText(_translate("MainWindow", "Введите сообщение..."))
         self.btn_send.setShortcut(_translate("MainWindow", "Return"))

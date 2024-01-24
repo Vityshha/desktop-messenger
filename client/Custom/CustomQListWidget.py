@@ -4,23 +4,22 @@ from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QVBoxLayout, QListWidg
     QSizePolicy
 
 
-class CustomQListWidget:
+class CustomQListWidgetItem(QWidget):
+    def __init__(self, data, parent=None):
+        super(CustomQListWidgetItem, self).__init__(parent)
+        self.width_size = 200
+        self.setStyleSheet('background: transparent;')
+        self.init_ui(data)
 
-    def __init__(self, wight=200):
-        super(CustomQListWidget, self).__init__()
-        self.width_size = wight
 
-    def get_item_widget(self, data):
-        # Read attributes
+    def init_ui(self, data):
         login = data['login']
         avatar = data['avatar']
         last_sms = data['last_sms']
         time_sms = data['time_sms']
-        # Total Widget
-        wight = QWidget()
 
         login_label = QLabel(login)
-        login_label.setFont(QFont("Open Sans", 10, QFont.Bold))
+        login_label.setFont(QFont("Open Sans", 9, QFont.Bold))
 
         last_sms_label = QLabel(last_sms)
         last_sms_label.setFont(QFont("Open Sans", 10))
@@ -30,43 +29,39 @@ class CustomQListWidget:
         time_sms_label.setFont(QFont("Open Sans", 8))
         time_sms_label.setStyleSheet("color: gray;")
 
-        # Overall horizontal layout
-        layout_main = QHBoxLayout()
-        layout_main.setSpacing(8)
-        layout_main.setContentsMargins(0, 0, 0, 0)
-        self.map_l = QLabel()  # Avatar display
-        self.map_l.setFixedSize(40, 40)
+        map_label = QLabel()
+        map_label.setFixedSize(60, 60)
         maps = QPixmap(avatar)
         pixmap = self.mask_image(maps)
 
-        self.map_l.setPixmap(pixmap)
+        map_label.setPixmap(pixmap)
 
-        # Vertical layout on the right
+        layout_main = QHBoxLayout()
+        layout_main.setSpacing(8)
+        layout_main.setContentsMargins(10, 0, 10, 0)
+
         layout_right = QVBoxLayout()
 
-        # Horizontal layout of the bottom right
-        layout_right_down = QHBoxLayout()  # Horizontal layout at the bottom right
+        layout_right_down = QHBoxLayout()  # Горизонтальный макет в правом нижнем углу
         layout_right_down.addWidget(last_sms_label)
+        layout_right_down.setContentsMargins(8, 0, 0, 12)
 
-
-        # Horizontal layout for login_label and time_sms_label
         layout_login_time = QHBoxLayout()
         layout_login_time.addWidget(login_label)
-        layout_login_time.addSpacerItem(QSpacerItem(125, 0, QSizePolicy.Minimum, QSizePolicy.Minimum))
+        layout_login_time.addSpacerItem(QSpacerItem(self.width_size, 0, QSizePolicy.Minimum, QSizePolicy.Minimum))
         layout_login_time.addWidget(time_sms_label)
+        layout_login_time.setContentsMargins(8, 12, 0, 0)
 
-        # Follow the layout from left to right, top to bottom to add
-        layout_main.addWidget(self.map_l)  # The leftmost picture
+        layout_main.addWidget(map_label)  # Левое изображение
 
-        layout_right.addLayout(layout_login_time)  # Add layout_login_time instead of login_label
-        layout_right.addLayout(layout_right_down)  # Horizontal layout in the lower right corner
+        layout_right.addLayout(layout_login_time)
+        layout_right.addLayout(layout_right_down)
 
-        layout_main.addLayout(layout_right)  # Layout on the right
+        layout_main.addLayout(layout_right)
 
-        wight.setLayout(layout_main)  # Layout for wight
-        return wight
+        self.setLayout(layout_main)
 
-    def mask_image(self, imgdata, imgtype='jpg', size=45):
+    def mask_image(self, imgdata, imgtype='jpg', size=60):
         if isinstance(imgdata, QPixmap):
             image = imgdata.toImage()
         else:
@@ -89,9 +84,9 @@ class CustomQListWidget:
         painter.drawEllipse(0, 0, imgsize, imgsize)
         painter.end()
 
-        pr = QWindow().devicePixelRatio()
+        pr = self.devicePixelRatio()
         pm = QPixmap.fromImage(out_img)
         pm.setDevicePixelRatio(pr)
         size *= pr
-        pm = pm.scaled(self.map_l.width(), self.map_l.height(), Qt.KeepAspectRatio)
+        pm = pm.scaled(size, size, Qt.KeepAspectRatio)
         return pm

@@ -2,10 +2,9 @@ import sys
 import datetime
 
 from PyQt5.QtGui import QPixmap, QImage, QBrush, QPainter, QWindow
-
 from Custom_Widgets import loadJsonStyle
 from GUI.UI_MainWindow import Ui_MainWindow
-from Custom.CustomQListWidget import CustomQListWidget
+from Custom.CustomQListWidget import CustomQListWidgetItem
 from authorization import Authorization
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QGraphicsBlurEffect, QListWidgetItem
 from PyQt5.QtCore import Qt, pyqtSignal as Signal, pyqtSlot as Slot, QPoint, QEvent, QRect, QSize
@@ -34,8 +33,7 @@ class Controller(QMainWindow):
         self.height_size = None
         self.original_items = []
         self.ui.widget_send_text.hide()
-        self.custom_list_widget = CustomQListWidget(wight=self.ui.list_users.width())
-        self.ui.list_users.setSpacing(5)
+        self.ui.list_users.setSpacing(0)
 
     def login_messager(self):
         if Constant().AUTHORIZED == 'True':
@@ -122,7 +120,7 @@ class Controller(QMainWindow):
         self.ui.btn_shape.clicked.connect(self.resize_window)
         self.ui.btn_remove.clicked.connect(self.remove_window)
         self.ui.btn_send.clicked.connect(self.send_message)
-        self.ui.list_users.clicked.connect(self.user_choise)
+        self.ui.list_users.itemClicked.connect(self.user_choise)
         self.ui.scrollArea.verticalScrollBar().rangeChanged.connect(self.scrollToBottom)
 
         self.signal_send_message.connect(self.sender.send_message)
@@ -179,20 +177,22 @@ class Controller(QMainWindow):
         self.showMinimized()
 
     def client_image(self, qimage):
-        self.save_image(qimage)
-        file_path = './GUI/icons/ava.jpg'
+        #todo нужно ждать вдруг не успело
+        with open(f'./cache/images/ava.jpg', 'wb') as received_image_file:
+            received_image_file.write(qimage)
+
+        file_path = './cache/images/ava.jpg'
         imgdata = open(file_path, 'rb').read()
         imgtype = file_path[-3:]
         pixmap = self.mask_image(imgdata, imgtype)
         self.ui.icon_user.setStyleSheet('')
         self.ui.icon_user.setPixmap(pixmap)
 
-    def save_image(self, qimage):
-        with open(f'./GUI/icons/ava.jpg', 'wb') as received_image_file:
-            received_image_file.write(qimage)
 
     @Slot(str)
     def user_add(self, user):
+        '''Поиск и добавление пользователей если они есть в бд
+                    и если они еще не добавлены'''
         self.books = []
         for i in range(self.ui.list_users.count()):
             book = self.ui.list_users.item(i).text()
@@ -218,13 +218,12 @@ class Controller(QMainWindow):
             last_sms = user[2]
             if user not in self.original_items:
                 self.original_items.append(login)
-                # self.ui.list_users.addItem(login)
                 self.add_item({"login": login, 'avatar': 'C:\\Users\\KFU\\Desktop\\desktop-messenger\\client\\GUI\\icons\\ava.jpg', 'last_sms': last_sms, 'time_sms': time})
 
     def add_item(self, user_data):
         item = QListWidgetItem()
-        item.setSizeHint(QSize(self.ui.list_users.width(), 40))
-        widget = self.custom_list_widget.get_item_widget(user_data)
+        item.setSizeHint(QSize(self.ui.widget_users_list.width() - 30, 80))
+        widget = CustomQListWidgetItem(data=user_data)
         self.ui.list_users.addItem(item)
         self.ui.list_users.setItemWidget(item, widget)
 
@@ -353,7 +352,7 @@ class Controller(QMainWindow):
                 self.ui.send_text.clear()
                 self.ui.send_text.update()
                 self.ui.send_text.setAcceptRichText(False)
-                #todo хуйня
+
                 self.move_item_to_top(notif=False, user=user_send)
 
     def scrollToBottom(self, minVal=None, maxVal=None):
@@ -406,6 +405,7 @@ class Controller(QMainWindow):
 
         self.ui.stackedWidget_sms.setCurrentIndex(0)
         self.shoise_user = self.ui.list_users.currentItem().text()
+        print(self.shoise_user)
         self.ui.user_label.setText(self.shoise_user)
         self.ui.user_status.setText(status)
 
