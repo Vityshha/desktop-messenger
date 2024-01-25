@@ -1,7 +1,6 @@
-from PyQt5.QtCore import QSize, QRect, Qt
-from PyQt5.QtGui import QPixmap, QImage, QBrush, QPainter, QWindow, QFont
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QVBoxLayout, QListWidgetItem, QListWidget, QSpacerItem, \
-    QSizePolicy
+from PyQt5.QtCore import QRect, Qt
+from PyQt5.QtGui import QPixmap, QImage, QBrush, QPainter, QFont
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QVBoxLayout, QSpacerItem, QSizePolicy
 
 
 class CustomQListWidgetItem(QWidget):

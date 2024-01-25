@@ -142,9 +142,12 @@ class Receiver(QObject):
             conn.send(('#!rn').encode(self.FORMAT))
 
     def user_db(self, user=None, conn=None):
-        request = f'SELECT login FROM users WHERE login = "{user}"'
+        request = f'SELECT login, time_activ FROM users WHERE login = "{user}";'
+
         user = self.db_method.select_db(request)
-        send_client_text = '#?1' + str(user)[1:-1]
+        if user == []:
+            return
+        send_client_text = '#?1' + str(user)
         if send_client_text == '#?1':
             return
         else:

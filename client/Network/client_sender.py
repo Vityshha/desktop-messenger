@@ -116,7 +116,7 @@ class Sender(QObject):
             self.notification = 'Пользователь уже занят!'
             self.signal_authorization_text.emit(self.notification)
         elif msg[:3] == '#?1':
-            user = str(msg[5:-3])
+            user = msg[3:]
             self.signal_sears_user_bd.emit(user)
         elif msg[:5] == '!#new':
             messages = msg[7:]

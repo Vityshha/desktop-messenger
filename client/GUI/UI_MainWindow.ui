@@ -862,6 +862,19 @@ p, li { white-space: pre-wrap; }
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="styleSheet">
+                <string notr="true">QListWidget::item:selected
+{
+    background: rgb(64, 57, 101);
+	border: transparent;
+}
+
+QListWidget::item:hover
+{
+    background: rgb(64, 57, 101);
+	border: transparent;
+}</string>
+               </property>
                <layout class="QVBoxLayout" name="verticalLayout_7">
                 <property name="leftMargin">
                  <number>0</number>
@@ -885,7 +898,8 @@ p, li { white-space: pre-wrap; }
                   </property>
                   <property name="styleSheet">
                    <string notr="true">color: rgb(255, 255, 255);
-border: transparent;</string>
+border: transparent;
+</string>
                   </property>
                   <property name="verticalScrollBarPolicy">
                    <enum>Qt::ScrollBarAlwaysOff</enum>

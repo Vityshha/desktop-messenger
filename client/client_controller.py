@@ -194,15 +194,16 @@ class Controller(QMainWindow):
         '''Поиск и добавление пользователей если они есть в бд
                     и если они еще не добавлены'''
         self.books = []
+        print('Кольво людей: ', self.ui.list_users.count())
         for i in range(self.ui.list_users.count()):
-            book = self.ui.list_users.item(i).text()
+            book = self.ui.list_users.item(i).data(Qt.UserRole)['login']
             self.books.append(book)
         if user in self.books:
             return
         else:
             if user not in self.original_items:
                 self.original_items.append(user)
-                # self.ui.list_users.addItem(user)
+                self.add_search_user(user)
 
     def compare_dates(self, item):
         return datetime.datetime.strptime(item[1], '%Y-%m-%d %H:%M')
@@ -222,10 +223,22 @@ class Controller(QMainWindow):
 
     def add_item(self, user_data):
         item = QListWidgetItem()
+        item.setData(Qt.UserRole, user_data)
         item.setSizeHint(QSize(self.ui.widget_users_list.width() - 30, 80))
         widget = CustomQListWidgetItem(data=user_data)
         self.ui.list_users.addItem(item)
         self.ui.list_users.setItemWidget(item, widget)
+
+    def add_search_user(self, users):
+        matches = re.findall(r"\('([^']+)', '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}):\d{2}\.\d{6}'\)", users)
+        result = [(match[0], match[1]) for match in matches]
+        sorted_data = sorted(result, key=self.compare_dates, reverse=True)
+        for user in sorted_data:
+            login = user[0]
+            time = user[1][11:]
+            if user not in self.original_items:
+                self.original_items.append(login)
+                self.add_item({"login": login, 'avatar': 'C:\\Users\\KFU\\Desktop\\desktop-messenger\\client\\GUI\\icons\\ava.jpg', 'last_sms': '', 'time_sms': ''})
 
 
     @Slot(str)
@@ -264,8 +277,8 @@ class Controller(QMainWindow):
         ite = [item.replace("'", "") for item in result]
         ite = [item.split(', ') for item in ite]
         user = ite[0][0]
-        #todo не работает нормально
-        self.move_item_to_top(notif=True, user=user)
+        #todo переделать нужно будет
+        self.move_item_to_top(notif=True, user=user, msg=ite[0][2], time=ite[0][3][11:16])
         messages = self.ui.sms_label.text()
         for itt in ite:
             print_time = itt[3].split(' ')
@@ -295,27 +308,47 @@ class Controller(QMainWindow):
 
         self.ui.sms_label.setText(messages)
 
-    def move_item_to_top(self, notif=None, user=None):
+    def move_item_to_top(self, notif=None, user=None, msg=None, time=None):
         if notif:
             if user not in self.original_items:
+                #todo если нет, то добавить
                 self.original_items.append(user)
-                list_item = QListWidgetItem(user)
-                self.ui.list_users.addItem(list_item)
+                self.add_item({"login": user, 'avatar': 'C:\\Users\\KFU\\Desktop\\desktop-messenger\\client\\GUI\\icons\\ava.jpg', 'last_sms': msg, 'time_sms': time})
 
-            items_found = self.ui.list_users.findItems(user, Qt.MatchExactly)
-            for item_found in items_found:
-                row = self.ui.list_users.row(item_found)
-                if row == 0:
-                    return
-                self.ui.list_users.takeItem(row)
-                self.ui.list_users.insertItem(0, user)
+            #todo изменяем его и поднимаем наверх, при этом выделение старого не трогаем
+            for i in range(self.ui.list_users.count()):
+                if self.ui.list_users.item(i).data(Qt.UserRole)['login'] == user:
+                    row = i
+                    items_info = self.ui.list_users.item(i).data(Qt.UserRole)
+                    items_info['last_sms'] = msg
+                    items_info['time_sms'] = str(datetime.datetime.now())[11:16]
+
+                    new_item = QListWidgetItem()
+                    new_item.setData(Qt.UserRole, items_info)
+                    new_item.setSizeHint(QSize(self.ui.widget_users_list.width() - 30, 80))
+                    new_widget = CustomQListWidgetItem(data=items_info)
+
+                    self.ui.list_users.takeItem(row)
+                    self.ui.list_users.insertItem(0, new_item)
+                    self.ui.list_users.setItemWidget(new_item, new_widget)
+
+
         else:
-            items_found = self.ui.list_users.findItems(user, Qt.MatchExactly)
-            if items_found:
-                currentItem = items_found[0]
-                row = self.ui.list_users.row(currentItem)
+            current_item = self.ui.list_users.currentItem()
+            items_info = current_item.data(Qt.UserRole)
+            if items_info:
+                items_info['last_sms'] = msg
+                items_info['time_sms'] = str(datetime.datetime.now())[11:16]
+
+                new_item = QListWidgetItem()
+                new_item.setData(Qt.UserRole, items_info)
+                new_item.setSizeHint(QSize(self.ui.widget_users_list.width() - 30, 80))
+                new_widget = CustomQListWidgetItem(data=items_info)
+
+                row = self.ui.list_users.row(current_item)
                 self.ui.list_users.takeItem(row)
-                self.ui.list_users.insertItem(0, user)
+                self.ui.list_users.insertItem(0, new_item)
+                self.ui.list_users.setItemWidget(new_item, new_widget)
                 self.ui.list_users.setCurrentRow(0)
 
 
@@ -349,11 +382,12 @@ class Controller(QMainWindow):
                 else:
                     self.ui.sms_label.setText(messages)
 
+                self.move_item_to_top(notif=False, user=user_send, msg=str(self.ui.send_text.toPlainText()))
+
                 self.ui.send_text.clear()
                 self.ui.send_text.update()
                 self.ui.send_text.setAcceptRichText(False)
 
-                self.move_item_to_top(notif=False, user=user_send)
 
     def scrollToBottom(self, minVal=None, maxVal=None):
         self.ui.scrollArea.verticalScrollBar().setValue(self.ui.scrollArea.verticalScrollBar().maximum())
@@ -380,7 +414,8 @@ class Controller(QMainWindow):
 
     def user_choise(self):
         self.ui.widget_send_text.show()
-        msg = 'select: ' + 'user: ' + Constant().login + ' user_send: ' + self.ui.list_users.currentItem().text()
+        user_select = self.ui.list_users.currentItem().data(Qt.UserRole)['login']
+        msg = 'select: ' + 'user: ' + Constant().login + ' user_send: ' + user_select
         self.signal_send_message.emit(msg)
 
     @Slot(str)
@@ -404,8 +439,7 @@ class Controller(QMainWindow):
             status = 'Error'
 
         self.ui.stackedWidget_sms.setCurrentIndex(0)
-        self.shoise_user = self.ui.list_users.currentItem().text()
-        print(self.shoise_user)
+        self.shoise_user = self.ui.list_users.currentItem().data(Qt.UserRole)['login']
         self.ui.user_label.setText(self.shoise_user)
         self.ui.user_status.setText(status)
 

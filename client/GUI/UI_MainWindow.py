@@ -419,6 +419,17 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget_users_list.sizePolicy().hasHeightForWidth())
         self.widget_users_list.setSizePolicy(sizePolicy)
+        self.widget_users_list.setStyleSheet("QListWidget::item:selected\n"
+"{\n"
+"    background: rgb(64, 57, 101);\n"
+"    border: transparent;\n"
+"}\n"
+"\n"
+"QListWidget::item:hover\n"
+"{\n"
+"    background: rgb(64, 57, 101);\n"
+"    border: transparent;\n"
+"}")
         self.widget_users_list.setObjectName("widget_users_list")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.widget_users_list)
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
@@ -430,7 +441,8 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.list_users.sizePolicy().hasHeightForWidth())
         self.list_users.setSizePolicy(sizePolicy)
         self.list_users.setStyleSheet("color: rgb(255, 255, 255);\n"
-"border: transparent;")
+"border: transparent;\n"
+"")
         self.list_users.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.list_users.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.list_users.setObjectName("list_users")
