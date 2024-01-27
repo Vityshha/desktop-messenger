@@ -16,6 +16,7 @@ class CustomQListWidgetItem(QWidget):
         avatar = data['avatar']
         last_sms = data['last_sms']
         time_sms = data['time_sms']
+        notif_count = str(data['notif_count'])
 
         login_label = QLabel(login)
         login_label.setFont(QFont("Open Sans", 9, QFont.Bold))
@@ -27,6 +28,16 @@ class CustomQListWidgetItem(QWidget):
         time_sms_label = QLabel(time_sms)
         time_sms_label.setFont(QFont("Open Sans", 8))
         time_sms_label.setStyleSheet("color: gray;")
+
+        notif_count_label = QLabel(notif_count)
+        notif_count_label.setFont(QFont("Open Sans", 9))
+        notif_count_label.setFixedSize(25, 25)
+
+        notif_count_label.setStyleSheet("border-radius: 12px; background-color: rgb(70, 64, 98); color: rgb(255, 255, 255);")
+        notif_count_label.setAlignment(Qt.AlignCenter)
+
+        if notif_count == '' or notif_count == '0':
+            notif_count_label.hide()
 
         map_label = QLabel()
         map_label.setFixedSize(60, 60)
@@ -41,8 +52,9 @@ class CustomQListWidgetItem(QWidget):
 
         layout_right = QVBoxLayout()
 
-        layout_right_down = QHBoxLayout()  # Горизонтальный макет в правом нижнем углу
+        layout_right_down = QHBoxLayout()
         layout_right_down.addWidget(last_sms_label)
+        layout_right_down.addWidget(notif_count_label)
         layout_right_down.setContentsMargins(8, 0, 0, 12)
 
         layout_login_time = QHBoxLayout()
@@ -51,7 +63,7 @@ class CustomQListWidgetItem(QWidget):
         layout_login_time.addWidget(time_sms_label)
         layout_login_time.setContentsMargins(8, 12, 0, 0)
 
-        layout_main.addWidget(map_label)  # Левое изображение
+        layout_main.addWidget(map_label)
 
         layout_right.addLayout(layout_login_time)
         layout_right.addLayout(layout_right_down)
