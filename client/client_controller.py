@@ -137,6 +137,7 @@ class Controller(QMainWindow):
 
         self.ui.send_text.installEventFilter(self)
         self.installEventFilter(self)
+        self.ui.list_users.installEventFilter(self)
 
         self.ui.btn_settings.clicked.connect(self.effects)
 
@@ -190,7 +191,6 @@ class Controller(QMainWindow):
         '''Поиск и добавление пользователей если они есть в бд
                     и если они еще не добавлены'''
         self.books = []
-        print('Кольво людей: ', self.ui.list_users.count())
         for i in range(self.ui.list_users.count()):
             book = self.ui.list_users.item(i).data(Qt.UserRole)['login']
             self.books.append(book)
@@ -220,7 +220,6 @@ class Controller(QMainWindow):
                 self.add_item({"login": login,
                                'avatar': 'C:\\Users\\KFU\\Desktop\\desktop-messenger\\client\\GUI\\icons\\ava.jpg',
                                'last_sms': last_sms, 'time_sms': time, 'notif_count': ''})
-        print(self.notif_count)
 
     def add_item(self, user_data):
         item = QListWidgetItem()
@@ -251,6 +250,7 @@ class Controller(QMainWindow):
         ite = [item.split(', ') for item in ite]
         messages = ''
         for itt in ite:
+            user = itt[0]
             print_time = itt[3].split(' ')
             print_time = print_time[1][:5]
             if itt[0] != Constant().login:
@@ -270,7 +270,6 @@ class Controller(QMainWindow):
             )
 
         self.ui.sms_label.setText(messages)
-        self.notif_count[f'{self.ui.list_users.currentItem().text()}'] = 0
 
     @Slot(str)
     def notification(self, notif):
@@ -294,7 +293,7 @@ class Controller(QMainWindow):
                         else:
                             self.notif_count[f'{itt[0]}'] = 1
                 else:
-                    print('Не выбран никто нужно доработать')
+                    self.notif_count[user] += 1
             else:
                 direct = 'right'
             messages += (
@@ -318,6 +317,7 @@ class Controller(QMainWindow):
         if notif:
             if user not in self.original_items:
                 self.original_items.append(user)
+                self.notif_count[user] = 0
                 self.add_item(
                     {"login": user, 'avatar': 'C:\\Users\\KFU\\Desktop\\desktop-messenger\\client\\GUI\\icons\\ava.jpg',
                      'last_sms': msg, 'time_sms': time, 'notif_count': self.notif_count[user]})
@@ -338,12 +338,13 @@ class Controller(QMainWindow):
                     self.ui.list_users.takeItem(row)
                     self.ui.list_users.insertItem(0, new_item)
                     self.ui.list_users.setItemWidget(new_item, new_widget)
-                    row = self.ui.list_users.row(current_item)
-                    if row == None:
-                        break
-                    elif row == -1:
-                        row = 0
-                        self.ui.list_users.setCurrentRow(row)
+                    if current_item:
+                        row = self.ui.list_users.row(current_item)
+                        if row == None:
+                            break
+                        elif row == -1:
+                            row = 0
+                            self.ui.list_users.setCurrentRow(row)
                     break
         else:
             current_item = self.ui.list_users.currentItem()
@@ -415,8 +416,10 @@ class Controller(QMainWindow):
                     self.ui.stackedWidget_sms.setCurrentIndex(1)
                     self.ui.user_label.clear()
                     self.ui.user_status.clear()
-                    self.ui.list_users.clearSelection()
                     self.ui.widget_send_text.hide()
+                    self.ui.list_users.clearFocus()
+                    self.ui.list_users.clearSelection()
+                    self.ui.list_users.setCurrentItem(None)
         if obj is self.ui.send_text and event.type() == QEvent.KeyPress:
             if event.key() == Qt.Key_Return and not event.modifiers():
                 self.send_message()
@@ -432,7 +435,7 @@ class Controller(QMainWindow):
 
         current_item = self.ui.list_users.currentItem()
         items_info = current_item.data(Qt.UserRole)
-        if items_info:
+        if items_info and (items_info['notif_count'] != 0 or items_info['notif_count'] != ''):
             items_info['notif_count'] = ''
             self.notif_count[str(user_select)] = 0
 
