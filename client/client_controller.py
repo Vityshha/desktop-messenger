@@ -293,7 +293,10 @@ class Controller(QMainWindow):
                         else:
                             self.notif_count[f'{itt[0]}'] = 1
                 else:
-                    self.notif_count[user] += 1
+                    if f'{itt[0]}' in self.notif_count:
+                        self.notif_count[f'{itt[0]}'] += 1
+                    else:
+                        self.notif_count[f'{itt[0]}'] = 1
             else:
                 direct = 'right'
             messages += (
@@ -317,7 +320,7 @@ class Controller(QMainWindow):
         if notif:
             if user not in self.original_items:
                 self.original_items.append(user)
-                self.notif_count[user] = 0
+                self.notif_count[user] = 1
                 self.add_item(
                     {"login": user, 'avatar': 'C:\\Users\\KFU\\Desktop\\desktop-messenger\\client\\GUI\\icons\\ava.jpg',
                      'last_sms': msg, 'time_sms': time, 'notif_count': self.notif_count[user]})
@@ -508,6 +511,11 @@ class Controller(QMainWindow):
                     wd_close_global_pos.y() <= event.globalY() <= wd_close_global_pos.y() + self.ui.wd_close.height():
                 self.user_exit()
         return super().mousePressEvent(event)
+
+    def mouseDoubleClickEvent(self, event):
+        if event.button() == Qt.LeftButton and self.ui.widget_btn.geometry().contains(event.pos()):
+            self.resize_window()
+        return super().mouseDoubleClickEvent(event)
 
     def mouseMoveEvent(self, event):
 
