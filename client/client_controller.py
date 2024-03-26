@@ -563,6 +563,7 @@ class Controller(QMainWindow):
         self.ui.sms_label.clear()
         self.ui.user_status.clear()
         self.ui.user_label.clear()
+        self.ui.search_text.clear()
         self.ui.stackedWidget_sms.setCurrentIndex(1)
         self.Authorization.ui_authorization.password.clear()
         self.Authorization.ui_authorization.login.clear()
